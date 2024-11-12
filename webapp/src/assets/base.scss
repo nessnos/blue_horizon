@@ -1,0 +1,44 @@
+body {
+  min-height: 100vh;
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.custom-scrollbar {
+  // Scroll bar for Firefox
+  overflow: scroll;
+  scrollbar-color: #6969be #dbdbdb;
+  scrollbar-width: initial;
+}
+
+
+/* width */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-track {
+  background: #dbdbdb;
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #67739f;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #333566;
+}

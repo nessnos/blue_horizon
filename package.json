@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@unhead/vue": "^1.10.4",
+    "vue-recaptcha": "^3.0.0-alpha.6"
+  }
+}
