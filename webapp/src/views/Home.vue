@@ -55,6 +55,9 @@
     <div class="text-2xl font-extrabold text-ocean">
       Water Quality Metrics (Europe)
     </div>
+    <div>
+      Exploration Stats
+    </div>
   </div>
 </template>
 
