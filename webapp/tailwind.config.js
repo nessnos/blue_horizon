@@ -18,4 +18,9 @@ export default {
     },
   },
   plugins: [require("@tailwindcss/forms")],
+  variants: {
+    extend: {
+      backdropFilter: ['responsive'], 
+    },
+  },
 }

@@ -18,7 +18,7 @@ const isActive = (path: string) => {
 </script>
 <template>
  <div class="flex flex-row">
-  <div class="transition-all duration-300 absolute h-screen inline-flex flex-col items-center bg-gray-900 shadow p-2 px-3 transform md:relative md:left-0 transition duration-200 ease-in-out" :class="[ 
+  <div class="transition-all duration-300 absolute h-screen inline-flex flex-col items-center bg-ocean shadow p-2 px-3 transform md:relative md:left-0 transition duration-200 ease-in-out" :class="[ 
                  [ isOpen ? 'w-72' : '' ]
       ]">
     <div class="my-6 w-full px-4 flex justify-between items-center">
@@ -49,7 +49,7 @@ const isActive = (path: string) => {
       </RouterLink>
     </nav>
   </div>
-  <div class="flex w-full bg-gray-200 max-h-screen">
+  <div class="flex w-full bg-white max-h-screen">
     <RouterView/>
   </div>
  </div>
