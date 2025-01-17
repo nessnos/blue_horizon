@@ -5,11 +5,9 @@
 <template>
   <div class="flex flex-col gap-6 p-12">
     <div class="text-3xl font-bold text-ocean">Welcome to Blue Horizon</div>
-    <div class="text-ocean">
-      Discover detailed water quality metrics and statistics for Europe, sourced from the European Environment Agency (EEA). 
-      Blue Horizon provides insights into water health across all European countries, with data on key indicators. Our interactive 
-      map allows you to explore and compare water quality data for each country, helping you understand the state of Europe’s water 
-      resources.
+    <div class="text-ocean w-2/3">
+      Dive into detailed water quality metrics and statistics for Europe, sourced from the European Environment Agency (EEA). 
+      Gain insights into key indicators of water health across all European countries, presented in a user-friendly interface.
     </div>
     <div class="font-semibold text-xl text-ocean">Try out</div>
     <div class="flex flex-row gap-6 px-3">
