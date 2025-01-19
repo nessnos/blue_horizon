@@ -1,9 +1,13 @@
 <script setup lang="ts">
 //@ts-ignore
 import Europe from "./EuropeMap.vue"
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
-const europeanCountries: { country: string; isoAlpha2: string, clicked: boolean }[] = [
+interface Country { country: string; isoAlpha2: string, clicked: boolean }
+
+const selectedCountry = ref<Country | null>(null)
+
+const europeanCountries: Country[] = [
   { country: "Albania", isoAlpha2: "AL", clicked : false },
   { country: "Andorra", isoAlpha2: "AD", clicked : false },
   { country: "Armenia", isoAlpha2: "AM", clicked : false },
@@ -60,6 +64,7 @@ const europeanCountries: { country: string; isoAlpha2: string, clicked: boolean 
 
 onMounted(() => {
   const paths = document.querySelectorAll('#countries path');
+  
   if (paths.length > 0) {
     paths.forEach((path) => {
       const isoAlpha2 = path.getAttribute('id')?.toString().toUpperCase();
@@ -74,12 +79,26 @@ onMounted(() => {
           if (country) {
             if (country.clicked) {
               path.classList.remove('fill-ocean');
-              path.classList.add('fill-gray-200'); 
+              path.classList.add('fill-gray-200');
               country.clicked = false;
+              selectedCountry.value = null
             } else {
+              europeanCountries.forEach(otherCountry => {
+                if (otherCountry.clicked) {
+                  const otherPath = document.getElementById(`${otherCountry.isoAlpha2.toLowerCase()}`);
+                  if (otherPath) {
+                    otherPath.classList.remove('fill-ocean');
+                    otherPath.classList.add('fill-gray-200');
+                    otherCountry.clicked = false;
+                  }
+                }
+              });
+
+              selectedCountry.value = country
               path.classList.remove('fill-gray-200');
               path.classList.add('fill-ocean');
-              country.clicked = true; 
+              country.clicked = true;
+
             }
           }
         });
@@ -94,13 +113,17 @@ onMounted(() => {
 
 
 
+
 </script>
 <template>
 
 <div class="flex flex-row items-start justify-start">
-   <Europe class="h-full"/>
-   <div class="p-6 h-full bg-white border-l-2 border-gray-300">
+   <div class="flex flex-col justify-start items-start h-full w-3/4">
+      <Europe class="w-full mb-auto"/>
+   </div>
+   <div class="w-1/4 p-6 h-full bg-white border-l-2 border-gray-300">
       <div class="font-semibold text-ocean text-lg">Select a country</div>
+      <div>{{ selectedCountry?.country }}</div>
    </div>
 </div>
 
