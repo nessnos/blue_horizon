@@ -111,19 +111,35 @@ onMounted(() => {
   }
 });
 
-
-
+const comparison = ref(false)
 
 </script>
 <template>
 
-<div class="flex flex-row items-start justify-start">
-   <div class="flex flex-col justify-start items-start h-full w-3/4">
-      <Europe class="w-full mb-auto"/>
+<div class="grid grid-cols-4 h-full items-start justify-start">
+   <div class="col-span-3 flex flex-col justify-start items-start h-full w-full">
+    <Europe class="w-full mb-4"/>
+    <div class="py-1 p-4 text-gray-500 font-normal text-xs">Comparison Mode : 
+      <span v-if="comparison">On</span>
+      <span v-else>Off</span>
+    </div>  
    </div>
-   <div class="w-1/4 p-6 h-full bg-white border-l-2 border-gray-300">
-      <div class="font-semibold text-ocean text-lg">Select a country</div>
-      <div>{{ selectedCountry?.country }}</div>
+   <div class="p-6 h-full bg-white border-l-2 border-gray-300">
+    <div class="flex flex-col items-center justify-center w-full h-full" v-if="!selectedCountry">
+      <div class="py-12 text-ocean text-lg">
+        <span class="font-semibold">Select a country </span>
+        <span class="font-normal">to explore its water quality metrics in detail.</span>
+      </div>
+      <div class="py-12 text-ocean text-sm">
+        <div class="pb-2">Want to <span class="font-semibold">compare</span> two countries?</div>
+        <div class="py-4">Enable comparison mode using the button below and click on two countries to see side-by-side insights into their water quality data.        </div>
+        <div @click="comparison = !comparison" class="px-3 py-2 bg-ocean text-white w-fit rounded-lg shadow font-semibold hover:bg-gray-400 hover:cursor-pointer">Compare</div>
+      </div>
+    </div>
+    <div class="flex flex-col items-start justify-start w-full h-full" v-if="selectedCountry">
+      <div class="font-semibold text-ocean text-lg">{{ selectedCountry?.country }}</div>
+    </div>
+    
    </div>
 </div>
 
