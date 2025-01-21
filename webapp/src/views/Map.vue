@@ -1,11 +1,14 @@
 <script setup lang="ts">
 //@ts-ignore
-import Europe from "./EuropeMap.vue"
+import Europe from "./EuropeMap.vue";
+import { ExclamationCircleIcon } from "@heroicons/vue/24/solid";
 import { onMounted, ref } from 'vue';
+import { Switch } from '@headlessui/vue';
+import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
 
 interface Country { country: string; isoAlpha2: string, clicked: boolean }
 
-const selectedCountry = ref<Country | null>(null)
+const selectedCountry = ref<Country[]>([])
 
 const europeanCountries: Country[] = [
   { country: "Albania", isoAlpha2: "AL", clicked : false },
@@ -81,8 +84,22 @@ onMounted(() => {
               path.classList.remove('fill-ocean');
               path.classList.add('fill-gray-200');
               country.clicked = false;
-              selectedCountry.value = null
-            } else {
+              selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1);
+            } 
+            else if(comparison.value) {
+              const numberClicked = europeanCountries.filter(function(s) { return s.clicked; }).length
+              if(numberClicked == 2){
+                console.error("you can't select more than 2 countries")
+                isOpen.value = true
+              }
+              else{
+                path.classList.remove('fill-gray-200');
+                path.classList.add('fill-ocean');
+                country.clicked = true;
+                selectedCountry.value.push(country)
+              }
+            }
+            else {
               europeanCountries.forEach(otherCountry => {
                 if (otherCountry.clicked) {
                   const otherPath = document.getElementById(`${otherCountry.isoAlpha2.toLowerCase()}`);
@@ -90,14 +107,16 @@ onMounted(() => {
                     otherPath.classList.remove('fill-ocean');
                     otherPath.classList.add('fill-gray-200');
                     otherCountry.clicked = false;
+                    selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1);
                   }
                 }
+                path.classList.remove('fill-gray-200');
+                path.classList.add('fill-ocean');
+                country.clicked = true;
               });
 
-              selectedCountry.value = country
-              path.classList.remove('fill-gray-200');
-              path.classList.add('fill-ocean');
-              country.clicked = true;
+              selectedCountry.value.push(country)
+              
 
             }
           }
@@ -112,10 +131,24 @@ onMounted(() => {
 });
 
 const comparison = ref(false)
+const isOpen = ref(false)
 
+const resetComparison = () => {
+  const selectedAll = europeanCountries.filter(function(s) { return s.clicked; })
+  selectedAll.forEach(country => {
+    const otherPath = document.getElementById(`${country.isoAlpha2.toLowerCase()}`);
+    if (otherPath) {
+        otherPath.classList.remove('fill-ocean');
+        otherPath.classList.add('fill-gray-200');
+        country.clicked = false;
+        selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1);
+      }
+  })
+  isOpen.value = !isOpen.value
+}
 </script>
-<template>
 
+<template>
 <div class="grid grid-cols-4 h-full items-start justify-start">
    <div class="col-span-3 flex flex-col justify-start items-start h-full w-full">
     <Europe class="w-full mb-4"/>
@@ -125,22 +158,104 @@ const comparison = ref(false)
     </div>  
    </div>
    <div class="p-6 h-full bg-white border-l-2 border-gray-300">
-    <div class="flex flex-col items-center justify-center w-full h-full" v-if="!selectedCountry">
-      <div class="py-12 text-ocean text-lg">
+    <div class="flex flex-col items-center justify-center w-full h-full" v-if="!selectedCountry.length">
+      <div v-if="!comparison" class="min-h-56 py-12 text-ocean text-lg">
         <span class="font-semibold">Select a country </span>
         <span class="font-normal">to explore its water quality metrics in detail.</span>
       </div>
+      <div v-else class="min-h-56 py-12 text-ocean text-lg">
+        <span class="font-semibold">Select two countries </span>
+        <span class="font-normal">to explore their water quality metrics in detail and compare.</span>
+      </div>
       <div class="py-12 text-ocean text-sm">
-        <div class="pb-2">Want to <span class="font-semibold">compare</span> two countries?</div>
-        <div class="py-4">Enable comparison mode using the button below and click on two countries to see side-by-side insights into their water quality data.        </div>
-        <div @click="comparison = !comparison" class="px-3 py-2 bg-ocean text-white w-fit rounded-lg shadow font-semibold hover:bg-gray-400 hover:cursor-pointer">Compare</div>
+        <div class="flex flex-row w-full items-end justify-start gap-5 pb-2">
+          <div>Want to <span class="font-semibold">compare</span> two countries?</div>
+          <Switch
+            v-model="comparison"
+            :class="comparison ? 'bg-ocean' : 'bg-gray-300'"
+            class="relative inline-flex h-[18px] w-[34px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          >
+            <span
+              aria-hidden="true"
+              :class="comparison ? 'translate-x-4' : 'translate-x-0'"
+              class="pointer-events-none inline-block h-[14px] w-[14px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+            />
+          </Switch>
+        </div>
+        <div class="py-4">Enable comparison mode using the switch above and click on two countries to see side-by-side insights into their water quality data.        </div>
       </div>
     </div>
     <div class="flex flex-col items-start justify-start w-full h-full" v-if="selectedCountry">
-      <div class="font-semibold text-ocean text-lg">{{ selectedCountry?.country }}</div>
+      <div class="font-semibold text-ocean text-lg" v-for="country in selectedCountry">{{ country.country }}</div>
     </div>
-    
-   </div>
+  </div>
 </div>
 
+
+<TransitionRoot appear :show="isOpen" as="template">
+    <Dialog as="div" @close="isOpen = !isOpen" class="relative z-10">
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black/25" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center"
+        >
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <DialogPanel
+              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+              <DialogTitle
+                as="h3"
+                class="flex flex-row items-center gap-2 text-lg font-medium leading-6 text-red-700"
+              >
+                <ExclamationCircleIcon class="h-6 w-6" />
+                <span>Selection Error</span>
+              </DialogTitle>
+              <div class="mt-6">
+                <div class="text-sm text-gray-500">
+                  You can only select up to two countries at a time for comparison. 
+                  Please deselect all or one country to choose a new one.
+                </div>
+              </div>
+
+              <div class="mt-8 flex flex-row justify-between items-center">
+                <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  @click="resetComparison"
+                >
+                  Deselect All
+                </button>
+                <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  @click="isOpen = !isOpen"
+                >
+                  Let Me Choose
+                </button>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
 </template>
