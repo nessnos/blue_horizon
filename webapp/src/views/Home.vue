@@ -1,5 +1,7 @@
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
 </script>
 
 <template>
@@ -23,7 +25,7 @@
             Filter by country or year to track trends and explore changes in water health over time.
           </div>
         </div>
-        <div class="bg-ocean rounded-lg px-3 py-2 text-white text-sm hover:bg-aqua hover:cursor-pointer">Learn More</div>
+        <RouterLink :to="'/dashboard'" class="bg-ocean rounded-lg px-3 py-2 text-white text-sm hover:bg-aqua hover:cursor-pointer">Learn More</RouterLink>
       </div>
       <div class="flex flex-col gap-2 items-start justify-between border-[0.5px] border-gray-300 rounded-lg bg-gray-100/55 shadow px-6 py-4 h-fit min-h-64 min-w-56">
         <div class="relative w-56 h-full p-1 py-4">
@@ -37,7 +39,7 @@
             Select countries to view detailed metrics, offering localized insights into water health and key statistics.
           </div>
         </div>
-        <div class="bg-ocean rounded-lg px-3 py-2 text-white text-sm hover:bg-aqua hover:cursor-pointer">Learn More</div>
+        <RouterLink :to="'/map'" class="bg-ocean rounded-lg px-3 py-2 text-white text-sm hover:bg-aqua hover:cursor-pointer">Learn More</RouterLink>
       </div>
     </div>
   </div>

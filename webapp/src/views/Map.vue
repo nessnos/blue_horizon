@@ -122,7 +122,7 @@ onMounted(() => {
           }
         });
       } else {
-        path.classList.add('fill-gray-200', 'stroke-gray-600');
+        path.classList.add('fill-gray-400', 'stroke-gray-600');
       }
     });
   } else {
@@ -186,7 +186,26 @@ const resetComparison = () => {
       </div>
     </div>
     <div class="flex flex-col items-start justify-start w-full h-full" v-if="selectedCountry">
-      <div class="font-semibold text-ocean text-lg" v-for="country in selectedCountry">{{ country.country }}</div>
+      <div v-for="country in selectedCountry">
+        <div class="font-bold text-ocean text-xl py-2 pb-3">{{ country.country }} ({{ country.isoAlpha2 }})</div>
+        <div class="font-bold text-sm py-2 text-ocean">General Information</div>
+        <div class="pl-2">
+          <div class="text-xs font-semibold text-ocean">Total Monitoring Sites : <span class="font-normal">6</span></div>
+          <div class="text-xs font-semibold text-ocean">Decades Covered : <span class="font-normal">1920 - 2023</span></div>
+          <div class="text-xs font-semibold text-ocean">Water Body Category : <span class="font-normal">Rivers and Lakes</span></div>
+          <div class="text-xs font-semibold text-ocean">Matrix : <span class="font-normal">Water</span></div>
+        </div>
+
+        <div class="font-bold text-sm py-2 text-ocean">Water Quality Measures</div>
+        <div class="pl-2">    
+          <div class="text-xs font-semibold text-ocean">Most Monitored Determinand : <span class="font-normal">Tetrachloroethylene (CAS_127-18-4)</span></div>     
+          <div class="text-xs font-semibold text-ocean">Mean Concentration : <span class="font-normal">0.052 µg/L</span></div>
+          <div class="text-xs font-semibold text-ocean">Maximum Recorded Value : <span class="font-normal">0.12 µg/L</span></div>
+          <div class="text-xs font-semibold text-ocean">Minimum Recorded Value : <span class="font-normal">0.02 µg/L</span></div>
+          <div class="text-xs font-semibold text-ocean">Standard Deviation : <span class="font-normal">0.015 µg/L</span></div>
+          <div class="text-xs font-semibold text-ocean">Total Samples : <span class="font-normal">100</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
