@@ -5,8 +5,7 @@ import { ExclamationCircleIcon } from "@heroicons/vue/24/solid";
 import { onMounted, ref } from 'vue';
 import { Switch } from '@headlessui/vue';
 import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
-
-interface Country { country: string; isoAlpha2: string, clicked: boolean }
+import type { Country } from "@/type";
 
 const selectedCountry = ref<Country[]>([])
 
