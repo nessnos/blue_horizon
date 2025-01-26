@@ -9,3 +9,8 @@ export interface Option {
     isoAlpha2?: string, 
     code?: string,
 }
+
+export interface BarData {
+    x: string,
+    y: number,
+}

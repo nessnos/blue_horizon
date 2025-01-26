@@ -156,7 +156,7 @@ const resetComparison = () => {
       <span v-else>Off</span>
     </div>  
    </div>
-   <div class="p-6 h-full bg-white border-l-2 border-gray-300">
+   <div class="p-6 h-full border-l-2 border-gray-300">
     <div class="flex flex-col items-center justify-center w-full h-full" v-if="!selectedCountry.length">
       <div v-if="!comparison" class="min-h-56 py-12 text-ocean text-lg">
         <span class="font-semibold">Select a country </span>

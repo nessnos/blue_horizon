@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Option } from "@/type";
+import type * as types from "@/type";
 import SelectOption from "@/assets/reusable/SelectOption.vue"
+//@ts-ignore
+import BarChart from '@/assets/reusable/BarChart.vue';
+//@ts-ignore
+import Chemicals from '@/assets/icons/Chemicals.vue';
+import WebDomain from '@/assets/icons/WebDomain.vue';
+import Sample from '@/assets/icons/Sample.vue';
 
-const countries = ref<Option[]>([
+const countries = ref<types.Option[]>([
+  {name: 'All'},
   { name: "Albania", isoAlpha2: "AL" },
   { name: "Andorra", isoAlpha2: "AD" },
   { name: "Armenia", isoAlpha2: "AM" },
@@ -58,6 +65,7 @@ const countries = ref<Option[]>([
 ]);
 
 const decades = ref<{ name: string }[]>([
+  {name : 'All'},
   { name: '1900-1910' },
   { name: '1910-1920' },
   { name: '1920-1930' },
@@ -73,7 +81,8 @@ const decades = ref<{ name: string }[]>([
   { name: '2020-2030' },
 ]);
 
-const chemicals = ref<Option[]>([
+const chemicals = ref<types.Option[]>([
+  {name : 'All'},
   { name: "Tetrachloroethylene", code: "CAS_127-18-4" },
   { name: "Trichloroethylene", code: "CAS_79-01-6" },
   { name: "Perchloroethylene", code: "CAS_127-18-4" },
@@ -89,9 +98,17 @@ const chemicals = ref<Option[]>([
 ]);
 
 
+const data = ref<types.BarData[]>([
+    { "x": "Trichloromethane", "y": 5 },
+    { "x": "Fenthion", "y": 3 },
+    { "x": "Chloridazon", "y": 1 },
+    { "x": "Thallium", "y": 2 }
+]
+)
+
 </script>
 <template>
-    <div class="p-12">
+    <div class="p-12 w-full h-full">
         <div class="flex flex-row gap-3">
             <SelectOption
                 :rowData="countries"
@@ -105,6 +122,38 @@ const chemicals = ref<Option[]>([
                 :rowData="chemicals"
                 :label="'Chemicals'"
             />
+        </div>
+        <div class="py-6 flex flex-row gap-6 items-center w-full">
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit max-h-24">
+            <div class="flex flex-col gap-2 items-center">
+              <div class="flex flex-row items-center justify-between w-full">
+                <Chemicals class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
+                <div class="font-bold text-2xl pr-6">6</div>
+              </div>
+              <div class="font-normal text-xs">Count of Chemicals Monitored</div>
+            </div>
+          </div>
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit max-h-24">
+            <div class="flex flex-col gap-2 items-center">
+              <div class="flex flex-row items-center justify-between w-full">
+                <WebDomain class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
+                <div class="font-bold text-2xl pr-6">2</div>
+              </div>
+              <div class="font-normal text-xs">Count of Monitoring Sites</div>
+            </div>
+          </div>
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit max-h-24">
+            <div class="flex flex-col gap-2 items-center">
+              <div class="flex flex-row items-center justify-between w-full">
+                <Sample class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
+                <div class="font-bold text-2xl pr-6">256</div>
+              </div>
+              <div class="font-normal text-xs">Number of Collected Samples</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-1/2 h-56">
+          <BarChart :chartData="data"/>
         </div>
     </div>
 </template>
