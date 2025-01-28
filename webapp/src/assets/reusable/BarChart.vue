@@ -1,5 +1,5 @@
 <template>
-      <div class="px-2 pt-4" id="column-chart"></div>
+      <div class="px-2 pt-4" id="bar-chart"></div>
       </template>
       <script setup lang="ts">
       import { onMounted } from 'vue';
@@ -96,20 +96,11 @@
        },
        fill: {
         opacity: 1,
-       },
-       grid: {
-        show: false,
-        strokeDashArray: 4,
-        padding: {
-         left: 16,
-         right: 2,
-         top: 0
-        },
-       },
+       }
       }
       
-      if(document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
-       const chart = new ApexCharts(document.getElementById("column-chart"), options);
+      if(document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
+       const chart = new ApexCharts(document.getElementById("bar-chart"), options);
        chart.render();
       }
       

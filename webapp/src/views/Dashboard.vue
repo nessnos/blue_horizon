@@ -4,10 +4,13 @@ import type * as types from "@/type";
 import SelectOption from "@/assets/reusable/SelectOption.vue"
 //@ts-ignore
 import BarChart from '@/assets/reusable/BarChart.vue';
+import DonutChart from '@/assets/reusable/DonutChart.vue';
 //@ts-ignore
 import Chemicals from '@/assets/icons/Chemicals.vue';
 import WebDomain from '@/assets/icons/WebDomain.vue';
 import Sample from '@/assets/icons/Sample.vue';
+import MissingData from '@/assets/icons/MissingData.vue';
+import Proportion from '@/assets/icons/Proportion.vue';
 
 const countries = ref<types.Option[]>([
   {name: 'All'},
@@ -124,8 +127,8 @@ const data = ref<types.BarData[]>([
             />
         </div>
         <div class="py-6 flex flex-row gap-6 items-center w-full">
-          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit max-h-24">
-            <div class="flex flex-col gap-2 items-center">
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
+            <div class="flex flex-col gap-8 items-start">
               <div class="flex flex-row items-center justify-between w-full">
                 <Chemicals class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">6</div>
@@ -133,8 +136,8 @@ const data = ref<types.BarData[]>([
               <div class="font-normal text-xs">Count of Chemicals Monitored</div>
             </div>
           </div>
-          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit max-h-24">
-            <div class="flex flex-col gap-2 items-center">
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
+            <div class="flex flex-col gap-8 items-start">
               <div class="flex flex-row items-center justify-between w-full">
                 <WebDomain class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">2</div>
@@ -142,8 +145,8 @@ const data = ref<types.BarData[]>([
               <div class="font-normal text-xs">Count of Monitoring Sites</div>
             </div>
           </div>
-          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit max-h-24">
-            <div class="flex flex-col gap-2 items-center">
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
+            <div class="flex flex-col gap-8 items-start">
               <div class="flex flex-row items-center justify-between w-full">
                 <Sample class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">256</div>
@@ -151,9 +154,32 @@ const data = ref<types.BarData[]>([
               <div class="font-normal text-xs">Number of Collected Samples</div>
             </div>
           </div>
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
+            <div class="flex flex-col gap-8 items-start">
+              <div class="flex flex-row items-center justify-between w-full">
+                <Proportion class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
+                <div class="font-bold text-2xl pr-6">2<span class="pl-1 text-xs">%</span></div>
+              </div>
+              <div class="text-left font-normal text-xs">Proportion Of Confirmed Samples</div>
+            </div>
+          </div>
+          <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
+            <div class="flex flex-col gap-8 items-start">
+              <div class="flex flex-row items-center justify-between w-full">
+                <MissingData class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
+                <div class="font-bold text-2xl pr-6">25<span class="pl-1 text-xs">%</span></div>
+              </div>
+              <div class="font-normal text-xs">Percentage of Missing Data</div>
+            </div>
+          </div>
         </div>
-        <div class="w-1/2 h-56">
-          <BarChart :chartData="data"/>
+        <div class="w-full flex flex-row gap-4 items-center">
+          <div class="w-1/2 h-64">
+            <BarChart :chartData="data"/>
+          </div>
+          <div class="w-1/4 h-64">
+            <DonutChart :chartData="data"/>
+          </div>
         </div>
     </div>
 </template>
