@@ -50,7 +50,7 @@ const isActive = (path: string) => {
       </RouterLink>
     </nav>
   </div>
-  <div class="w-full bg-ocean/10  max-h-screen">
+  <div class="w-full bg-ocean/10 max-h-screen">
     <RouterView/>
   </div>
  </div>

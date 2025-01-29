@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type * as types from "@/type";
-import SelectOption from "@/assets/reusable/SelectOption.vue"
+import SelectOption from "@/assets/reusable/Dropdowns/SelectOption.vue"
 //@ts-ignore
-import BarChart from '@/assets/reusable/BarChart.vue';
-import DonutChart from '@/assets/reusable/DonutChart.vue';
+import BarChart from '@/assets/reusable/Charts/BarChart.vue';
+import DonutChart from '@/assets/reusable/Charts/DonutChart.vue';
+import LineChart from '@/assets/reusable/Charts/LineChart.vue';
 //@ts-ignore
 import Chemicals from '@/assets/icons/Chemicals.vue';
 import WebDomain from '@/assets/icons/WebDomain.vue';
@@ -111,7 +112,7 @@ const data = ref<types.BarData[]>([
 
 </script>
 <template>
-    <div class="p-12 w-full h-full">
+    <div class="p-12 w-full h-full flex flex-col items-start justify-between">
         <div class="flex flex-row gap-3">
             <SelectOption
                 :rowData="countries"
@@ -126,7 +127,7 @@ const data = ref<types.BarData[]>([
                 :label="'Chemicals'"
             />
         </div>
-        <div class="py-6 flex flex-row gap-6 items-center w-full">
+        <div class="py-6 flex flex-row justify-between items-center w-full">
           <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
             <div class="flex flex-col gap-8 items-start">
               <div class="flex flex-row items-center justify-between w-full">
@@ -173,12 +174,54 @@ const data = ref<types.BarData[]>([
             </div>
           </div>
         </div>
-        <div class="w-full flex flex-row gap-4 items-center">
-          <div class="w-1/2 h-64">
-            <BarChart :chartData="data"/>
-          </div>
-          <div class="w-1/4 h-64">
+        <div class="w-full flex flex-row gap-12 items-start">
+          <div class="w-40 h-40 mr-8">
             <DonutChart :chartData="data"/>
+          </div>
+          <div class="min-w-2/3 w-full h-full min-h-fit">
+            <table class="w-full bg-white rounded-lg shadow text-xs">
+                <thead>
+                    <tr class="border-b border-ocean text-gray-700 rounded-lg">
+                        <th class="px-4 py-2">Chemical Name</th>
+                        <th class="px-4 py-2">Mean</th>
+                        <th class="px-4 py-2">Min</th>
+                        <th class="px-4 py-2">Max</th>
+                        <th class="px-4 py-2">Std Dev</th>
+                        <th class="px-4 py-2">Median</th>
+                        <th class="px-4 py-2">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example Row (Replace with dynamic content) -->
+                    <tr class="text-center">
+                        <td class="px-4 py-2">Trichloromethane</td>
+                        <td class="px-4 py-2">0.01</td>
+                        <td class="px-4 py-2">0.01</td>
+                        <td class="px-4 py-2">0.02</td>
+                        <td class="px-4 py-2">0.005</td>
+                        <td class="px-4 py-2">0.01</td>
+                        <td class="px-4 py-2">5</td>
+                    </tr>
+                    <tr class="text-center bg-gray-50/25">
+                        <td class="px-4 py-2">Fenthion</td>
+                        <td class="px-4 py-2">0.02</td>
+                        <td class="px-4 py-2">0.01</td>
+                        <td class="px-4 py-2">0.03</td>
+                        <td class="px-4 py-2">0.007</td>
+                        <td class="px-4 py-2">0.02</td>
+                        <td class="px-4 py-2">4</td>
+                    </tr>
+                    <!-- Add more rows dynamically -->
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="w-full flex flex-row justify-between items-center">
+          <div class="w-1/2 h-64 px-6">
+            <LineChart :chartData="data"/>
+          </div>
+          <div class="w-1/2 h-64 px-6">
+            <BarChart :chartData="data"/>
           </div>
         </div>
     </div>

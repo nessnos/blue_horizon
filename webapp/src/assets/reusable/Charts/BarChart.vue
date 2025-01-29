@@ -13,11 +13,10 @@
       onMounted(() => {
       
        const options = {
-       //colors: ["#1A56DB", "#FDBA8C"],
        series: [
         {
-         name: "MOCs",
-         color: "rgba(134, 239, 172,0.75)",
+         name: "Chemicals",
+         color: "#002665",
          data: props.chartData,
         },
        ],
