@@ -12,12 +12,13 @@
 
       onMounted(() => {
       
+        const sortedData = [...props.chartData].sort((a, b) => b.y - a.y);
        const options = {
        series: [
         {
          name: "Chemicals",
          color: "#002665",
-         data: props.chartData,
+         data: sortedData,
         },
        ],
        chart: {
@@ -32,42 +33,33 @@
        plotOptions: {
         bar: {
          horizontal: false,
-         columnWidth: "92%",
+         columnWidth: "90%",
          borderRadiusApplication: "end",
-         borderRadius: 6,
+         borderRadius: 4,
         },
        },
        tooltip: {
-        shared: true,
-        intersect: false,
-        style: {
-         fontFamily: "Inter, sans-serif",
-        },
+        enabled : false,
        },
        states: {
         hover: {
          filter: {
-          type: "darken",
+          type: "lighten",
           value: 1,
          },
         },
-       },
-       stroke: {
-        show: true,
-        width: 0,
-        colors: ["transparent"],
        },
        grid: {
         show: false,
         strokeDashArray: 4,
         padding: {
-         left: 1,
-         right: 1,
-         top: -14
+         left: 6,
+         right: 6,
+         top: 0
         },
        },
        dataLabels: {
-        enabled: false,
+        enabled: true,
        },
        legend: {
         show: false,
@@ -78,8 +70,7 @@
         labels: {
          show: true,
          style: {
-          fontFamily: "Inter, sans-serif",
-          cssClass: 'text-xs font-normal fill-gray-500'
+          cssClass: 'text-xs font-normal fill-ocean'
          }
         },
         axisBorder: {
@@ -91,7 +82,7 @@
        },
        yaxis: {
         show: true,
-        tickAmount: 5,
+        tickAmount: "dataPoints",
        },
        fill: {
         opacity: 1,

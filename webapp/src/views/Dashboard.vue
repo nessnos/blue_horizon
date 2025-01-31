@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { InformationCircleIcon } from "@heroicons/vue/24/outline";
 import type * as types from "@/type";
 import SelectOption from "@/assets/reusable/Dropdowns/SelectOption.vue"
 //@ts-ignore
@@ -12,6 +13,43 @@ import WebDomain from '@/assets/icons/WebDomain.vue';
 import Sample from '@/assets/icons/Sample.vue';
 import MissingData from '@/assets/icons/MissingData.vue';
 import Proportion from '@/assets/icons/Proportion.vue';
+
+const allChemicals = ref([
+  { name: "Trichloromethane", mean: 0.01, min: 0.01, max: 0.02, stdDev: 0.005, count: 6 },
+  { name: "Fenthion", mean: 0.02, min: 0.01, max: 0.03, stdDev: 0.007, count: 4 },
+  { name: "Chloridazon", mean: 0.015, min: 0.01, max: 0.02, stdDev: 0.006, count: 1 },
+  { name: "Thallium", mean: 0.05, min: 0.04, max: 0.06, stdDev: 0.008, count: 9 },
+  { name: "Aldicarb", mean: 0.03, min: 0.02, max: 0.04, stdDev: 0.009, count: 7 },
+  { name: "Malathion", mean: 0.04, min: 0.02, max: 0.05, stdDev: 0.01, count: 5 },
+  { name: "Atrazine", mean: 0.05, min: 0.04, max: 0.07, stdDev: 0.02, count: 8 },
+  { name: "Glyphosate", mean: 0.02, min: 0.01, max: 0.03, stdDev: 0.004, count: 3 },
+  { name: "Carbaryl", mean: 0.01, min: 0.01, max: 0.02, stdDev: 0.003, count: 2 },
+  { name: "Paraquat", mean: 0.04, min: 0.03, max: 0.05, stdDev: 0.008, count: 6 }
+]);
+
+// Pagination setup
+const itemsPerPage = 3;
+const currentPage = ref(1);
+
+const totalPages = computed(() => Math.ceil(allChemicals.value.length / itemsPerPage));
+
+const paginatedChemicals = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return allChemicals.value.slice(start, end);
+});
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+}
 
 const countries = ref<types.Option[]>([
   {name: 'All'},
@@ -112,7 +150,7 @@ const data = ref<types.BarData[]>([
 
 </script>
 <template>
-    <div class="p-12 w-full h-full flex flex-col items-start justify-between">
+    <div class="p-12 py-8 w-full h-full flex flex-col items-start justify-between">
         <div class="flex flex-row gap-3">
             <SelectOption
                 :rowData="countries"
@@ -127,14 +165,25 @@ const data = ref<types.BarData[]>([
                 :label="'Chemicals'"
             />
         </div>
-        <div class="py-6 flex flex-row justify-between items-center w-full">
+        <div class="flex flex-row justify-between items-center w-full">
           <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
             <div class="flex flex-col gap-8 items-start">
               <div class="flex flex-row items-center justify-between w-full">
                 <Chemicals class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">6</div>
               </div>
-              <div class="font-normal text-xs">Count of Chemicals Monitored</div>
+              <div class="flex flex-row items-center w-full justify-between">
+                <div class="font-normal text-xs">Count of Chemicals Monitored</div>
+                <div class="relative group">
+                  <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+                  <!-- Tooltip -->
+                  <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                    More info about chemicals monitored
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
@@ -143,7 +192,18 @@ const data = ref<types.BarData[]>([
                 <WebDomain class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">2</div>
               </div>
-              <div class="font-normal text-xs">Count of Monitoring Sites</div>
+              <div class="flex flex-row items-center w-full justify-between">
+                <div class="font-normal text-xs">Count of Monitoring Sites</div>
+                <div class="relative group">
+                  <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+                  <!-- Tooltip -->
+                  <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                    More info about monitoring sites
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
@@ -152,7 +212,18 @@ const data = ref<types.BarData[]>([
                 <Sample class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">256</div>
               </div>
-              <div class="font-normal text-xs">Number of Collected Samples</div>
+              <div class="flex flex-row items-center w-full justify-between">
+                <div class="font-normal text-xs">Number of Collected Samples</div>
+                <div class="relative group">
+                  <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+                  <!-- Tooltip -->
+                  <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                    More info about collected samples
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
@@ -161,7 +232,18 @@ const data = ref<types.BarData[]>([
                 <Proportion class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">2<span class="pl-1 text-xs">%</span></div>
               </div>
-              <div class="text-left font-normal text-xs">Proportion Of Confirmed Samples</div>
+              <div class="flex flex-row items-center w-full justify-between">
+                <div class="text-left font-normal text-xs">Proportion Of Confirmed Samples</div>
+                <div class="relative group">
+                  <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+                  <!-- Tooltip -->
+                  <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                    More info about confirmed samples
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="p-3 px-4 bg-aqua/25 text-ocean shadow-lg rounded-lg h-fit min-h-24 w-56">
@@ -170,57 +252,105 @@ const data = ref<types.BarData[]>([
                 <MissingData class="fill-ocean bg-aqua/35 p-2 rounded-lg w-10 h-10"/>
                 <div class="font-bold text-2xl pr-6">25<span class="pl-1 text-xs">%</span></div>
               </div>
-              <div class="font-normal text-xs">Percentage of Missing Data</div>
+              <div class="flex flex-row items-center w-full justify-between">
+                <div class="font-normal text-xs">Percentage of Missing Data</div>
+                <div class="relative group">
+                  <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+                  <!-- Tooltip -->
+                  <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                    More info about missing data. More info about missing data. More info about missing data.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="w-full flex flex-row gap-12 items-start">
-          <div class="w-40 h-40 mr-8">
+        <div class="w-full flex flex-row gap-8 items-center">
+          <div class="w-full h-full min-h-fit bg-white rounded-lg shadow p-2 py-3">
+    <div class="flex flex-row items-center w-full gap-4 px-3 py-2 pt-0">
+      <div class="text-sm font-semibold text-ocean">Overview of Chemical Measurements Across Sites</div>
+      <div class="relative group">
+        <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+        <!-- Tooltip -->
+        <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+          More info about missing data. More info about missing data. More info about missing data.
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Wrapper with Fixed Height -->
+    <div class="overflow-y-auto h-36">
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-center text-xs border-b border-gray-200 ">
+            <th class="py-2 px-4">Chemical</th>
+            <th class="py-2 px-4">Count</th>
+            <th class="py-2 px-4">Mean</th>
+            <th class="py-2 px-4">Min</th>
+            <th class="py-2 px-4">Max</th>
+            <th class="py-2 px-4">Std Dev</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(chemical, index) in paginatedChemicals" :key="index" class="text-center text-xs">
+            <td class="py-2 px-4 w-56">{{ chemical.name }}</td>
+            <td class="py-2 px-4">{{ chemical.count }}</td>
+            <td class="py-2 px-4">{{ chemical.mean }}</td>
+            <td class="py-2 px-4">{{ chemical.min }}</td>
+            <td class="py-2 px-4">{{ chemical.max }}</td>
+            <td class="py-2 px-4">{{ chemical.stdDev }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1" class="flex justify-between items-center">
+      <button @click="prevPage" :disabled="currentPage === 1" class="bg-ocean text-white px-3 py-1 rounded text-xs">
+        Prev
+      </button>
+      <div class="text-xs">Page {{ currentPage }} of {{ totalPages }}</div>
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="bg-ocean text-white px-3 py-1 rounded text-xs">
+        Next
+      </button>
+    </div>
+  </div>
+          <div class="w-fit h-40 -ml-24">
             <DonutChart :chartData="data"/>
           </div>
-          <div class="min-w-2/3 w-full h-full min-h-fit">
-            <table class="w-full bg-white rounded-lg shadow text-xs">
-                <thead>
-                    <tr class="border-b border-ocean text-gray-700 rounded-lg">
-                        <th class="px-4 py-2">Chemical Name</th>
-                        <th class="px-4 py-2">Mean</th>
-                        <th class="px-4 py-2">Min</th>
-                        <th class="px-4 py-2">Max</th>
-                        <th class="px-4 py-2">Std Dev</th>
-                        <th class="px-4 py-2">Median</th>
-                        <th class="px-4 py-2">Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example Row (Replace with dynamic content) -->
-                    <tr class="text-center">
-                        <td class="px-4 py-2">Trichloromethane</td>
-                        <td class="px-4 py-2">0.01</td>
-                        <td class="px-4 py-2">0.01</td>
-                        <td class="px-4 py-2">0.02</td>
-                        <td class="px-4 py-2">0.005</td>
-                        <td class="px-4 py-2">0.01</td>
-                        <td class="px-4 py-2">5</td>
-                    </tr>
-                    <tr class="text-center bg-gray-50/25">
-                        <td class="px-4 py-2">Fenthion</td>
-                        <td class="px-4 py-2">0.02</td>
-                        <td class="px-4 py-2">0.01</td>
-                        <td class="px-4 py-2">0.03</td>
-                        <td class="px-4 py-2">0.007</td>
-                        <td class="px-4 py-2">0.02</td>
-                        <td class="px-4 py-2">4</td>
-                    </tr>
-                    <!-- Add more rows dynamically -->
-                </tbody>
-            </table>
-          </div>
         </div>
-        <div class="w-full flex flex-row justify-between items-center">
-          <div class="w-1/2 h-64 px-6">
+        <div class="w-full flex flex-row gap-8 justify-between items-center">
+          <div class="w-1/2 min-h-64 h-fit p-3 px-6 bg-white rounded-lg shadow">
+            <div class="flex flex-row items-center w-full gap-4 px-3 py-2 pt-0">
+              <div class="text-sm font-semibold text-ocean">Average Observed Values Over Time</div>
+              <div class="relative group">
+              <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+              <!-- Tooltip -->
+              <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                More info about missing data. More info about missing data. More info about missing data.
+              </div>
+            </div>
+            </div>
             <LineChart :chartData="data"/>
           </div>
-          <div class="w-1/2 h-64 px-6">
+          <div class="w-1/2 min-h-64 h-fit p-3 px-6 bg-white rounded-lg shadow">
+            <div class="flex flex-row items-center w-full gap-4 px-3 py-2 pt-0">
+              <div class="text-sm font-semibold text-ocean">Most Monitored Determinands</div>
+              <div class="relative group">
+                <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+
+                <!-- Tooltip -->
+                <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                    More info about missing data. More info about missing data. More info about missing data.
+                </div>
+              </div>
+            </div>
             <BarChart :chartData="data"/>
           </div>
         </div>

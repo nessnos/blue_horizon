@@ -30,6 +30,16 @@
     dataLabels: {
       enabled: false
     },
+    tooltip: {
+      custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        const data = series[seriesIndex];
+        return `
+          <div class="p-1.5 shadow rounded bg-white text-ocean text-xs">
+            ${data}%
+          </div>
+        `;
+      },
+    },
     plotOptions: {
       pie: {
         startAngle: 10,
@@ -49,6 +59,7 @@
               color: '#002665',
               offsetY: -25
             },
+            
             total: {
               show: true,
               showAlways: true,
@@ -56,7 +67,7 @@
               fontWeight: 600,
               formatter: (w) => {
                 const total = w.globals.seriesTotals.reduce(
-                  (a, b) => b,
+                  (a : number, b : number) => b,
                   0
                 );
                 return `${total}%`;
