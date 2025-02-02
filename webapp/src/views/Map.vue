@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterView, RouterLink, useRoute, useRouter } from "vue-router"
 //@ts-ignore
 import Europe from "./EuropeMap.vue";
 import { ExclamationCircleIcon } from "@heroicons/vue/24/solid";
@@ -33,7 +34,6 @@ const europeanCountries: Country[] = [
   { country: "Iceland", isoAlpha2: "IS", clicked : false },
   { country: "Ireland", isoAlpha2: "IE", clicked : false },
   { country: "Italy", isoAlpha2: "IT", clicked : false },
-  { country: "Kazakhstan", isoAlpha2: "KZ", clicked : false },
   { country: "Kosovo", isoAlpha2: "XK", clicked : false },
   { country: "Latvia", isoAlpha2: "LV", clicked : false },
   { country: "Liechtenstein", isoAlpha2: "LI", clicked : false },
@@ -63,6 +63,36 @@ const europeanCountries: Country[] = [
   { country: "Vatican City", isoAlpha2: "VA", clicked : false },
 ];
 
+
+const getGeneralInfo = (label: string): string => {
+  const data: Record<string, string> = {
+    "Total Monitoring Sites": "3",
+    "Decades Covered": "1920 - 2023",
+    "Water Body Category": "Rivers and Lakes",
+    "Matrix": "Water",
+    "Count of Chemicals Monitored": "6",
+    "Number of Collected Samples": "6",
+    "Proportion Of Confirmed Samples": "6%",
+    "Percentage of Missing Data": "6%"
+  };
+  
+  return data[label] || "-";
+};
+
+const getQualityInfo = (label: string): string => {
+  const data: Record<string, string> = {
+    "Most Monitored Determinand": "Tetrachloroethylene (CAS_127-18-4)",
+    "Mean Concentration": "0.052 µg/L",
+    "Maximum Recorded Value": "0.12 µg/L",
+    "Minimum Recorded Value": "0.02 µg/L",
+    "Standard Deviation": "0.015 µg/L",
+    "Total Samples": "100"
+  };
+  
+  return data[label] || "-";
+};
+
+  
 
 onMounted(() => {
   const paths = document.querySelectorAll('#countries path');
@@ -156,8 +186,8 @@ const resetComparison = () => {
       <span v-else>Off</span>
     </div>  
    </div>
-   <div class="p-6 h-full border-l-2 border-gray-300">
-    <div class="flex flex-col items-center justify-center w-full h-full" v-if="!selectedCountry.length">
+   <div class="h-full overflow-scroll">
+    <div class="px-6 py-4 flex flex-col items-center justify-center w-full h-full" v-if="!selectedCountry.length">
       <div v-if="!comparison" class="min-h-56 py-12 text-ocean text-lg">
         <span class="font-semibold">Select a country </span>
         <span class="font-normal">to explore its water quality metrics in detail.</span>
@@ -186,132 +216,139 @@ const resetComparison = () => {
     </div>
     <div class="w-full h-full" v-if="selectedCountry.length">
       <!-- If more than one country is selected -->
-      <div class="flex flex-wrap items-start justify-start w-full h-full" v-if="selectedCountry.length > 1">
-        <div class="w-full p-4 py-0">
-          <div class="flex flex-row items-center justify-between w-full">
-            <div v-for="(country, index) in selectedCountry" :key="index" class="font-bold text-ocean text-xl py-2 pb-3">{{ country.country }} ({{ country.isoAlpha2 }})</div>
-          </div>
-          
-          <!-- General Information Section -->
-          <div class="font-bold text-sm py-2 text-ocean text-center">General Information</div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Total Monitoring Sites</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean">3</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Decades Covered</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">1920 - 2023</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Water Body Category</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">Rivers and Lakes</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Matrix</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">Water</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Count of Chemicals Monitored</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">6</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Number of Collected Samples</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">6</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Proportion Of Confirmed Samples</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">6%</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Percentage of Missing Data</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">6%</div>
-            </div>
-          </div>
+      <div class="w-full h-full" v-if="selectedCountry.length > 1">
+        <div class="w-fit min-w-full">
+          <table class="w-full border border-gray-300">
+            <thead>
+              <tr class="h-12">
+                <th v-for="(country, index) in selectedCountry" :key="index" class="font-bold text-lg p-2 border border-gray-300 text-ocean">
+                  {{ country.country }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="(label, index) in [
+                'Total Monitoring Sites',
+                'Decades Covered', 
+                'Water Body Category',
+                'Matrix',
+                'Count of Chemicals Monitored',
+                'Number of Collected Samples',
+                'Proportion Of Confirmed Samples',
+                'Percentage of Missing Data'
+              ]" :key="'general-' + index">
+                <!-- Label Row -->
+                <tr>
+                  <td class="border border-gray-300 text-sm p-2 font-semibold text-center bg-gray-100 text-ocean" 
+                      :colspan="selectedCountry.length">
+                    {{ label }}
+                  </td>
+                </tr>
+                <!-- Data Row -->
+                <tr>
+                  <td v-for="(_, countryIndex) in selectedCountry" :key="countryIndex" 
+                      class="border border-gray-300 p-2 text-center text-xs text-ocean">
+                    {{ getGeneralInfo(label) }}
+                  </td>
+                </tr>
+              </template>
 
-          <!-- Water Quality Measures Section -->
-          <div class="font-bold text-sm py-2 text-ocean text-center">Water Quality Measures</div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Most Monitored Determinand</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">Tetrachloroethylene (CAS_127-18-4)</div>
-            </div>
+              <template v-for="(label, index) in [
+                'Most Monitored Determinand',
+                'Mean Concentration',
+                'Maximum Recorded Value',
+                'Minimum Recorded Value',
+                'Standard Deviation',
+                'Total Samples'
+              ]" :key="'quality-' + index">
+                <!-- Label Row -->
+                <tr>
+                  <td class="border border-gray-300 text-sm p-2 font-semibold text-center bg-gray-100 text-ocean" 
+                      :colspan="selectedCountry.length">
+                    {{ label }}
+                  </td>
+                </tr>
+                <!-- Data Row -->
+                <tr>
+                  <td v-for="(_, countryIndex) in selectedCountry" :key="countryIndex" 
+                      class="border border-gray-300 p-2 text-center text-xs text-ocean">
+                    {{ getQualityInfo(label) }}
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <div class="py-6 flex flex-row gap-12 items-start justify-between px-4">
+            <RouterLink :to="{name : 'dashboard', query : { country: country.country } }" v-for="country in selectedCountry" class="text-center w-fit bg-ocean px-3 py-2 rounded-lg shadow text-xs text-white hover:cursor-pointer">
+              Explore {{ country.country }}
+            </RouterLink>
           </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Mean Concentration</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">0.052 µg/L</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Maximum Recorded Value</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">0.12 µg/L</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Minimum Recorded Value</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">0.02 µg/L</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Standard Deviation</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">0.015 µg/L</div>
-            </div>
-          </div>
-          <div class="pb-1.5">
-            <div class="text-xs font-semibold text-ocean text-center pb-2">Total Samples</div>
-            <div class="flex flex-row items-center justify-center w-full space-x-20">
-              <div v-for="(country, index) in selectedCountry" :key="index" class="text-xs text-ocean text-center">100</div>
-            </div>
-          </div>
-
         </div>
       </div>
 
       <!-- If only one country is selected -->
-      <div v-else class="w-full flex justify-center items-center p-4 py-0">
-        <div class="w-full max-w-3xl">
-          <div class="font-bold text-ocean text-xl py-2 pb-3">{{ selectedCountry[0].country }} ({{ selectedCountry[0].isoAlpha2 }})</div>
-          
-          <!-- General Information Section -->
-          <div class="font-bold text-sm py-2 text-ocean">General Information</div>
-          <div class="pl-2">
-            <div class="text-xs font-semibold text-ocean">Total Monitoring Sites : <span class="font-normal">6</span></div>
-            <div class="text-xs font-semibold text-ocean">Decades Covered : <span class="font-normal">1920 - 2023</span></div>
-            <div class="text-xs font-semibold text-ocean">Water Body Category : <span class="font-normal">Rivers and Lakes</span></div>
-            <div class="text-xs font-semibold text-ocean">Matrix : <span class="font-normal">Water</span></div>
-            <div class="text-xs font-semibold text-ocean">Count of Chemicals Monitored : <span class="font-normal">6</span></div>
-            <div class="text-xs font-semibold text-ocean">Number of Collected Samples : <span class="font-normal">6</span></div>
-            <div class="text-xs font-semibold text-ocean">Proportion Of Confirmed Samples : <span class="font-normal">6%</span></div>
-            <div class="text-xs font-semibold text-ocean">Percentage of Missing Data : <span class="font-normal">6%</span></div>
-          </div>
+      <div class="w-full h-full" v-else>
+        <div class="w-fit min-w-full">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="text-ocean text-lg h-12 gont-bold">
+                  {{ selectedCountry[0].country }} ({{ selectedCountry[0].isoAlpha2 }})
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="(label, index) in [
+                'Total Monitoring Sites',
+                'Decades Covered', 
+                'Water Body Category',
+                'Matrix',
+                'Count of Chemicals Monitored',
+                'Number of Collected Samples',
+                'Proportion Of Confirmed Samples',
+                'Percentage of Missing Data'
+              ]" :key="'general-' + index">
+                <!-- Label Row -->
+                <tr>
+                  <td class="border border-gray-300 text-sm p-2 font-semibold text-center text-ocean">
+                    {{ label }}
+                  </td>
+                </tr>
+                <!-- Data Row -->
+                <tr>
+                  <td class="border border-gray-300 p-2 text-center text-xs bg-gray-100 text-ocean">
+                    {{ getGeneralInfo(label) }}
+                  </td>
+                </tr>
+              </template>
 
-          <!-- Water Quality Measures Section -->
-          <div class="font-bold text-sm py-2 text-ocean">Water Quality Measures</div>
-          <div class="pl-2">    
-            <div class="text-xs font-semibold text-ocean">Most Monitored Determinand : <span class="font-normal">Tetrachloroethylene (CAS_127-18-4)</span></div>     
-            <div class="text-xs font-semibold text-ocean">Mean Concentration : <span class="font-normal">0.052 µg/L</span></div>
-            <div class="text-xs font-semibold text-ocean">Maximum Recorded Value : <span class="font-normal">0.12 µg/L</span></div>
-            <div class="text-xs font-semibold text-ocean">Minimum Recorded Value : <span class="font-normal">0.02 µg/L</span></div>
-            <div class="text-xs font-semibold text-ocean">Standard Deviation : <span class="font-normal">0.015 µg/L</span></div>
-            <div class="text-xs font-semibold text-ocean">Total Samples : <span class="font-normal">100</span></div>
+              <template v-for="(label, index) in [
+                'Most Monitored Determinand',
+                'Mean Concentration',
+                'Maximum Recorded Value',
+                'Minimum Recorded Value',
+                'Standard Deviation',
+                'Total Samples'
+              ]" :key="'quality-' + index">
+                <!-- Label Row -->
+                <tr>
+                  <td class="border border-gray-300 text-sm p-2 font-semibold text-center text-ocean">
+                    {{ label }}
+                  </td>
+                </tr>
+                <!-- Data Row -->
+                <tr>
+                  <td class="border border-gray-300 p-2 text-center text-xs bg-gray-100 text-ocean">
+                    {{ getQualityInfo(label) }}
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <div class="py-6 flex justify-center">
+            <RouterLink :to="{name : 'dashboard', query : { country: selectedCountry[0].country } }" class="bg-ocean px-3 py-2 rounded-lg shadow text-xs text-white hover:cursor-pointer">
+              Explore More
+            </RouterLink>
           </div>
         </div>
       </div>

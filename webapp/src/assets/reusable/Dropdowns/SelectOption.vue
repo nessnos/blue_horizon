@@ -1,13 +1,18 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
   import { Listbox, ListboxButton, ListboxOptions, ListboxOption,} from '@headlessui/vue';
   import type { Option } from '@/type' ;
 
   const props = defineProps<{
         rowData: Option[];
         label: String;
+        default : Option;
     }>();
   const selectedData = ref(props.rowData[0])
+
+  onMounted(() => {
+    selectedData.value = props.default
+  })
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { InformationCircleIcon } from "@heroicons/vue/24/outline";
+import { RouterView, RouterLink, useRoute, useRouter } from "vue-router"
+import { InformationCircleIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline";
 import type * as types from "@/type";
 import SelectOption from "@/assets/reusable/Dropdowns/SelectOption.vue"
 //@ts-ignore
@@ -13,6 +14,8 @@ import WebDomain from '@/assets/icons/WebDomain.vue';
 import Sample from '@/assets/icons/Sample.vue';
 import MissingData from '@/assets/icons/MissingData.vue';
 import Proportion from '@/assets/icons/Proportion.vue';
+
+const route = useRoute();
 
 const allChemicals = ref([
   { name: "Trichloromethane", mean: 0.01, min: 0.01, max: 0.02, stdDev: 0.005, count: 6 },
@@ -139,7 +142,6 @@ const chemicals = ref<types.Option[]>([
   { name: "Hexachloroethane", code: "CAS_67-72-1" }
 ]);
 
-
 const data = ref<types.BarData[]>([
     { "x": "Trichloromethane", "y": 5 },
     { "x": "Fenthion", "y": 3 },
@@ -155,14 +157,17 @@ const data = ref<types.BarData[]>([
             <SelectOption
                 :rowData="countries"
                 :label="'Country'"
+                :default="countries.find(country => country.name === route.query.country) || countries[0]"
             />
             <SelectOption
                 :rowData="decades"
                 :label="'Decades'"
+                :default="decades[0]"
             />
             <SelectOption
                 :rowData="chemicals"
                 :label="'Chemicals'"
+                :default="chemicals[0]"
             />
         </div>
         <div class="flex flex-row justify-between items-center w-full">
@@ -269,55 +274,54 @@ const data = ref<types.BarData[]>([
         </div>
         <div class="w-full flex flex-row gap-8 items-center">
           <div class="w-full h-full min-h-fit bg-white rounded-lg shadow p-2 py-3">
-    <div class="flex flex-row items-center w-full gap-4 px-3 py-2 pt-0">
-      <div class="text-sm font-semibold text-ocean">Overview of Chemical Measurements Across Sites</div>
-      <div class="relative group">
-        <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
-        <!-- Tooltip -->
-        <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
-          More info about missing data. More info about missing data. More info about missing data.
-        </div>
-      </div>
-    </div>
+            <div class="flex flex-row items-center w-full gap-4 px-3 py-2 pt-0">
+              <div class="text-sm font-semibold text-ocean">Overview of Chemical Measurements Across Sites</div>
+              <div class="relative group">
+                <InformationCircleIcon class="h-4 w-4 text-ocean cursor-pointer" />
+                <!-- Tooltip -->
+                <div class="absolute right-0 translate-x-1/5 top-6 bg-ocean text-white text-[0.7rem] py-1 px-2 rounded-md shadow-md 
+                          opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 max-w-56 w-fit min-w-32 text-center hidden group-hover:block">
+                  More info about missing data. More info about missing data. More info about missing data.
+                </div>
+              </div>
+            </div>
 
-    <!-- Table Wrapper with Fixed Height -->
-    <div class="overflow-y-auto h-36">
-      <table class="min-w-full">
-        <thead>
-          <tr class="text-center text-xs border-b border-gray-200 ">
-            <th class="py-2 px-4">Chemical</th>
-            <th class="py-2 px-4">Count</th>
-            <th class="py-2 px-4">Mean</th>
-            <th class="py-2 px-4">Min</th>
-            <th class="py-2 px-4">Max</th>
-            <th class="py-2 px-4">Std Dev</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(chemical, index) in paginatedChemicals" :key="index" class="text-center text-xs">
-            <td class="py-2 px-4 w-56">{{ chemical.name }}</td>
-            <td class="py-2 px-4">{{ chemical.count }}</td>
-            <td class="py-2 px-4">{{ chemical.mean }}</td>
-            <td class="py-2 px-4">{{ chemical.min }}</td>
-            <td class="py-2 px-4">{{ chemical.max }}</td>
-            <td class="py-2 px-4">{{ chemical.stdDev }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <div class="overflow-y-auto h-36">
+              <table class="min-w-full">
+                <thead>
+                  <tr class="text-center text-xs border-b border-gray-200 ">
+                    <th class="py-2 px-4">Chemical</th>
+                    <th class="py-2 px-4">Count</th>
+                    <th class="py-2 px-4">Mean</th>
+                    <th class="py-2 px-4">Min</th>
+                    <th class="py-2 px-4">Max</th>
+                    <th class="py-2 px-4">Std Dev</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(chemical, index) in paginatedChemicals" :key="index" class="text-center text-xs">
+                    <td class="py-2 px-4 w-56">{{ chemical.name }}</td>
+                    <td class="py-2 px-4">{{ chemical.count }}</td>
+                    <td class="py-2 px-4">{{ chemical.mean }}</td>
+                    <td class="py-2 px-4">{{ chemical.min }}</td>
+                    <td class="py-2 px-4">{{ chemical.max }}</td>
+                    <td class="py-2 px-4">{{ chemical.stdDev }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-    <!-- Pagination -->
-    <div v-if="totalPages > 1" class="flex justify-between items-center">
-      <button @click="prevPage" :disabled="currentPage === 1" class="bg-ocean text-white px-3 py-1 rounded text-xs">
-        Prev
-      </button>
-      <div class="text-xs">Page {{ currentPage }} of {{ totalPages }}</div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="bg-ocean text-white px-3 py-1 rounded text-xs">
-        Next
-      </button>
-    </div>
-  </div>
+            <!-- Pagination -->
+            <div v-if="totalPages > 1" class="flex justify-center gap-4 items-center">
+              <div @click="prevPage" :disabled="currentPage === 1" class="text-xs text-ocen font-semibold">
+                <ChevronLeftIcon class="h-4 w-4 text-gray-500 hover:text-ocean hover:cursor-pointer" />
+              </div>
+              <div class="text-xs">Page {{ currentPage }} of {{ totalPages }}</div>
+              <div @click="nextPage" :disabled="currentPage === totalPages" class="text-xs text-ocen font-semibold">
+                <ChevronRightIcon class="h-4 w-4 text-gray-500 hover:text-ocean hover:cursor-pointer" />
+              </div>
+            </div>
+          </div>
           <div class="w-fit h-40 -ml-24">
             <DonutChart :chartData="data"/>
           </div>

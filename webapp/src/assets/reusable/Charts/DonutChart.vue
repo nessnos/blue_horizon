@@ -10,10 +10,16 @@
       chartData: BarData[];
       }>();
 
+    const series = [44, 55]
+    const maxSeriesValue = Math.max(...series);
+
       onMounted(() => {
   const options: ApexCharts.ApexOptions = {
-    series: [44, 55],
+    series: series,
     chart: {
+      events: {
+        click : undefined,
+      },
       height: "100%",
       width: "100%",
       type: 'donut',
