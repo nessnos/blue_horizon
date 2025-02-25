@@ -1,13 +1,5 @@
 {
   "files": [],
-  "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx",
-        "src/**/*.vue" // Add this line
-    ],
-    "exclude": [
-        "node_modules"
-    ]
   "references": [
     {
       "path": "./tsconfig.config.json"
