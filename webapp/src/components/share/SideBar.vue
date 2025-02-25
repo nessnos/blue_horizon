@@ -1,26 +1,33 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex">
     <div
-      class="absolute inline-flex h-screen transform flex-col items-center bg-ocean p-2 px-3 shadow transition-all duration-300 ease-in-out md:relative md:left-0"
+      class="h-screen bg-ocean pb-2 px-3 shadow relative left-0"
     >
-      <nav class="mt-6 inline-flex flex-col space-y-2">
+      <nav class="mt-6 flex flex-col space-y-2 items-center">
+        <div class="mb-2 w-10">
+          <img
+            alt="Blue Horizon"
+            src="@/assets/images/Blue%20Horizon%20Logo%20White.png"
+          />
+        </div>
+
         <SideBarButton
-          to="/"
           :icon="HomeIcon"
-          :label="'Home'"
           :isActive="isActive('/')"
+          :label="'Home'"
+          to="/"
         />
         <SideBarButton
-          to="/dashboard"
           :icon="ChartPieIcon"
-          :label="'Dashboard'"
           :isActive="isActive('/dashboard')"
+          :label="'Dashboard'"
+          to="/dashboard"
         />
         <SideBarButton
-          to="/map"
           :icon="MapIcon"
-          :label="'Map'"
           :isActive="isActive('/map')"
+          :label="'Map'"
+          to="/map"
         />
       </nav>
     </div>
