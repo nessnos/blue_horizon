@@ -1,58 +1,67 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref } from "vue"
-import { RouterView, RouterLink, useRoute, useRouter } from "vue-router"
-import { ChevronRightIcon, ChevronLeftIcon, HomeIcon, ChartPieIcon, MapIcon } from "@heroicons/vue/24/outline";
+import { RouterLink, RouterView, useRoute } from "vue-router"
+import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/outline"
 
 const isOpen = ref(false)
 
 const openSidebar = () => {
   console.log(isOpen.value)
-  return isOpen.value = !isOpen.value
+  return (isOpen.value = !isOpen.value)
 }
 
 const isActive = (path: string) => {
-  const route = useRoute();
-  return route.path === path;
-};
-
+  const route = useRoute()
+  return route.path === path
+}
 </script>
 <template>
- <div class="flex flex-row">
-  <div class="transition-all duration-300 absolute h-screen inline-flex flex-col items-center bg-ocean shadow p-2 px-3 transform md:relative md:left-0 transition duration-200 ease-in-out" 
-  :class="[ 
-                 [ isOpen ? 'w-72' : '' ]
-      ]">
-    <div class="my-6 w-full px-4 flex justify-between items-end">
-      <div v-if="isOpen" class="font-bold text-white text-xl">Blue Horizon</div>
-      <!--≈<div @click="openSidebar"  class="p-2 rounded-full text-center text-white bg-gray-500/55">
-        <ChevronLeftIcon v-if="isOpen" class="h-4 w-4" />
-        <ChevronRightIcon v-if="!isOpen" class="h-4 w-4" />
-      </div>-->
+  <div class="flex flex-row">
+    <div
+      :class="[[isOpen ? 'w-72' : '']]"
+      class="absolute inline-flex h-screen transform flex-col items-center bg-ocean p-2 px-3 shadow transition transition-all duration-200 duration-300 ease-in-out md:relative md:left-0"
+    >
+      <div class="my-6 flex w-full items-end justify-between px-4">
+        <div v-if="isOpen" class="text-xl font-bold text-white">
+          Blue Horizon
+        </div>
+        <!--≈<div @click="openSidebar"  class="p-2 rounded-full text-center text-white bg-gray-500/55">
+          <ChevronLeftIcon v-if="isOpen" class="h-4 w-4" />
+          <ChevronRightIcon v-if="!isOpen" class="h-4 w-4" />
+        </div>-->
+      </div>
+      <nav
+        class="mt-6 inline-flex flex-col space-y-2"
+        v-bind:class="{ 'w-full': isOpen }"
+      >
+        <RouterLink
+          :class="[isActive('/') ? 'bg-aqua' : '', '']"
+          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer"
+          to="/"
+        >
+          <HomeIcon class="h-6 w-6" />
+          <div v-if="isOpen" class="font-semibold">Home</div>
+        </RouterLink>
+        <RouterLink
+          :class="[isActive('/dashboard') ? 'bg-aqua' : '', '']"
+          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer hover:bg-aqua"
+          to="/dashboard"
+        >
+          <ChartPieIcon class="h-6 w-6" />
+          <div v-if="isOpen" class="font-semibold">Dashboard</div>
+        </RouterLink>
+        <RouterLink
+          :class="[isActive('/map') ? 'bg-aqua' : '', '']"
+          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer hover:bg-aqua"
+          to="/map"
+        >
+          <MapIcon class="h-6 w-6" />
+          <div v-if="isOpen" class="font-semibold">Map</div>
+        </RouterLink>
+      </nav>
     </div>
-    <nav class="inline-flex flex-col space-y-2 mt-6" v-bind:class="{ 'w-full': isOpen }">
-      <RouterLink to="/" class="flex flex-row gap-4 text-white p-3 rounded-lg hover:cursor-pointer"
-        :class="[isActive('/') ? 'bg-aqua' : '', '']"
-      >
-        <HomeIcon class="h-6 w-6" />
-        <div v-if="isOpen" class="font-semibold">Home</div>
-      </RouterLink>
-      <RouterLink to="/dashboard" class="flex flex-row gap-4 text-white p-3 rounded-lg hover:bg-aqua hover:cursor-pointer"
-        :class="[isActive('/dashboard') ? 'bg-aqua' : '', '']"
-      >
-        <ChartPieIcon class="h-6 w-6" />
-        <div v-if="isOpen" class="font-semibold">Dashboard</div>
-      </RouterLink>
-      <RouterLink to="/map" class="flex flex-row gap-4 text-white p-3 rounded-lg hover:bg-aqua hover:cursor-pointer"
-        :class="[isActive('/map') ? 'bg-aqua' : '', '']"
-      >
-        <MapIcon class="h-6 w-6" />
-        <div v-if="isOpen" class="font-semibold">Map</div>
-      </RouterLink>
-    </nav>
+    <div class="max-h-screen w-full bg-ocean/10">
+      <RouterView />
+    </div>
   </div>
-  <div class="w-full bg-ocean/10 max-h-screen">
-    <RouterView/>
-  </div>
- </div>
 </template>
-
