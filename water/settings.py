@@ -91,11 +91,14 @@ WSGI_APPLICATION = 'water.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'waterdata',
+        'USER': 'postgres',
+        'PASSWORD': 'waterize',
+        'HOST': 'localhost',
+        'PORT': '5422',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
