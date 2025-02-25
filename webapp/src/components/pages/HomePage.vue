@@ -1,7 +1,3 @@
-<script lang="ts" setup>
-import { RouterLink } from "vue-router"
-</script>
-
 <template>
   <div class="flex flex-col gap-6 p-12">
     <div class="text-3xl font-bold text-ocean">Welcome to Blue Horizon</div>
@@ -60,3 +56,7 @@ import { RouterLink } from "vue-router"
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { RouterLink } from "vue-router"
+</script>

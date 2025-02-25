@@ -3,30 +3,22 @@
     <div
       class="absolute inline-flex h-screen transform flex-col items-center bg-ocean p-2 px-3 shadow transition-all duration-300 ease-in-out md:relative md:left-0"
     >
-      <nav
-        class="mt-6 inline-flex flex-col space-y-2"
-      >
-        <RouterLink
-          :class="[isActive('/') ? 'bg-aqua' : '', '']"
-          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer"
+      <nav class="mt-6 inline-flex flex-col space-y-2">
+        <SideBarButton
           to="/"
-        >
-          <HomeIcon class="h-6 w-6" />
-        </RouterLink>
-        <RouterLink
-          :class="[isActive('/dashboard') ? 'bg-aqua' : '', '']"
-          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer hover:bg-aqua"
+          :icon="HomeIcon"
+          :isActive="isActive('/')"
+        />
+        <SideBarButton
           to="/dashboard"
-        >
-          <ChartPieIcon class="h-6 w-6" />
-        </RouterLink>
-        <RouterLink
-          :class="[isActive('/map') ? 'bg-aqua' : '', '']"
-          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer hover:bg-aqua"
+          :icon="ChartPieIcon"
+          :isActive="isActive('/dashboard')"
+        />
+        <SideBarButton
           to="/map"
-        >
-          <MapIcon class="h-6 w-6" />
-        </RouterLink>
+          :icon="MapIcon"
+          :isActive="isActive('/map')"
+        />
       </nav>
     </div>
     <div class="max-h-screen w-full bg-ocean/10">
@@ -36,8 +28,9 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterLink, RouterView, useRoute } from "vue-router"
-import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/outline"
+import { RouterView, useRoute } from "vue-router"
+import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/solid"
+import SideBarButton from "@/components/templates/SideBarButton.vue"
 
 const isActive = (path: string) => {
   const route = useRoute()
