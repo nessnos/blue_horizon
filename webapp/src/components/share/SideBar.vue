@@ -7,16 +7,19 @@
         <SideBarButton
           to="/"
           :icon="HomeIcon"
+          :label="'Home'"
           :isActive="isActive('/')"
         />
         <SideBarButton
           to="/dashboard"
           :icon="ChartPieIcon"
+          :label="'Dashboard'"
           :isActive="isActive('/dashboard')"
         />
         <SideBarButton
           to="/map"
           :icon="MapIcon"
+          :label="'Map'"
           :isActive="isActive('/map')"
         />
       </nav>
