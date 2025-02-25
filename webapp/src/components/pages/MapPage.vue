@@ -1,202 +1,3 @@
-<script lang="ts" setup>
-import { RouterLink } from "vue-router" //@ts-ignore
-import Europe from "./EuropeMap.vue"
-import { ExclamationCircleIcon } from "@heroicons/vue/24/solid"
-import { onMounted, ref } from "vue"
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Switch,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue"
-import type { Country } from "@/type"
-
-const selectedCountry = ref<Country[]>([])
-
-const europeanCountries: Country[] = [
-  { country: "Albania", isoAlpha2: "AL", clicked: false },
-  { country: "Andorra", isoAlpha2: "AD", clicked: false },
-  { country: "Armenia", isoAlpha2: "AM", clicked: false },
-  { country: "Austria", isoAlpha2: "AT", clicked: false },
-  { country: "Azerbaijan", isoAlpha2: "AZ", clicked: false },
-  { country: "Belarus", isoAlpha2: "BY", clicked: false },
-  { country: "Belgium", isoAlpha2: "BE", clicked: false },
-  { country: "Bosnia and Herzegovina", isoAlpha2: "BA", clicked: false },
-  { country: "Bulgaria", isoAlpha2: "BG", clicked: false },
-  { country: "Croatia", isoAlpha2: "HR", clicked: false },
-  { country: "Cyprus", isoAlpha2: "CY", clicked: false },
-  { country: "Czech Republic", isoAlpha2: "CZ", clicked: false },
-  { country: "Denmark", isoAlpha2: "DK", clicked: false },
-  { country: "Estonia", isoAlpha2: "EE", clicked: false },
-  { country: "Finland", isoAlpha2: "FI", clicked: false },
-  { country: "France", isoAlpha2: "FR", clicked: false },
-  { country: "Georgia", isoAlpha2: "GE", clicked: false },
-  { country: "Germany", isoAlpha2: "DE", clicked: false },
-  { country: "Greece", isoAlpha2: "GR", clicked: false },
-  { country: "Hungary", isoAlpha2: "HU", clicked: false },
-  { country: "Iceland", isoAlpha2: "IS", clicked: false },
-  { country: "Ireland", isoAlpha2: "IE", clicked: false },
-  { country: "Italy", isoAlpha2: "IT", clicked: false },
-  { country: "Kosovo", isoAlpha2: "XK", clicked: false },
-  { country: "Latvia", isoAlpha2: "LV", clicked: false },
-  { country: "Liechtenstein", isoAlpha2: "LI", clicked: false },
-  { country: "Lithuania", isoAlpha2: "LT", clicked: false },
-  { country: "Luxembourg", isoAlpha2: "LU", clicked: false },
-  { country: "Malta", isoAlpha2: "MT", clicked: false },
-  { country: "Moldova", isoAlpha2: "MD", clicked: false },
-  { country: "Monaco", isoAlpha2: "MC", clicked: false },
-  { country: "Montenegro", isoAlpha2: "ME", clicked: false },
-  { country: "Netherlands", isoAlpha2: "NL", clicked: false },
-  { country: "North Macedonia", isoAlpha2: "MK", clicked: false },
-  { country: "Norway", isoAlpha2: "NO", clicked: false },
-  { country: "Poland", isoAlpha2: "PL", clicked: false },
-  { country: "Portugal", isoAlpha2: "PT", clicked: false },
-  { country: "Romania", isoAlpha2: "RO", clicked: false },
-  { country: "Russia", isoAlpha2: "RU", clicked: false },
-  { country: "San Marino", isoAlpha2: "SM", clicked: false },
-  { country: "Serbia", isoAlpha2: "RS", clicked: false },
-  { country: "Slovakia", isoAlpha2: "SK", clicked: false },
-  { country: "Slovenia", isoAlpha2: "SI", clicked: false },
-  { country: "Spain", isoAlpha2: "ES", clicked: false },
-  { country: "Sweden", isoAlpha2: "SE", clicked: false },
-  { country: "Switzerland", isoAlpha2: "CH", clicked: false },
-  { country: "Turkey", isoAlpha2: "TR", clicked: false },
-  { country: "Ukraine", isoAlpha2: "UA", clicked: false },
-  { country: "United Kingdom", isoAlpha2: "GB", clicked: false },
-  { country: "Vatican City", isoAlpha2: "VA", clicked: false },
-]
-
-const getGeneralInfo = (label: string): string => {
-  const data: Record<string, string> = {
-    "Total Monitoring Sites": "3",
-    "Decades Covered": "1920 - 2023",
-    "Water Body Category": "Rivers and Lakes",
-    Matrix: "Water",
-    "Count of Chemicals Monitored": "6",
-    "Number of Collected Samples": "6",
-    "Proportion Of Confirmed Samples": "6%",
-    "Percentage of Missing Data": "6%",
-  }
-
-  return data[label] || "-"
-}
-
-const getQualityInfo = (label: string): string => {
-  const data: Record<string, string> = {
-    "Most Monitored Determinand": "Tetrachloroethylene (CAS_127-18-4)",
-    "Mean Concentration": "0.052 µg/L",
-    "Maximum Recorded Value": "0.12 µg/L",
-    "Minimum Recorded Value": "0.02 µg/L",
-    "Standard Deviation": "0.015 µg/L",
-    "Total Samples": "100",
-  }
-
-  return data[label] || "-"
-}
-
-onMounted(() => {
-  const paths = document.querySelectorAll("#countries path")
-
-  if (paths.length > 0) {
-    paths.forEach((path) => {
-      const isoAlpha2 = path.getAttribute("id")?.toString().toUpperCase()
-      const isEuropean = europeanCountries.some(
-        (country) => country.isoAlpha2 === isoAlpha2
-      )
-
-      if (isEuropean) {
-        path.classList.add(
-          "fill-gray-200",
-          "stroke-gray-600",
-          "hover:fill-ocean",
-          "hover:cursor-pointer"
-        )
-
-        path.addEventListener("click", function (e) {
-          const country = europeanCountries.find(
-            (country) => country.isoAlpha2 === isoAlpha2
-          )
-
-          if (country) {
-            if (country.clicked) {
-              path.classList.remove("fill-ocean")
-              path.classList.add("fill-gray-200")
-              country.clicked = false
-              selectedCountry.value.splice(
-                selectedCountry.value.indexOf(country),
-                1
-              )
-            } else if (comparison.value) {
-              const numberClicked = europeanCountries.filter(function (s) {
-                return s.clicked
-              }).length
-              if (numberClicked == 2) {
-                console.error("you can't select more than 2 countries")
-                isOpen.value = true
-              } else {
-                path.classList.remove("fill-gray-200")
-                path.classList.add("fill-ocean")
-                country.clicked = true
-                selectedCountry.value.push(country)
-              }
-            } else {
-              europeanCountries.forEach((otherCountry) => {
-                if (otherCountry.clicked) {
-                  const otherPath = document.getElementById(
-                    `${otherCountry.isoAlpha2.toLowerCase()}`
-                  )
-                  if (otherPath) {
-                    otherPath.classList.remove("fill-ocean")
-                    otherPath.classList.add("fill-gray-200")
-                    otherCountry.clicked = false
-                    selectedCountry.value.splice(
-                      selectedCountry.value.indexOf(country),
-                      1
-                    )
-                  }
-                }
-                path.classList.remove("fill-gray-200")
-                path.classList.add("fill-ocean")
-                country.clicked = true
-              })
-
-              selectedCountry.value.push(country)
-            }
-          }
-        })
-      } else {
-        path.classList.add("fill-gray-400", "stroke-gray-600")
-      }
-    })
-  } else {
-    console.error("No paths found inside #countries")
-  }
-})
-
-const comparison = ref(false)
-const isOpen = ref(false)
-
-const resetComparison = () => {
-  const selectedAll = europeanCountries.filter(function (s) {
-    return s.clicked
-  })
-  selectedAll.forEach((country) => {
-    const otherPath = document.getElementById(
-      `${country.isoAlpha2.toLowerCase()}`
-    )
-    if (otherPath) {
-      otherPath.classList.remove("fill-ocean")
-      otherPath.classList.add("fill-gray-200")
-      country.clicked = false
-      selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1)
-    }
-  })
-  isOpen.value = !isOpen.value
-}
-</script>
-
 <template>
   <div class="grid h-full grid-cols-4 items-start justify-start">
     <div
@@ -508,3 +309,202 @@ const resetComparison = () => {
     </Dialog>
   </TransitionRoot>
 </template>
+
+<script lang="ts" setup>
+import { RouterLink } from "vue-router" //@ts-ignore
+import Europe from "./EuropeMap.vue"
+import { ExclamationCircleIcon } from "@heroicons/vue/24/solid"
+import { onMounted, ref } from "vue"
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Switch,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue"
+import type { Country } from "@/type"
+
+const selectedCountry = ref<Country[]>([])
+
+const europeanCountries: Country[] = [
+  { country: "Albania", isoAlpha2: "AL", clicked: false },
+  { country: "Andorra", isoAlpha2: "AD", clicked: false },
+  { country: "Armenia", isoAlpha2: "AM", clicked: false },
+  { country: "Austria", isoAlpha2: "AT", clicked: false },
+  { country: "Azerbaijan", isoAlpha2: "AZ", clicked: false },
+  { country: "Belarus", isoAlpha2: "BY", clicked: false },
+  { country: "Belgium", isoAlpha2: "BE", clicked: false },
+  { country: "Bosnia and Herzegovina", isoAlpha2: "BA", clicked: false },
+  { country: "Bulgaria", isoAlpha2: "BG", clicked: false },
+  { country: "Croatia", isoAlpha2: "HR", clicked: false },
+  { country: "Cyprus", isoAlpha2: "CY", clicked: false },
+  { country: "Czech Republic", isoAlpha2: "CZ", clicked: false },
+  { country: "Denmark", isoAlpha2: "DK", clicked: false },
+  { country: "Estonia", isoAlpha2: "EE", clicked: false },
+  { country: "Finland", isoAlpha2: "FI", clicked: false },
+  { country: "France", isoAlpha2: "FR", clicked: false },
+  { country: "Georgia", isoAlpha2: "GE", clicked: false },
+  { country: "Germany", isoAlpha2: "DE", clicked: false },
+  { country: "Greece", isoAlpha2: "GR", clicked: false },
+  { country: "Hungary", isoAlpha2: "HU", clicked: false },
+  { country: "Iceland", isoAlpha2: "IS", clicked: false },
+  { country: "Ireland", isoAlpha2: "IE", clicked: false },
+  { country: "Italy", isoAlpha2: "IT", clicked: false },
+  { country: "Kosovo", isoAlpha2: "XK", clicked: false },
+  { country: "Latvia", isoAlpha2: "LV", clicked: false },
+  { country: "Liechtenstein", isoAlpha2: "LI", clicked: false },
+  { country: "Lithuania", isoAlpha2: "LT", clicked: false },
+  { country: "Luxembourg", isoAlpha2: "LU", clicked: false },
+  { country: "Malta", isoAlpha2: "MT", clicked: false },
+  { country: "Moldova", isoAlpha2: "MD", clicked: false },
+  { country: "Monaco", isoAlpha2: "MC", clicked: false },
+  { country: "Montenegro", isoAlpha2: "ME", clicked: false },
+  { country: "Netherlands", isoAlpha2: "NL", clicked: false },
+  { country: "North Macedonia", isoAlpha2: "MK", clicked: false },
+  { country: "Norway", isoAlpha2: "NO", clicked: false },
+  { country: "Poland", isoAlpha2: "PL", clicked: false },
+  { country: "Portugal", isoAlpha2: "PT", clicked: false },
+  { country: "Romania", isoAlpha2: "RO", clicked: false },
+  { country: "Russia", isoAlpha2: "RU", clicked: false },
+  { country: "San Marino", isoAlpha2: "SM", clicked: false },
+  { country: "Serbia", isoAlpha2: "RS", clicked: false },
+  { country: "Slovakia", isoAlpha2: "SK", clicked: false },
+  { country: "Slovenia", isoAlpha2: "SI", clicked: false },
+  { country: "Spain", isoAlpha2: "ES", clicked: false },
+  { country: "Sweden", isoAlpha2: "SE", clicked: false },
+  { country: "Switzerland", isoAlpha2: "CH", clicked: false },
+  { country: "Turkey", isoAlpha2: "TR", clicked: false },
+  { country: "Ukraine", isoAlpha2: "UA", clicked: false },
+  { country: "United Kingdom", isoAlpha2: "GB", clicked: false },
+  { country: "Vatican City", isoAlpha2: "VA", clicked: false },
+]
+
+const getGeneralInfo = (label: string): string => {
+  const data: Record<string, string> = {
+    "Total Monitoring Sites": "3",
+    "Decades Covered": "1920 - 2023",
+    "Water Body Category": "Rivers and Lakes",
+    Matrix: "Water",
+    "Count of Chemicals Monitored": "6",
+    "Number of Collected Samples": "6",
+    "Proportion Of Confirmed Samples": "6%",
+    "Percentage of Missing Data": "6%",
+  }
+
+  return data[label] || "-"
+}
+
+const getQualityInfo = (label: string): string => {
+  const data: Record<string, string> = {
+    "Most Monitored Determinand": "Tetrachloroethylene (CAS_127-18-4)",
+    "Mean Concentration": "0.052 µg/L",
+    "Maximum Recorded Value": "0.12 µg/L",
+    "Minimum Recorded Value": "0.02 µg/L",
+    "Standard Deviation": "0.015 µg/L",
+    "Total Samples": "100",
+  }
+
+  return data[label] || "-"
+}
+
+onMounted(() => {
+  const paths = document.querySelectorAll("#countries path")
+
+  if (paths.length > 0) {
+    paths.forEach((path) => {
+      const isoAlpha2 = path.getAttribute("id")?.toString().toUpperCase()
+      const isEuropean = europeanCountries.some(
+        (country) => country.isoAlpha2 === isoAlpha2
+      )
+
+      if (isEuropean) {
+        path.classList.add(
+          "fill-gray-200",
+          "stroke-gray-600",
+          "hover:fill-ocean",
+          "hover:cursor-pointer"
+        )
+
+        path.addEventListener("click", function (e) {
+          const country = europeanCountries.find(
+            (country) => country.isoAlpha2 === isoAlpha2
+          )
+
+          if (country) {
+            if (country.clicked) {
+              path.classList.remove("fill-ocean")
+              path.classList.add("fill-gray-200")
+              country.clicked = false
+              selectedCountry.value.splice(
+                selectedCountry.value.indexOf(country),
+                1
+              )
+            } else if (comparison.value) {
+              const numberClicked = europeanCountries.filter(function (s) {
+                return s.clicked
+              }).length
+              if (numberClicked == 2) {
+                console.error("you can't select more than 2 countries")
+                isOpen.value = true
+              } else {
+                path.classList.remove("fill-gray-200")
+                path.classList.add("fill-ocean")
+                country.clicked = true
+                selectedCountry.value.push(country)
+              }
+            } else {
+              europeanCountries.forEach((otherCountry) => {
+                if (otherCountry.clicked) {
+                  const otherPath = document.getElementById(
+                    `${otherCountry.isoAlpha2.toLowerCase()}`
+                  )
+                  if (otherPath) {
+                    otherPath.classList.remove("fill-ocean")
+                    otherPath.classList.add("fill-gray-200")
+                    otherCountry.clicked = false
+                    selectedCountry.value.splice(
+                      selectedCountry.value.indexOf(country),
+                      1
+                    )
+                  }
+                }
+                path.classList.remove("fill-gray-200")
+                path.classList.add("fill-ocean")
+                country.clicked = true
+              })
+
+              selectedCountry.value.push(country)
+            }
+          }
+        })
+      } else {
+        path.classList.add("fill-gray-400", "stroke-gray-600")
+      }
+    })
+  } else {
+    console.error("No paths found inside #countries")
+  }
+})
+
+const comparison = ref(false)
+const isOpen = ref(false)
+
+const resetComparison = () => {
+  const selectedAll = europeanCountries.filter(function (s) {
+    return s.clicked
+  })
+  selectedAll.forEach((country) => {
+    const otherPath = document.getElementById(
+      `${country.isoAlpha2.toLowerCase()}`
+    )
+    if (otherPath) {
+      otherPath.classList.remove("fill-ocean")
+      otherPath.classList.add("fill-gray-200")
+      country.clicked = false
+      selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1)
+    }
+  })
+  isOpen.value = !isOpen.value
+}
+</script>
