@@ -66,12 +66,19 @@ To leave the shell use this command:
 ```postgresql
 \q
 ```
+
+Now dump all the data inside the `waterdata` database:
+
+```bash
+pg_restore -U postgres -h localhost -p 5422 --clean --create --verbose -d postgres waterdata_backup.dump
+```
+(You'll be prompted for the password: `waterize`.)
+
 Your PostgreSQL database is now running inside the Docker container. You can connect to it from your host machine using:
 
 ```bash
 psql -h localhost -p 5422 -U postgres -d waterdata
 ```
-(You'll be prompted for the password: `waterize`.)
 
 If you want to stop or start the container use the following commands:
 
