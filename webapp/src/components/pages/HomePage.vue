@@ -17,7 +17,7 @@ import { RouterLink } from "vue-router"
         class="flex h-fit min-h-64 min-w-56 flex-col items-start justify-between gap-2 rounded-lg border-[0.5px] border-gray-300 bg-gray-100/55 px-6 py-4 shadow"
       >
         <div class="relative h-full w-56 p-1 py-4">
-          <img alt="" class="rounded" src="@/assets/img/statistics.png" />
+          <img alt="" class="rounded" src="../../assets/img/statistics.png" />
           <div class="absolute bottom-0 h-12 w-full bg-gray-100 blur-lg"></div>
           <!-- Blur effect -->
         </div>
@@ -39,7 +39,7 @@ import { RouterLink } from "vue-router"
         class="flex h-fit min-h-64 min-w-56 flex-col items-start justify-between gap-2 rounded-lg border-[0.5px] border-gray-300 bg-gray-100/55 px-6 py-4 shadow"
       >
         <div class="relative h-full w-56 p-1 py-4">
-          <img alt="" class="rounded" src="@/assets/img/map.png" />
+          <img alt="" class="rounded" src="../../assets/img/map.png" />
           <div class="absolute bottom-0 h-12 w-full bg-gray-100 blur-lg"></div>
           <!-- Blur effect -->
         </div>
