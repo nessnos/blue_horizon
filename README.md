@@ -32,6 +32,53 @@ To install frontend dependencies run:
 ```bash
 npm --prefix webapp install
 ```
+# Setup
+
+### Docker
+
+You now need to launch the `postgres` container with Docker.
+
+> To install Docker, check [https://www.docker.com/](https://www.docker.com/)
+
+After having installed Docker, start the container:
+
+```bash
+docker run --name waterdb -d -p 5422:5432 -e POSTGRES_PASSWORD=waterize postgres:15-bullseye
+```
+
+This created and ran a container named `waterdb` and set the `POSTGRES_PASSWORD` to `waterize`.
+
+### Postgres
+
+To create the `waterdata` database in your container, open a shell in your container and log in as a `postgres` user:
+
+```bash
+docker exec -it waterdb  psql -h localhost -U postgres 
+```
+
+Create the database:
+
+```postgresql
+CREATE DATABASE waterdata;
+```
+
+To leave the shell use this command:
+```postgresql
+\q
+```
+Your PostgreSQL database is now running inside the Docker container. You can connect to it from your host machine using:
+
+```bash
+psql -h localhost -p 5422 -U postgres -d waterdata
+```
+(You'll be prompted for the password: `waterize`.)
+
+If you want to stop or start the container use the following commands:
+
+```bash
+docker stop waterdb   # Stop the container
+docker start waterdb  # Start the container again
+```
 
 # Running the project
 
