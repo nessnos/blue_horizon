@@ -41,16 +41,8 @@
        tooltip: {
         enabled : false,
        },
-       states: {
-        hover: {
-         filter: {
-          type: "lighten",
-          value: 1,
-         },
-        },
-       },
        grid: {
-        show: false,
+        show: true,
         strokeDashArray: 4,
         padding: {
          left: 6,

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-full w-full flex-col items-start justify-between p-12 py-8"
+    class="flex h-full w-full flex-col items-start justify-between p-12 py-4 gap-2"
   >
     <div class="flex flex-row gap-3">
       <SelectOption
@@ -22,7 +22,7 @@
         :rowData="chemicals"
       />
     </div>
-    <div class="flex w-full flex-row items-center justify-between">
+    <div class="flex w-full flex-row items-center justify-between gap-2">
       <div
         class="h-fit min-h-24 w-56 rounded-lg bg-aqua/25 p-3 px-4 text-ocean shadow-lg"
       >
@@ -152,8 +152,7 @@
               <div
                 class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
               >
-                More info about missing data. More info about missing data. More
-                info about missing data.
+                More info about missing data.
               </div>
             </div>
           </div>
@@ -170,10 +169,9 @@
             <InformationCircleIcon class="h-4 w-4 cursor-pointer text-ocean" />
             <!-- Tooltip -->
             <div
-              class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
+              class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-black/80 px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
             >
-              More info about missing data. More info about missing data. More
-              info about missing data.
+              More info about missing data.
             </div>
           </div>
         </div>
@@ -250,8 +248,7 @@
             <div
               class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
             >
-              More info about missing data. More info about missing data. More
-              info about missing data.
+              More info about missing data.
             </div>
           </div>
         </div>
@@ -269,8 +266,7 @@
             <div
               class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
             >
-              More info about missing data. More info about missing data. More
-              info about missing data.
+              More info about missing data.
             </div>
           </div>
         </div>
@@ -289,10 +285,10 @@ import {
   InformationCircleIcon,
 } from "@heroicons/vue/24/outline"
 import type * as types from "@/type"
-import SelectOption from "@/assets/reusable/Dropdowns/SelectOption.vue"
-import BarChart from "@/assets/reusable/Charts/BarChart.vue"
-import DonutChart from "@/assets/reusable/Charts/DonutChart.vue"
-import LineChart from "@/assets/reusable/Charts/LineChart.vue"
+import SelectOption from "@/components/reusable/dropdowns/SelectOption.vue"
+import BarChart from "@/components/reusable/charts/BarChart.vue"
+import DonutChart from "@/components/reusable/charts/DonutChart.vue"
+import LineChart from "@/components/reusable/charts/LineChart.vue"
 import Chemicals from "@/assets/icons/Chemicals.vue"
 import WebDomain from "@/assets/icons/WebDomain.vue"
 import Sample from "@/assets/icons/Sample.vue"

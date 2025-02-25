@@ -11,7 +11,6 @@
       }>();
 
     const series = [44, 55]
-    const maxSeriesValue = Math.max(...series);
 
       onMounted(() => {
   const options: ApexCharts.ApexOptions = {
@@ -37,10 +36,10 @@
       enabled: false
     },
     tooltip: {
-      custom: function({ series, seriesIndex, dataPointIndex, w }) {
+      custom: function({ series, seriesIndex }) {
         const data = series[seriesIndex];
         return `
-          <div class="p-1.5 shadow rounded bg-white text-ocean text-xs">
+          <div class="p-1.5 shadow rounded bg-black/80 text-white text-xs">
             ${data}%
           </div>
         `;

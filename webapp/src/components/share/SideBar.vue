@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import { RouterView, useRoute } from "vue-router"
 import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/solid"
-import SideBarButton from "@/components/templates/SideBarButton.vue"
+import SideBarButton from "@/components/reusable/buttons/SideBarButton.vue"
 
 const isActive = (path: string) => {
   const route = useRoute()
