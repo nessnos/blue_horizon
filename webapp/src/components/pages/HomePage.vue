@@ -1,8 +1,17 @@
 <template>
   <div class="flex flex-col gap-6 p-12">
-    <div class="flex text-3xl text-ocean gap-2">
+    <div class="flex gap-2 text-4xl text-ocean">
       <div>Welcome to</div>
-      <div class="font-bold">Blue Horizon</div>
+      <div class="flex">
+        <div class="font-bold">BLUE H</div>
+        <div class="mb-2 w-10">
+          <img
+            alt="Blue Horizon"
+            src="@/assets/images/Blue%20Horizon%20Logo.png"
+          />
+        </div>
+        <div class="font-bold">RIZON</div>
+      </div>
     </div>
     <div class="w-2/3 text-ocean">
       Dive into detailed water quality metrics and statistics for Europe,
@@ -13,23 +22,23 @@
     <div class="text-xl font-semibold text-ocean">Try out</div>
     <div class="flex flex-row gap-6 px-3">
       <HomeInformationCard
-        title="Statistics Dashboard"
-        description="Access a dashboard with water quality metrics like pH, pollution, and availability. Filter by country or year to track trends and explore changes in water health over time."
         :icon="BarGraph"
+        description="Access a dashboard with water quality metrics like pH, pollution, and availability. Filter by country or year to track trends and explore changes in water health over time."
         link="/dashboard"
+        title="Statistics Dashboard"
       />
       <HomeInformationCard
-        title="Interactive Map"
-        description="Explore Europe’s water quality through an interactive map. Select countries to view detailed metrics, offering localized insights into water health and key statistics."
         :icon="MapPin"
+        description="Explore Europe’s water quality through an interactive map. Select countries to view detailed metrics, offering localized insights into water health and key statistics."
         link="/map"
+        title="Interactive Map"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import HomeInformationCard from '@/components/reusable/cards/HomeInformationCard.vue'
+import HomeInformationCard from "@/components/reusable/cards/HomeInformationCard.vue"
 import BarGraph from "@/assets/icons/BarGraph.vue"
-import MapPin from "@/assets/icons/MapPin.vue";
+import MapPin from "@/assets/icons/MapPin.vue"
 </script>

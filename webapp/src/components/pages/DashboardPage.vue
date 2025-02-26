@@ -129,35 +129,6 @@
           </div>
         </div>
       </div>
-      <div
-        class="h-fit min-h-24 w-56 rounded-lg bg-aqua/25 p-3 px-4 text-ocean shadow-lg"
-      >
-        <div class="flex flex-col items-start gap-8">
-          <div class="flex w-full flex-row items-center justify-between">
-            <MissingData
-              class="h-10 w-10 rounded-lg bg-aqua/35 fill-ocean p-2"
-            />
-            <div class="pr-6 text-2xl font-bold">
-              25<span class="pl-1 text-xs">%</span>
-            </div>
-          </div>
-          <div class="flex w-full flex-row items-center justify-between">
-            <div class="text-xs font-normal">Percentage of Missing Data</div>
-            <div class="group relative">
-              <InformationCircleIcon
-                class="h-4 w-4 cursor-pointer text-ocean"
-              />
-
-              <!-- Tooltip -->
-              <div
-                class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-              >
-                More info about missing data.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="flex w-full flex-row items-center gap-8">
       <div class="h-full min-h-fit w-full rounded-lg bg-white p-2 py-3 shadow">
@@ -292,7 +263,6 @@ import LineChart from "@/components/reusable/charts/LineChart.vue"
 import Chemicals from "@/assets/icons/Chemicals.vue"
 import WebDomain from "@/assets/icons/WebDomain.vue"
 import Sample from "@/assets/icons/Sample.vue"
-import MissingData from "@/assets/icons/MissingData.vue"
 import Proportion from "@/assets/icons/Proportion.vue"
 
 const route = useRoute()
