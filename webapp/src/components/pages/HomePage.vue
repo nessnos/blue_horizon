@@ -15,13 +15,13 @@
       <HomeInformationCard
         title="Statistics Dashboard"
         description="Access a dashboard with water quality metrics like pH, pollution, and availability. Filter by country or year to track trends and explore changes in water health over time."
-        image="@/assets/img/statistics.png"
+        :icon="BarGraph"
         link="/dashboard"
       />
       <HomeInformationCard
         title="Interactive Map"
         description="Explore Europe’s water quality through an interactive map. Select countries to view detailed metrics, offering localized insights into water health and key statistics."
-        image="@/assets/img/map.png"
+        :icon="MapPin"
         link="/map"
       />
     </div>
@@ -29,5 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import HomeInformationCard from '@/components/reusable/cards/HomeInformationCard.vue';
+import HomeInformationCard from '@/components/reusable/cards/HomeInformationCard.vue'
+import BarGraph from "@/assets/icons/BarGraph.vue"
+import MapPin from "@/assets/icons/MapPin.vue";
 </script>

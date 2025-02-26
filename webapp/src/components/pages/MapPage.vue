@@ -225,15 +225,10 @@
               </tbody>
             </table>
             <div class="flex justify-center py-6">
-              <RouterLink
-                :to="{
-                  name: 'dashboard',
-                  query: { country: selectedCountry[0].country },
-                }"
-                class="rounded-lg bg-ocean px-3 py-2 text-xs text-white shadow hover:cursor-pointer"
-              >
-                Explore More
-              </RouterLink>
+              <DefaultButton
+                :to="JSON.stringify({ name: 'dashboard', query: { country: selectedCountry[0].country } })"
+                label="Explore More"
+              />
             </div>
           </div>
         </div>
@@ -311,8 +306,8 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterLink } from "vue-router" //@ts-ignore
-import Europe from "./EuropeMap.vue"
+import { RouterLink } from "vue-router"
+import Europe from "@/components/pages/EuropeMap.vue"
 import { ExclamationCircleIcon } from "@heroicons/vue/24/solid"
 import { onMounted, ref } from "vue"
 import {
@@ -324,6 +319,7 @@ import {
   TransitionRoot,
 } from "@headlessui/vue"
 import type { Country } from "@/type"
+import DefaultButton from "@/components/reusable/buttons/DefaultButton.vue"
 
 const selectedCountry = ref<Country[]>([])
 
