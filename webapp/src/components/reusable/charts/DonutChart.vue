@@ -1,31 +1,31 @@
 <template>
-    <div id="donut-chart"></div>
-    </template>
-    <script setup lang="ts">
-    import { onMounted } from 'vue';
-    import ApexCharts from 'apexcharts'
-    import type { BarData } from '@/type' ;
-    
-    const props = defineProps<{
-      chartData: BarData[];
-      }>();
+  <div id="donut-chart"></div>
+</template>
+<script lang="ts" setup>
+import { onMounted } from "vue"
+import ApexCharts from "apexcharts"
+import type { BarData } from "@/type"
 
-    const series = [44, 55]
+const props = defineProps<{
+  chartData: BarData[]
+}>()
 
-      onMounted(() => {
+const series = [44, 55]
+
+onMounted(() => {
   const options: ApexCharts.ApexOptions = {
     series: series,
     chart: {
       events: {
-        click : undefined,
+        click: undefined,
       },
       height: "100%",
       width: "100%",
-      type: 'donut',
-      offsetX: 50
+      type: "donut",
+      offsetX: 50,
     },
-    colors : ['#002665', '#9fd0f0'],
-    labels: ['Under LOQ', 'Above LOQ'],
+    colors: ["#002665", "#0169C5"],
+    labels: ["Under LOQ", "Above LOQ"],
     legend: {
       show: false,
     },
@@ -33,62 +33,70 @@
       show: false,
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     tooltip: {
-      custom: function({ series, seriesIndex }) {
-        const data = series[seriesIndex];
+      custom: function ({ series, seriesIndex }) {
+        const data = series[seriesIndex]
         return `
           <div class="p-1.5 shadow rounded bg-black/80 text-white text-xs">
             ${data}%
           </div>
-        `;
+        `
       },
     },
     plotOptions: {
       pie: {
         startAngle: 10,
         donut: {
-          size: '85%',
+          size: "85%",
           labels: {
             show: true,
             name: {
               show: true,
               offsetY: 15,
-              formatter: () => 'above LOQ'
+              formatter: () => "above LOQ",
             },
             value: {
               show: true,
-              fontSize: '20px',
+              fontSize: "20px",
               fontWeight: 500,
-              color: '#002665',
-              offsetY: -25
+              color: "#002665",
+              offsetY: -25,
             },
-            
+
             total: {
               show: true,
               showAlways: true,
-              color: '#002665',
+              color: "#002665",
               fontWeight: 600,
               formatter: (w) => {
                 const total = w.globals.seriesTotals.reduce(
-                  (a : number, b : number) => b,
+                  (a: number, b: number) => b,
                   0
-                );
-                return `${total}%`;
-              }
-            }
-          }
+                )
+                return `${total}%`
+              },
+            },
+          },
         },
       },
     },
-  };
-
-  const donutChartElement = document.getElementById("donut-chart");
-  if (donutChartElement && typeof ApexCharts !== 'undefined') {
-    const chart = new ApexCharts(donutChartElement, options);
-    chart.render();
+    /** ADD THIS PART **/
+    states: {
+      hover: {
+        filter: {
+          type: "lighten",
+          value: 0.1,
+        },
+      },
+    },
   }
-});
-    </script>
-  
+
+  const donutChartElement = document.getElementById("donut-chart")
+  if (donutChartElement && typeof ApexCharts !== "undefined") {
+    const chart = new ApexCharts(donutChartElement, options)
+    chart.render()
+  }
+})
+</script>
