@@ -50,15 +50,7 @@
           <div class="text-sm font-semibold text-ocean">
             Overview of Chemical Measurements Across Sites
           </div>
-          <div class="group relative">
-            <InformationCircleIcon class="h-4 w-4 cursor-pointer text-ocean" />
-            <!-- Tooltip -->
-            <div
-              class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-black/80 px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-            >
-              More info about missing data.
-            </div>
-          </div>
+          <InformationTooltip text="More info about collected samples"/>
         </div>
 
         <div class="h-36 overflow-y-auto">
@@ -126,16 +118,7 @@
           <div class="text-sm font-semibold text-ocean">
             Average Observed Values Over Time
           </div>
-          <div class="group relative">
-            <InformationCircleIcon class="h-4 w-4 cursor-pointer text-ocean" />
-
-            <!-- Tooltip -->
-            <div
-              class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-            >
-              More info about missing data.
-            </div>
-          </div>
+          <InformationTooltip text="More info about collected samples"/>
         </div>
         <LineChart :chartData="data" />
       </div>
@@ -144,16 +127,7 @@
           <div class="text-sm font-semibold text-ocean">
             Most Monitored Determinands
           </div>
-          <div class="group relative">
-            <InformationCircleIcon class="h-4 w-4 cursor-pointer text-ocean" />
-
-            <!-- Tooltip -->
-            <div
-              class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-            >
-              More info about missing data.
-            </div>
-          </div>
+          <InformationTooltip text="More info about collected samples"/>
         </div>
         <BarChart :chartData="data" />
       </div>
@@ -167,7 +141,6 @@ import { useRoute } from "vue-router"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  InformationCircleIcon,
 } from "@heroicons/vue/24/outline"
 import type * as types from "@/type"
 import SelectOption from "@/components/reusable/dropdowns/SelectOption.vue"
@@ -179,6 +152,7 @@ import WebDomain from "@/assets/icons/WebDomain.vue"
 import Sample from "@/assets/icons/Sample.vue"
 import Proportion from "@/assets/icons/Proportion.vue"
 import DashboardInformationCards from "@/components/reusable/cards/DashboardInformationCards.vue"
+import InformationTooltip from "@/components/reusable/tooltips/InformationTooltip.vue";
 
 const route = useRoute()
 
