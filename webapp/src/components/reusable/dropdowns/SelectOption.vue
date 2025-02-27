@@ -28,7 +28,7 @@
             >
               <li
                 :class="[
-                  active ? 'bg-ocean text-white' : 'text-gray-900',
+                  active ? 'bg-ocean text-white transition-all duration-200 ease-in-out' : 'text-gray-900',
                   'relative cursor-default select-none py-2 pl-4 pr-4',
                 ]"
               >

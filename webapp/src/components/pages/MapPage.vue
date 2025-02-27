@@ -10,7 +10,7 @@
         <span v-else>Off</span>
       </div>
     </div>
-    <div class="overflow-scroll w-screen/3 right-0 h-full">
+    <div class="w-screen/3 right-0 h-full overflow-scroll">
       <div
         v-if="!selectedCountry.length"
         class="flex h-full flex-col items-center py-10"
@@ -27,7 +27,7 @@
             >to explore their water quality metrics in detail and compare.</span
           >
         </div>
-        <div class="pr-4 text-sm text-ocean flex flex-col gap-4">
+        <div class="flex flex-col gap-4 pr-4 text-sm text-ocean">
           <div class="flex w-full flex-row items-end justify-start gap-5">
             <div>
               Want to <span class="font-semibold">compare</span> two countries?
@@ -226,7 +226,12 @@
             </table>
             <div class="flex justify-center py-6">
               <DefaultButton
-                :to="JSON.stringify({ name: 'dashboard', query: { country: selectedCountry[0].country } })"
+                :to="
+                  JSON.stringify({
+                    name: 'dashboard',
+                    query: { country: selectedCountry[0].country },
+                  })
+                "
                 label="Explore More"
               />
             </div>
@@ -418,6 +423,9 @@ onMounted(() => {
         path.classList.add(
           "fill-gray-200",
           "stroke-gray-600",
+          "transition-all",
+          "duration-200",
+          "ease-in-out",
           "hover:fill-ocean",
           "hover:cursor-pointer"
         )

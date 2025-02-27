@@ -20,6 +20,13 @@ onMounted(() => {
         data: sortedData,
       },
     ],
+    states: {
+      active: {
+        filter: {
+          type: "none",
+        },
+      },
+    },
     chart: {
       type: "bar",
       height: "100%",
