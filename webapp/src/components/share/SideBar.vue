@@ -4,12 +4,12 @@
       class="h-screen bg-ocean pb-2 px-3 shadow relative left-0"
     >
       <nav class="mt-6 flex flex-col space-y-2 items-center">
-        <div class="mb-2 w-10">
+        <RouterLink to="/" class="mb-2 w-10">
           <img
             alt="Blue Horizon"
             src="@/assets/images/Blue%20Horizon%20Logo%20White.png"
           />
-        </div>
+        </RouterLink>
 
         <SideBarButton
           :icon="HomeIcon"
