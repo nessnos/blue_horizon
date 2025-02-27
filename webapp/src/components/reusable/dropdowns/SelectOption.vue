@@ -4,7 +4,7 @@
     <Listbox v-model="selectedData">
       <div class="relative mt-1">
         <ListboxButton
-          class="relative w-full cursor-default rounded-lg border border-ocean/55 bg-gray-200/25 bg-white py-2 pl-3 pr-10 text-left text-sm shadow"
+          class="relative w-full cursor-default rounded-lg border border-ocean/50 py-2 pl-3 pr-10 text-left text-sm"
         >
           <span v-if="selectedData" class="block truncate">{{
             selectedData.name
@@ -17,7 +17,7 @@
           leave-to-class="opacity-0"
         >
           <ListboxOptions
-            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-md"
+            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto bg-white border border-ocean/50 rounded-lg py-1 text-sm shadow-md"
           >
             <ListboxOption
               v-for="data in rowData"

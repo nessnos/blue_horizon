@@ -39,6 +39,13 @@ onMounted(() => {
     },
     tooltip: {
       enabled: true,
+      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+        const dataPoint = series[seriesIndex][dataPointIndex]
+        const category = w.globals.labels[dataPointIndex]
+        return `<div class="p-[5px] bg-black/80 text-white text-xs border-none;">
+                  ${category}: ${dataPoint}
+                </div>`
+      },
     },
     grid: {
       show: true,
@@ -89,3 +96,4 @@ onMounted(() => {
   }
 })
 </script>
+<style></style>

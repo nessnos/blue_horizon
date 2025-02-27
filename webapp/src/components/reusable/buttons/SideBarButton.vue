@@ -5,7 +5,7 @@
       :class="[
         isActive ? 'bg-white' : '',
         'flex flex-row gap-4 rounded-lg p-3 text-white transition duration-200 ease-in-out',
-        isActive ? '' : 'transition-all duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-300 hover:bg-opacity-20'
+        isActive ? '' : 'transition-all duration-200 ease-in-out hover:cursor-pointer hover:bg-blue-900'
       ]"
     >
       <component :is="icon" :class="['h-6 w-6', isActive ? 'text-ocean' : 'text-white']" />

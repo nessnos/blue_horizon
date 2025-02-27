@@ -123,7 +123,7 @@ onMounted(() => {
         var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex]
 
         return (
-          '<div class="p-1.5 rounded-lg bg-black/80 text-white text-xs"> Average : ' +
+          '<div class="p-1.5 bg-black/80 text-white text-xs"> Average : ' +
           data.y +
           "</div>"
         )
