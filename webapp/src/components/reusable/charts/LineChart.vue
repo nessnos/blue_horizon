@@ -50,7 +50,7 @@ onMounted(() => {
       },
     },
     stroke: {
-      width: 5,
+      width: 3,
       curve: "smooth",
     },
     xaxis: {
@@ -104,16 +104,9 @@ onMounted(() => {
       },
     },
     fill: {
-      type: "gradient",
-      gradient: {
-        shade: "dark",
-        gradientToColors: ["#002665"],
-        shadeIntensity: 1,
-        type: "vertical",
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100, 100, 100],
-      },
+      type: "solid",
+      opacity: 1,
+      colors: ["#002665"],
     },
     tooltip: {
       custom: function ({

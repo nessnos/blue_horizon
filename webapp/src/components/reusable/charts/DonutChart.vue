@@ -6,7 +6,7 @@ import { onMounted } from "vue"
 import ApexCharts from "apexcharts"
 import type { BarData } from "@/type"
 
-const props = defineProps<{
+defineProps<{
   chartData: BarData[]
 }>()
 
@@ -24,7 +24,7 @@ onMounted(() => {
       type: "donut",
       offsetX: 50,
     },
-    colors: ["#002665", "#0169C5"],
+    colors: ["#002665", "#9FD0F0"],
     labels: ["Under LOQ", "Above LOQ"],
     legend: {
       show: false,
@@ -48,6 +48,7 @@ onMounted(() => {
     plotOptions: {
       pie: {
         startAngle: 10,
+        expandOnClick: false,
         donut: {
           size: "85%",
           labels: {
@@ -82,12 +83,10 @@ onMounted(() => {
         },
       },
     },
-    /** ADD THIS PART **/
     states: {
       hover: {
         filter: {
-          type: "lighten",
-          value: 0.1,
+          type: "darken",
         },
       },
     },
