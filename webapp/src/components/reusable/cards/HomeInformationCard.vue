@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-80 w-64 flex-col items-start justify-between gap-2 rounded-lg border-[0.5px] border-gray-300 bg-gray-100/55 px-6 py-4 shadow"
+    class="flex h-80 w-64 flex-col items-start justify-between gap-2 rounded-lg border border-ocean/50 bg-aqua/10 px-6 py-4"
   >
     <div class="relative h-full w-full p-1 flex flex-col items-center">
       <component :is="icon" class="text-ocean size-20" />

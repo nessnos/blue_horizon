@@ -13,22 +13,22 @@
         <div class="font-bold">RIZON</div>
       </div>
     </div>
-    <div class="w-2/3 text-ocean">
+    <div class="w-2/3">
       Dive into detailed water quality metrics and statistics for Europe,
       sourced from the European Environment Agency (EEA). Gain insights into key
       indicators of water health across all European countries, presented in a
       user-friendly interface.
     </div>
-    <div class="text-xl font-semibold text-ocean">Try out</div>
+    <div class="text-xl font-semibold">Try out</div>
     <div class="flex flex-row gap-6 px-3">
       <HomeInformationCard
-        :icon="BarGraph"
+        :icon="ChartPieIcon"
         description="Access a dashboard with water quality metrics like pH, pollution, and availability. Filter by country or year to track trends and explore changes in water health over time."
         link="/dashboard"
         title="Statistics Dashboard"
       />
       <HomeInformationCard
-        :icon="MapPin"
+        :icon="MapIcon"
         description="Explore Europe’s water quality through an interactive map. Select countries to view detailed metrics, offering localized insights into water health and key statistics."
         link="/map"
         title="Interactive Map"
@@ -39,6 +39,5 @@
 
 <script lang="ts" setup>
 import HomeInformationCard from "@/components/reusable/cards/HomeInformationCard.vue"
-import BarGraph from "@/assets/icons/BarGraph.vue"
-import MapPin from "@/assets/icons/MapPin.vue"
+import { ChartPieIcon, MapIcon } from "@heroicons/vue/24/solid"
 </script>

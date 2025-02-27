@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-full w-full flex-col items-start justify-between p-12 py-4 gap-2"
+    class="flex h-full w-full flex-col items-start justify-between gap-2 p-12 py-4"
   >
     <div class="flex flex-row gap-3">
       <SelectOption
@@ -23,115 +23,29 @@
       />
     </div>
     <div class="flex w-full flex-row items-center justify-between gap-2">
-      <div
-        class="h-fit min-h-24 w-56 rounded-lg bg-aqua/25 p-3 px-4 text-ocean shadow-lg"
-      >
-        <div class="flex flex-col items-start gap-8">
-          <div class="flex w-full flex-row items-center justify-between">
-            <Chemicals class="h-10 w-10 rounded-lg bg-aqua/35 fill-ocean p-2" />
-            <div class="pr-6 text-2xl font-bold">6</div>
-          </div>
-          <div class="flex w-full flex-row items-center justify-between">
-            <div class="text-xs font-normal">Count of Chemicals Monitored</div>
-            <div class="group relative">
-              <InformationCircleIcon
-                class="h-4 w-4 cursor-pointer text-ocean"
-              />
-
-              <!-- Tooltip -->
-              <div
-                class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-              >
-                More info about chemicals monitored
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-fit min-h-24 w-56 rounded-lg bg-aqua/25 p-3 px-4 text-ocean shadow-lg"
-      >
-        <div class="flex flex-col items-start gap-8">
-          <div class="flex w-full flex-row items-center justify-between">
-            <WebDomain class="h-10 w-10 rounded-lg bg-aqua/35 fill-ocean p-2" />
-            <div class="pr-6 text-2xl font-bold">2</div>
-          </div>
-          <div class="flex w-full flex-row items-center justify-between">
-            <div class="text-xs font-normal">Count of Monitoring Sites</div>
-            <div class="group relative">
-              <InformationCircleIcon
-                class="h-4 w-4 cursor-pointer text-ocean"
-              />
-
-              <!-- Tooltip -->
-              <div
-                class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-              >
-                More info about monitoring sites
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-fit min-h-24 w-56 rounded-lg bg-aqua/25 p-3 px-4 text-ocean shadow-lg"
-      >
-        <div class="flex flex-col items-start gap-8">
-          <div class="flex w-full flex-row items-center justify-between">
-            <Sample class="h-10 w-10 rounded-lg bg-aqua/35 fill-ocean p-2" />
-            <div class="pr-6 text-2xl font-bold">256</div>
-          </div>
-          <div class="flex w-full flex-row items-center justify-between">
-            <div class="text-xs font-normal">Number of Collected Samples</div>
-            <div class="group relative">
-              <InformationCircleIcon
-                class="h-4 w-4 cursor-pointer text-ocean"
-              />
-
-              <!-- Tooltip -->
-              <div
-                class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-              >
-                More info about collected samples
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-fit min-h-24 w-56 rounded-lg bg-aqua/25 p-3 px-4 text-ocean shadow-lg"
-      >
-        <div class="flex flex-col items-start gap-8">
-          <div class="flex w-full flex-row items-center justify-between">
-            <Proportion
-              class="h-10 w-10 rounded-lg bg-aqua/35 fill-ocean p-2"
-            />
-            <div class="pr-6 text-2xl font-bold">
-              2<span class="pl-1 text-xs">%</span>
-            </div>
-          </div>
-          <div class="flex w-full flex-row items-center justify-between">
-            <div class="text-left text-xs font-normal">
-              Proportion Of Confirmed Samples
-            </div>
-            <div class="group relative">
-              <InformationCircleIcon
-                class="h-4 w-4 cursor-pointer text-ocean"
-              />
-
-              <!-- Tooltip -->
-              <div
-                class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-ocean px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
-              >
-                More info about confirmed samples
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <DashboardInformationCards
+        :icon="Chemicals"
+        title="Count of Chemicals Monitored"
+        value="100"
+      />
+      <DashboardInformationCards
+        :icon="WebDomain"
+        title="Count of Monitoring Sites"
+        value="100"
+      />
+      <DashboardInformationCards
+        :icon="Sample"
+        title="Number of Collected Samples"
+        value="100"
+      />
+      <DashboardInformationCards
+        :icon="Proportion"
+        title="Proportion Of Confirmed Samples"
+        value="100"
+      />
     </div>
     <div class="flex w-full flex-row items-center gap-8">
-      <div class="h-full min-h-fit w-full rounded-lg bg-white p-2 py-3 shadow">
+      <div class="h-full min-h-fit w-full rounded-lg bg-white p-2 py-3 border border-ocean/50">
         <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
           <div class="text-sm font-semibold text-ocean">
             Overview of Chemical Measurements Across Sites
@@ -207,7 +121,7 @@
       </div>
     </div>
     <div class="flex w-full flex-row items-center justify-between gap-8">
-      <div class="h-fit min-h-64 w-1/2 rounded-lg bg-white p-3 px-6 shadow">
+      <div class="h-fit min-h-64 w-1/2 rounded-lg bg-white p-3 px-6 border border-ocean/50">
         <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
           <div class="text-sm font-semibold text-ocean">
             Average Observed Values Over Time
@@ -225,7 +139,7 @@
         </div>
         <LineChart :chartData="data" />
       </div>
-      <div class="h-fit min-h-64 w-1/2 rounded-lg bg-white p-3 px-6 shadow">
+      <div class="h-fit min-h-64 w-1/2 rounded-lg bg-white p-3 px-6 border border-ocean/50">
         <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
           <div class="text-sm font-semibold text-ocean">
             Most Monitored Determinands
@@ -264,6 +178,7 @@ import Chemicals from "@/assets/icons/Chemicals.vue"
 import WebDomain from "@/assets/icons/WebDomain.vue"
 import Sample from "@/assets/icons/Sample.vue"
 import Proportion from "@/assets/icons/Proportion.vue"
+import DashboardInformationCards from "@/components/reusable/cards/DashboardInformationCards.vue"
 
 const route = useRoute()
 

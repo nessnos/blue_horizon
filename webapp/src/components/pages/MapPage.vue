@@ -3,32 +3,32 @@
     <div
       class="col-span-3 flex h-full w-full flex-col items-start justify-start"
     >
-      <Europe class="mb-4 w-full" />
-      <div class="p-4 py-1 text-xs font-normal text-gray-500">
+      <Europe class="" />
+      <div class="p-4 text-xs font-normal text-gray-500">
         Comparison Mode :
         <span v-if="comparison">On</span>
         <span v-else>Off</span>
       </div>
     </div>
-    <div class="h-full overflow-scroll">
+    <div class="overflow-scroll w-screen/3 right-0 h-full">
       <div
         v-if="!selectedCountry.length"
-        class="flex h-full w-full flex-col items-center justify-center px-6 py-4"
+        class="flex h-full flex-col items-center py-10"
       >
-        <div v-if="!comparison" class="min-h-56 py-12 text-lg text-ocean">
+        <div v-if="!comparison" class="min-h-56 text-lg text-ocean">
           <span class="font-semibold">Select a country </span>
           <span class="font-normal"
             >to explore its water quality metrics in detail.</span
           >
         </div>
-        <div v-else class="min-h-56 py-12 text-lg text-ocean">
+        <div v-else class="min-h-56 text-lg text-ocean">
           <span class="font-semibold">Select two countries </span>
           <span class="font-normal"
             >to explore their water quality metrics in detail and compare.</span
           >
         </div>
-        <div class="py-12 text-sm text-ocean">
-          <div class="flex w-full flex-row items-end justify-start gap-5 pb-2">
+        <div class="pr-4 text-sm text-ocean flex flex-col gap-4">
+          <div class="flex w-full flex-row items-end justify-start gap-5">
             <div>
               Want to <span class="font-semibold">compare</span> two countries?
             </div>
@@ -44,16 +44,16 @@
               />
             </Switch>
           </div>
-          <div class="py-4">
+          <div>
             Enable comparison mode using the switch above and click on two
             countries to see side-by-side insights into their water quality
             data.
           </div>
         </div>
       </div>
-      <div v-if="selectedCountry.length" class="h-full w-full">
+      <div v-if="selectedCountry.length" class="">
         <!-- If more than one country is selected -->
-        <div v-if="selectedCountry.length > 1" class="h-full w-full">
+        <div v-if="selectedCountry.length > 1" class="">
           <div class="w-fit min-w-full">
             <table class="w-full border border-gray-300">
               <thead>
