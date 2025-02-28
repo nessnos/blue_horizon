@@ -45,12 +45,15 @@
       />
     </div>
     <div class="flex w-full flex-row items-center gap-8">
-      <div class="h-full min-h-fit w-full rounded-lg bg-white p-2 py-3 border border-ocean/50">
+      <!-- Need to make apart .vue file for the table -->
+      <div
+        class="h-full min-h-fit w-full rounded-lg border border-ocean/50 bg-white p-2 py-3"
+      >
         <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
           <div class="text-sm font-semibold text-ocean">
             Overview of Chemical Measurements Across Sites
           </div>
-          <InformationTooltip text="More info about collected samples"/>
+          <InformationTooltip text="More info about collected samples" />
         </div>
 
         <div class="h-36 overflow-y-auto">
@@ -113,21 +116,25 @@
       </div>
     </div>
     <div class="flex w-full flex-row items-center justify-between gap-8">
-      <div class="h-fit min-h-64 w-1/2 rounded-lg bg-white p-3 px-6 border border-ocean/50">
+      <div
+        class="h-fit min-h-64 w-1/2 rounded-lg border border-ocean/50 bg-white p-3 px-6"
+      >
         <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
           <div class="text-sm font-semibold text-ocean">
             Average Observed Values Over Time
           </div>
-          <InformationTooltip text="More info about collected samples"/>
+          <InformationTooltip text="More info about collected samples" />
         </div>
         <LineChart :chartData="data" />
       </div>
-      <div class="h-fit min-h-64 w-1/2 rounded-lg bg-white p-3 px-6 border border-ocean/50">
+      <div
+        class="h-fit min-h-64 w-1/2 rounded-lg border border-ocean/50 bg-white p-3 px-6"
+      >
         <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
           <div class="text-sm font-semibold text-ocean">
             Most Monitored Determinands
           </div>
-          <InformationTooltip text="More info about collected samples"/>
+          <InformationTooltip text="More info about collected samples" />
         </div>
         <BarChart :chartData="data" />
       </div>
@@ -138,10 +145,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue"
 import { useRoute } from "vue-router"
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/vue/24/outline"
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline"
 import type * as types from "@/type"
 import SelectOption from "@/components/reusable/dropdowns/SelectOption.vue"
 import BarChart from "@/components/reusable/charts/BarChart.vue"
@@ -152,7 +156,7 @@ import WebDomain from "@/assets/icons/WebDomain.vue"
 import Sample from "@/assets/icons/Sample.vue"
 import Proportion from "@/assets/icons/Proportion.vue"
 import DashboardInformationCards from "@/components/reusable/cards/DashboardInformationCards.vue"
-import InformationTooltip from "@/components/reusable/tooltips/InformationTooltip.vue";
+import InformationTooltip from "@/components/reusable/tooltips/InformationTooltip.vue"
 
 const route = useRoute()
 

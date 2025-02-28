@@ -73,7 +73,7 @@ import {
 } from "@headlessui/vue"
 import type { Country } from "@/type"
 import ErrorPopUp from "@/components/reusable/popups/ErrorPopUp.vue";
-import MapTable from "@/components/reusable/tables/MapTable.vue";
+import MapTable from "@/components/tables/MapTable.vue";
 
 const selectedCountry = ref<Country[]>([])
 

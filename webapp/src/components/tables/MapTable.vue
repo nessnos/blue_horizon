@@ -57,7 +57,7 @@
 import { RouterLink } from "vue-router"
 import { defineProps } from "vue"
 import type { Country } from "@/type"
-import CountryTable from "@/components/reusable/tables/CountryTable.vue"
+import CountryTable from "@/components/tables/CountryTable.vue"
 
 defineProps<{
   selectedCountry: Country[]
