@@ -314,7 +314,8 @@
 import { RouterLink } from "vue-router" //@ts-ignore
 import Europe from "./EuropeMap.vue"
 import { ExclamationCircleIcon } from "@heroicons/vue/24/solid"
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
+import axios from "axios";
 import {
   Dialog,
   DialogPanel,
@@ -380,33 +381,78 @@ const europeanCountries: Country[] = [
   { country: "Vatican City", isoAlpha2: "VA", clicked: false },
 ]
 
+
+const generalInfo = ref<Record<string, any>>({});
+  watch(
+  () => selectedCountry.value, // Reactively watch the array
+  (newValue) => {
+    if (newValue.length > 0) {
+      console.log("Country selection changed:", newValue);
+      fetchGeneralInfo();
+      fetchQualityInfo();
+    }
+  },
+  { deep: true } // Ensure Vue watches inside the array
+);
+
+const fetchGeneralInfo = async () => {
+  try {
+    console.log("Selected Country:", selectedCountry.value);
+
+    if (selectedCountry.value.length === 0) {
+      console.warn("No country selected!");
+      return;
+    }
+
+    const countryCode = selectedCountry.value[0]?.isoAlpha2 || " ";
+    console.log("ISO Alpha-2 Code:", countryCode);
+
+    const response = await axios.get(
+      `http://localhost:8000/water-quality/general-info/?country=${countryCode}`
+    );
+
+    generalInfo.value = response.data; // Store fetched data
+    console.log("Fetched General Info:", generalInfo.value);
+  } catch (error) {
+    console.error("Error fetching general info:", error);
+  }
+};
+
+// Function to get a specific value
 const getGeneralInfo = (label: string): string => {
-  const data: Record<string, string> = {
-    "Total Monitoring Sites": "3",
-    "Decades Covered": "1920 - 2023",
-    "Water Body Category": "Rivers and Lakes",
-    Matrix: "Water",
-    "Count of Chemicals Monitored": "6",
-    "Number of Collected Samples": "6",
-    "Proportion Of Confirmed Samples": "6%",
-    "Percentage of Missing Data": "6%",
+  return generalInfo.value[label] || "N/A";
+};
+
+const qualityInfo = ref<Record<string, any>>({});
+
+const fetchQualityInfo = async () => {
+  try {
+    console.log("Selected Country:", selectedCountry.value);
+
+    if (selectedCountry.value.length === 0) {
+      console.warn("No country selected!");
+      return;
+    }
+
+    const countryCode = selectedCountry.value[0]?.isoAlpha2 || " ";
+    console.log("ISO Alpha-2 Code:", countryCode);
+
+    const response = await axios.get(
+      `http://localhost:8000/water-quality/quality-info/?country=${countryCode}`
+    );
+
+    qualityInfo.value = response.data; // Store fetched data
+    console.log("Fetched Quality Info:", qualityInfo.value);
+  } catch (error) {
+    console.error("Error fetching general info:", error);
   }
+};
 
-  return data[label] || "-"
-}
-
+// Function to get a specific value
 const getQualityInfo = (label: string): string => {
-  const data: Record<string, string> = {
-    "Most Monitored Determinand": "Tetrachloroethylene (CAS_127-18-4)",
-    "Mean Concentration": "0.052 µg/L",
-    "Maximum Recorded Value": "0.12 µg/L",
-    "Minimum Recorded Value": "0.02 µg/L",
-    "Standard Deviation": "0.015 µg/L",
-    "Total Samples": "100",
-  }
+  return qualityInfo.value[label] || "N/A";
+};
 
-  return data[label] || "-"
-}
 
 onMounted(() => {
   const paths = document.querySelectorAll("#countries path")
@@ -485,6 +531,8 @@ onMounted(() => {
   } else {
     console.error("No paths found inside #countries")
   }
+  fetchGeneralInfo();
+  fetchGeneralInfo();
 })
 
 const comparison = ref(false)
