@@ -1,19 +1,19 @@
 <template>
-  <div class="grid h-full grid-cols-4 items-start justify-start">
+  <div class="grid w-full h-full grid-cols-4 items-start justify-start">
     <div
-      class="col-span-3 flex h-full w-full flex-col items-start justify-start"
+      class="col-span-3 flex w-full flex-col items-start justify-start"
     >
-      <Europe class="" />
-      <div class="p-4 text-xs font-normal text-gray-500">
+      <Europe class="w-full"/>
+      <div class="px-4 text-xs font-normal text-gray-500">
         Comparison Mode :
         <span v-if="comparison">On</span>
         <span v-else>Off</span>
       </div>
     </div>
-    <div class="w-screen/3 right-0 h-full overflow-scroll">
+    <div class="h-full w-full overflow-scroll">
       <div
         v-if="!selectedCountry.length"
-        class="flex h-full flex-col items-center py-10"
+        class="max-w-80 items-center justify-center mx-auto pt-10 px-2"
       >
         <div v-if="!comparison" class="min-h-56 text-lg text-ocean">
           <span class="font-semibold">Select a country </span>
@@ -51,9 +51,9 @@
           </div>
         </div>
       </div>
-      <div v-if="selectedCountry.length" class="">
+      <div v-if="selectedCountry.length" class="w-full">
         <!-- If more than one country is selected -->
-        <div v-if="selectedCountry.length > 1" class="">
+        <div v-if="selectedCountry.length > 1" class="w-full">
           <div class="w-fit min-w-full">
             <table class="w-full border border-gray-300">
               <thead>
