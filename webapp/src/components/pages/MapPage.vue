@@ -27,7 +27,7 @@
             >to explore their water quality metrics in detail and compare.</span
           >
         </div>
-        <div class="flex flex-col gap-4 pr-4 text-sm text-ocean">
+        <div class="flex flex-col gap-4 pr-4 text-sm">
           <div class="flex w-full flex-row items-end justify-start gap-5">
             <div>
               Want to <span class="font-semibold">compare</span> two countries?
@@ -52,191 +52,7 @@
         </div>
       </div>
       <div v-if="selectedCountry.length" class="w-full">
-        <!-- If more than one country is selected -->
-        <div v-if="selectedCountry.length > 1" class="w-full">
-          <div class="w-fit min-w-full">
-            <table class="w-full border border-gray-300">
-              <thead>
-                <tr class="h-12">
-                  <th
-                    v-for="(country, index) in selectedCountry"
-                    :key="index"
-                    class="border border-gray-300 p-2 text-lg font-bold text-ocean"
-                  >
-                    {{ country.country }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
-                  v-for="(label, index) in [
-                    'Total Monitoring Sites',
-                    'Decades Covered',
-                    'Water Body Category',
-                    'Matrix',
-                    'Count of Chemicals Monitored',
-                    'Number of Collected Samples',
-                    'Proportion Of Confirmed Samples',
-                    'Percentage of Missing Data',
-                  ]"
-                  :key="'general-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      :colspan="selectedCountry.length"
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      v-for="(_, countryIndex) in selectedCountry"
-                      :key="countryIndex"
-                      class="border border-gray-300 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getGeneralInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-
-                <template
-                  v-for="(label, index) in [
-                    'Most Monitored Determinand',
-                    'Mean Concentration',
-                    'Maximum Recorded Value',
-                    'Minimum Recorded Value',
-                    'Standard Deviation',
-                    'Total Samples',
-                  ]"
-                  :key="'quality-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      :colspan="selectedCountry.length"
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      v-for="(_, countryIndex) in selectedCountry"
-                      :key="countryIndex"
-                      class="border border-gray-300 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getQualityInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
-            <div
-              class="flex flex-row items-start justify-between gap-12 px-4 py-6"
-            >
-              <RouterLink
-                v-for="country in selectedCountry"
-                :to="{ name: 'dashboard', query: { country: country.country } }"
-                class="w-fit rounded-lg bg-ocean px-3 py-2 text-center text-xs text-white shadow hover:cursor-pointer"
-              >
-                Explore {{ country.country }}
-              </RouterLink>
-            </div>
-          </div>
-        </div>
-
-        <!-- If only one country is selected -->
-        <div v-else class="h-full w-full">
-          <div class="w-fit min-w-full">
-            <table class="w-full">
-              <thead>
-                <tr>
-                  <th class="gont-bold h-12 text-lg text-ocean">
-                    {{ selectedCountry[0].country }} ({{
-                      selectedCountry[0].isoAlpha2
-                    }})
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
-                  v-for="(label, index) in [
-                    'Total Monitoring Sites',
-                    'Decades Covered',
-                    'Water Body Category',
-                    'Matrix',
-                    'Count of Chemicals Monitored',
-                    'Number of Collected Samples',
-                    'Proportion Of Confirmed Samples',
-                    'Percentage of Missing Data',
-                  ]"
-                  :key="'general-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getGeneralInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-
-                <template
-                  v-for="(label, index) in [
-                    'Most Monitored Determinand',
-                    'Mean Concentration',
-                    'Maximum Recorded Value',
-                    'Minimum Recorded Value',
-                    'Standard Deviation',
-                    'Total Samples',
-                  ]"
-                  :key="'quality-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getQualityInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
-            <div class="flex justify-center py-6">
-              <DefaultButton
-                :to="
-                  JSON.stringify({
-                    name: 'dashboard',
-                    query: { country: selectedCountry[0].country },
-                  })
-                "
-                label="Explore More"
-              />
-            </div>
-          </div>
-        </div>
+        <MapTable :selected-country="selectedCountry" :quality-info="getQualityInfo" :general-info="getGeneralInfo"/>
       </div>
     </div>
   </div>
@@ -249,7 +65,6 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterLink } from "vue-router"
 import Europe from "@/components/pages/EuropeMap.vue"
 import { onMounted, ref } from "vue"
 import {
@@ -257,8 +72,8 @@ import {
   TransitionRoot,
 } from "@headlessui/vue"
 import type { Country } from "@/type"
-import DefaultButton from "@/components/reusable/buttons/DefaultButton.vue"
 import ErrorPopUp from "@/components/reusable/popups/ErrorPopUp.vue";
+import MapTable from "@/components/reusable/tables/MapTable.vue";
 
 const selectedCountry = ref<Country[]>([])
 
