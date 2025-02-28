@@ -1,14 +1,8 @@
 from .models import WaterData
 from django.db.models import Avg, Max, Min, Count,StdDev, Q
-from django.core.cache import cache
 
 def fetch_general_info(country_code):
     """Retrieve summarized water quality data for a given country code."""
-    cache_key = f"water_data_{country_code}"
-    cached_data = cache.get(cache_key)
-
-    if cached_data:
-        return cached_data
 
     # Filter data by country code
     queryset = WaterData.objects.filter(country__code=country_code)
@@ -54,18 +48,10 @@ def fetch_general_info(country_code):
         "Standard Deviation": aggregated_data["std_deviation"] if aggregated_data["std_deviation"] is not None else "N/A"
     }
 
-    # Cache the data for 1 hour (3600 seconds)
-    cache.set(cache_key, data, 3600)
     return data
 
 def fetch_water_quality_info(country_code):
     """Retrieve water quality statistics for a given country code."""
-    cache_key = f"water_quality_info_{country_code}"
-    cached_data = cache.get(cache_key)
-
-    if cached_data:
-        return cached_data
-
     # Filter data by country code
     queryset = WaterData.objects.filter(country__code=country_code)
 
@@ -98,7 +84,4 @@ def fetch_water_quality_info(country_code):
         "Standard Deviation": f"{aggregated_data['std_deviation']:.3f} µg/L" if aggregated_data["std_deviation"] is not None else "N/A",
         "Total Samples": aggregated_data["total_samples"] if aggregated_data["total_samples"] else "N/A",
     }
-
-    # Cache the data for 1 hour (3600 seconds)
-    cache.set(cache_key, data, 3600)
     return data

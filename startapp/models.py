@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from django.utils.timezone import now
 
 # WATER DATA RELATED
 
