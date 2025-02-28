@@ -241,90 +241,24 @@
     </div>
   </div>
 
-  <TransitionRoot :show="isOpen" appear as="template">
-    <Dialog as="div" class="relative z-10" @close="isOpen = !isOpen">
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-black/25" />
-      </TransitionChild>
-
-      <div class="fixed inset-0 overflow-y-auto">
-        <div
-          class="flex min-h-full items-center justify-center p-4 text-center"
-        >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-            >
-              <DialogTitle
-                as="h3"
-                class="flex flex-row items-center gap-2 text-lg font-medium leading-6 text-red-700"
-              >
-                <ExclamationCircleIcon class="h-6 w-6" />
-                <span>Selection Error</span>
-              </DialogTitle>
-              <div class="mt-6">
-                <div class="text-sm text-gray-500">
-                  You can only select up to two countries at a time for
+  <TransitionRoot :show="showPopUp" appear as="template">
+    <ErrorPopUp title="Selection Error" message="You can only select up to two countries at a time for
                   comparison. Please deselect all or one country to choose a new
-                  one.
-                </div>
-              </div>
-
-              <div class="mt-8 flex flex-row items-center justify-between">
-                <button
-                  class="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  type="button"
-                  @click="resetComparison"
-                >
-                  Deselect All
-                </button>
-                <button
-                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  type="button"
-                  @click="isOpen = !isOpen"
-                >
-                  Let Me Choose
-                </button>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
+                  one." left-label="Deselect All" right-label="Let Me Choose" :left-action="resetComparison" :right-action="togglePopUp"/>
   </TransitionRoot>
 </template>
 
 <script lang="ts" setup>
 import { RouterLink } from "vue-router"
 import Europe from "@/components/pages/EuropeMap.vue"
-import { ExclamationCircleIcon } from "@heroicons/vue/24/solid"
 import { onMounted, ref } from "vue"
 import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
   Switch,
-  TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue"
 import type { Country } from "@/type"
 import DefaultButton from "@/components/reusable/buttons/DefaultButton.vue"
+import ErrorPopUp from "@/components/reusable/popups/ErrorPopUp.vue";
 
 const selectedCountry = ref<Country[]>([])
 
@@ -450,7 +384,7 @@ onMounted(() => {
               }).length
               if (numberClicked == 2) {
                 console.error("you can't select more than 2 countries")
-                isOpen.value = true
+                showPopUp.value = true
               } else {
                 path.classList.remove("fill-gray-200")
                 path.classList.add("fill-ocean")
@@ -492,7 +426,7 @@ onMounted(() => {
 })
 
 const comparison = ref(false)
-const isOpen = ref(false)
+const showPopUp = ref(false)
 
 const resetComparison = () => {
   const selectedAll = europeanCountries.filter(function (s) {
@@ -509,6 +443,10 @@ const resetComparison = () => {
       selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1)
     }
   })
-  isOpen.value = !isOpen.value
+  togglePopUp()
+}
+
+const togglePopUp = () => {
+  showPopUp.value = !showPopUp.value
 }
 </script>
