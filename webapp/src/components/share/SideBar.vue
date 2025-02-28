@@ -1,32 +1,34 @@
 <template>
-  <div class="flex flex-row">
+  <div class="flex">
     <div
-      class="absolute inline-flex h-screen transform flex-col items-center bg-ocean p-2 px-3 shadow transition-all duration-300 ease-in-out md:relative md:left-0"
+      class="h-screen bg-ocean pb-2 px-3 shadow relative left-0"
     >
-      <nav
-        class="mt-6 inline-flex flex-col space-y-2"
-      >
-        <RouterLink
-          :class="[isActive('/') ? 'bg-aqua' : '', '']"
-          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer"
+      <nav class="mt-6 flex flex-col space-y-2 items-center">
+        <RouterLink to="/" class="mb-2 w-10">
+          <img
+            alt="Blue Horizon"
+            src="@/assets/images/Blue%20Horizon%20Logo%20White.png"
+          />
+        </RouterLink>
+
+        <SideBarButton
+          :icon="HomeIcon"
+          :isActive="isActive('/')"
+          :label="'Home'"
           to="/"
-        >
-          <HomeIcon class="h-6 w-6" />
-        </RouterLink>
-        <RouterLink
-          :class="[isActive('/dashboard') ? 'bg-aqua' : '', '']"
-          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer hover:bg-aqua"
+        />
+        <SideBarButton
+          :icon="ChartPieIcon"
+          :isActive="isActive('/dashboard')"
+          :label="'Dashboard'"
           to="/dashboard"
-        >
-          <ChartPieIcon class="h-6 w-6" />
-        </RouterLink>
-        <RouterLink
-          :class="[isActive('/map') ? 'bg-aqua' : '', '']"
-          class="flex flex-row gap-4 rounded-lg p-3 text-white hover:cursor-pointer hover:bg-aqua"
+        />
+        <SideBarButton
+          :icon="MapIcon"
+          :isActive="isActive('/map')"
+          :label="'Map'"
           to="/map"
-        >
-          <MapIcon class="h-6 w-6" />
-        </RouterLink>
+        />
       </nav>
     </div>
     <div class="max-h-screen w-full bg-ocean/10">
@@ -36,8 +38,9 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterLink, RouterView, useRoute } from "vue-router"
-import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/outline"
+import { RouterView, useRoute } from "vue-router"
+import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/solid"
+import SideBarButton from "@/components/reusable/buttons/SideBarButton.vue"
 
 const isActive = (path: string) => {
   const route = useRoute()

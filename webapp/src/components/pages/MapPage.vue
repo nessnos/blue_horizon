@@ -1,34 +1,34 @@
 <template>
-  <div class="grid h-full grid-cols-4 items-start justify-start">
+  <div class="grid w-full h-full grid-cols-4 items-start justify-start">
     <div
-      class="col-span-3 flex h-full w-full flex-col items-start justify-start"
+      class="col-span-3 flex w-full flex-col items-start justify-start"
     >
-      <Europe class="mb-4 w-full" />
-      <div class="p-4 py-1 text-xs font-normal text-gray-500">
+      <Europe class="w-full"/>
+      <div class="px-4 text-xs font-normal text-gray-500">
         Comparison Mode :
         <span v-if="comparison">On</span>
         <span v-else>Off</span>
       </div>
     </div>
-    <div class="h-full overflow-scroll">
+    <div class="h-full w-full overflow-scroll">
       <div
         v-if="!selectedCountry.length"
-        class="flex h-full w-full flex-col items-center justify-center px-6 py-4"
+        class="max-w-80 items-center justify-center mx-auto pt-10 px-2"
       >
-        <div v-if="!comparison" class="min-h-56 py-12 text-lg text-ocean">
+        <div v-if="!comparison" class="min-h-56 text-lg text-ocean">
           <span class="font-semibold">Select a country </span>
           <span class="font-normal"
             >to explore its water quality metrics in detail.</span
           >
         </div>
-        <div v-else class="min-h-56 py-12 text-lg text-ocean">
+        <div v-else class="min-h-56 text-lg text-ocean">
           <span class="font-semibold">Select two countries </span>
           <span class="font-normal"
             >to explore their water quality metrics in detail and compare.</span
           >
         </div>
-        <div class="py-12 text-sm text-ocean">
-          <div class="flex w-full flex-row items-end justify-start gap-5 pb-2">
+        <div class="flex flex-col gap-4 pr-4 text-sm">
+          <div class="flex w-full flex-row items-end justify-start gap-5">
             <div>
               Want to <span class="font-semibold">compare</span> two countries?
             </div>
@@ -44,287 +44,37 @@
               />
             </Switch>
           </div>
-          <div class="py-4">
+          <div>
             Enable comparison mode using the switch above and click on two
             countries to see side-by-side insights into their water quality
             data.
           </div>
         </div>
       </div>
-      <div v-if="selectedCountry.length" class="h-full w-full">
-        <!-- If more than one country is selected -->
-        <div v-if="selectedCountry.length > 1" class="h-full w-full">
-          <div class="w-fit min-w-full">
-            <table class="w-full border border-gray-300">
-              <thead>
-                <tr class="h-12">
-                  <th
-                    v-for="(country, index) in selectedCountry"
-                    :key="index"
-                    class="border border-gray-300 p-2 text-lg font-bold text-ocean"
-                  >
-                    {{ country.country }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
-                  v-for="(label, index) in [
-                    'Total Monitoring Sites',
-                    'Decades Covered',
-                    'Water Body Category',
-                    'Matrix',
-                    'Count of Chemicals Monitored',
-                    'Number of Collected Samples',
-                    'Proportion Of Confirmed Samples',
-                    'Percentage of Missing Data',
-                  ]"
-                  :key="'general-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      :colspan="selectedCountry.length"
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      v-for="(_, countryIndex) in selectedCountry"
-                      :key="countryIndex"
-                      class="border border-gray-300 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getGeneralInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-
-                <template
-                  v-for="(label, index) in [
-                    'Most Monitored Determinand',
-                    'Mean Concentration',
-                    'Maximum Recorded Value',
-                    'Minimum Recorded Value',
-                    'Standard Deviation',
-                    'Total Samples',
-                  ]"
-                  :key="'quality-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      :colspan="selectedCountry.length"
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      v-for="(_, countryIndex) in selectedCountry"
-                      :key="countryIndex"
-                      class="border border-gray-300 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getQualityInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
-            <div
-              class="flex flex-row items-start justify-between gap-12 px-4 py-6"
-            >
-              <RouterLink
-                v-for="country in selectedCountry"
-                :to="{ name: 'dashboard', query: { country: country.country } }"
-                class="w-fit rounded-lg bg-ocean px-3 py-2 text-center text-xs text-white shadow hover:cursor-pointer"
-              >
-                Explore {{ country.country }}
-              </RouterLink>
-            </div>
-          </div>
-        </div>
-
-        <!-- If only one country is selected -->
-        <div v-else class="h-full w-full">
-          <div class="w-fit min-w-full">
-            <table class="w-full">
-              <thead>
-                <tr>
-                  <th class="gont-bold h-12 text-lg text-ocean">
-                    {{ selectedCountry[0].country }} ({{
-                      selectedCountry[0].isoAlpha2
-                    }})
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <template
-                  v-for="(label, index) in [
-                    'Total Monitoring Sites',
-                    'Decades Covered',
-                    'Water Body Category',
-                    'Matrix',
-                    'Count of Chemicals Monitored',
-                    'Number of Collected Samples',
-                    'Proportion Of Confirmed Samples',
-                    'Percentage of Missing Data',
-                  ]"
-                  :key="'general-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getGeneralInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-
-                <template
-                  v-for="(label, index) in [
-                    'Most Monitored Determinand',
-                    'Mean Concentration',
-                    'Maximum Recorded Value',
-                    'Minimum Recorded Value',
-                    'Standard Deviation',
-                    'Total Samples',
-                  ]"
-                  :key="'quality-' + index"
-                >
-                  <!-- Label Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 p-2 text-center text-sm font-semibold text-ocean"
-                    >
-                      {{ label }}
-                    </td>
-                  </tr>
-                  <!-- Data Row -->
-                  <tr>
-                    <td
-                      class="border border-gray-300 bg-gray-100 p-2 text-center text-xs text-ocean"
-                    >
-                      {{ getQualityInfo(label) }}
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
-            <div class="flex justify-center py-6">
-              <RouterLink
-                :to="{
-                  name: 'dashboard',
-                  query: { country: selectedCountry[0].country },
-                }"
-                class="rounded-lg bg-ocean px-3 py-2 text-xs text-white shadow hover:cursor-pointer"
-              >
-                Explore More
-              </RouterLink>
-            </div>
-          </div>
-        </div>
+      <div v-if="selectedCountry.length" class="w-full">
+        <MapTable :selected-country="selectedCountry" :quality-info="getQualityInfo" :general-info="getGeneralInfo"/>
       </div>
     </div>
   </div>
 
-  <TransitionRoot :show="isOpen" appear as="template">
-    <Dialog as="div" class="relative z-10" @close="isOpen = !isOpen">
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-black/25" />
-      </TransitionChild>
-
-      <div class="fixed inset-0 overflow-y-auto">
-        <div
-          class="flex min-h-full items-center justify-center p-4 text-center"
-        >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-            >
-              <DialogTitle
-                as="h3"
-                class="flex flex-row items-center gap-2 text-lg font-medium leading-6 text-red-700"
-              >
-                <ExclamationCircleIcon class="h-6 w-6" />
-                <span>Selection Error</span>
-              </DialogTitle>
-              <div class="mt-6">
-                <div class="text-sm text-gray-500">
-                  You can only select up to two countries at a time for
+  <TransitionRoot :show="showPopUp" appear as="template">
+    <ErrorPopUp title="Selection Error" message="You can only select up to two countries at a time for
                   comparison. Please deselect all or one country to choose a new
-                  one.
-                </div>
-              </div>
-
-              <div class="mt-8 flex flex-row items-center justify-between">
-                <button
-                  class="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  type="button"
-                  @click="resetComparison"
-                >
-                  Deselect All
-                </button>
-                <button
-                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  type="button"
-                  @click="isOpen = !isOpen"
-                >
-                  Let Me Choose
-                </button>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
+                  one." left-label="Deselect All" right-label="Let Me Choose" :left-action="resetComparison" :right-action="togglePopUp"/>
   </TransitionRoot>
 </template>
 
 <script lang="ts" setup>
-import { RouterLink } from "vue-router" //@ts-ignore
-import Europe from "./EuropeMap.vue"
-import { ExclamationCircleIcon } from "@heroicons/vue/24/solid"
 import { onMounted, ref, watch } from "vue"
 import axios from "axios";
+import Europe from "@/components/pages/EuropeMap.vue"
 import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
   Switch,
-  TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue"
 import type { Country } from "@/type"
+import ErrorPopUp from "@/components/reusable/popups/ErrorPopUp.vue";
+import MapTable from "@/components/tables/MapTable.vue";
 
 const selectedCountry = ref<Country[]>([])
 
@@ -468,6 +218,9 @@ onMounted(() => {
         path.classList.add(
           "fill-gray-200",
           "stroke-gray-600",
+          "transition-all",
+          "duration-200",
+          "ease-in-out",
           "hover:fill-ocean",
           "hover:cursor-pointer"
         )
@@ -492,7 +245,7 @@ onMounted(() => {
               }).length
               if (numberClicked == 2) {
                 console.error("you can't select more than 2 countries")
-                isOpen.value = true
+                showPopUp.value = true
               } else {
                 path.classList.remove("fill-gray-200")
                 path.classList.add("fill-ocean")
@@ -536,7 +289,7 @@ onMounted(() => {
 })
 
 const comparison = ref(false)
-const isOpen = ref(false)
+const showPopUp = ref(false)
 
 const resetComparison = () => {
   const selectedAll = europeanCountries.filter(function (s) {
@@ -553,6 +306,10 @@ const resetComparison = () => {
       selectedCountry.value.splice(selectedCountry.value.indexOf(country), 1)
     }
   })
-  isOpen.value = !isOpen.value
+  togglePopUp()
+}
+
+const togglePopUp = () => {
+  showPopUp.value = !showPopUp.value
 }
 </script>
