@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import general_info
+from . import api
 urlpatterns = [
-    path("water-quality/general-info/", general_info, name="general_info"),
-    path("water-quality/quality-info/", general_info, name="quality_info"),
+    path("water-quality/general-info/", api.GeneralInfo.as_view(), name="general_info"),
 ]
