@@ -43,3 +43,107 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 worker: Hitting Ctrl+C again will terminate all running tasks!
 
 worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@MacBook-Pro-de-Lina.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.1.1-arm64-arm-64bit-Mach-O 2025-03-09 17:25:47
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x102fc7b60
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-09 17:25:48,069: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-09 17:25:48,077: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-09 17:25:49,095: INFO/MainProcess] mingle: all alone
+[2025-03-09 17:25:49,136: INFO/MainProcess] celery@MacBook-Pro-de-Lina.local ready.
+ 
+ -------------- celery@MacBook-Pro-de-Lina.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.1.1-arm64-arm-64bit-Mach-O 2025-03-09 18:34:29
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x10510bb60
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-09 18:34:29,712: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-09 18:34:29,717: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-09 18:34:30,727: INFO/MainProcess] mingle: all alone
+[2025-03-09 18:34:30,760: INFO/MainProcess] celery@MacBook-Pro-de-Lina.local ready.
+ 
+ -------------- celery@MacBook-Pro-de-Lina.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.1.1-arm64-arm-64bit-Mach-O 2025-03-09 18:35:02
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x10a90bb60
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-09 18:35:03,871: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-09 18:35:03,879: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-09 18:35:04,890: INFO/MainProcess] mingle: all alone
+[2025-03-09 18:35:04,906: INFO/MainProcess] celery@MacBook-Pro-de-Lina.local ready.
+ 
+ -------------- celery@MacBook-Pro-de-Lina.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.1.1-arm64-arm-64bit-Mach-O 2025-03-09 18:35:29
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x1063fbb60
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-09 18:35:29,847: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-09 18:35:29,852: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-09 18:35:30,871: INFO/MainProcess] mingle: all alone
+[2025-03-09 18:35:30,924: INFO/MainProcess] celery@MacBook-Pro-de-Lina.local ready.
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)

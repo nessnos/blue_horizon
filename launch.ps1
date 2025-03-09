@@ -1,17 +1,17 @@
 poetry install
 
-pg_restore -U postgres -h db -p 5422 --clean --create -d waterdata waterdata_backup.dump
+$port = 8000
+Get-NetTCPConnection -LocalPort $port | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
 
-$celeryProcess = Get-Process | Where-Object { $_.CommandLine -like "*celery -A water worker*" }
+$celeryProcess = Get-Process | Where-Object { $_.Path -like "*celery*" -and $_.CommandLine -like "*-A water worker --loglevel=info*" }
 if ($celeryProcess) {
-    Stop-Process -Id $celeryProcess.Id
+    $celeryProcess | Stop-Process -Force
 }
 
-Start-Process "poetry" "run celery -A water worker --loglevel=info" -RedirectStandardOutput "celery.log" -RedirectStandardError "celery.log" -NoNewWindow -WindowStyle Hidden
+Start-Process -NoNewWindow -Wait -FilePath "poetry" -ArgumentList "run", "celery", "-A water", "worker", "--loglevel=info" | Out-File -FilePath "celery.log" -Append
 
-Start-Process "poetry" "run manage.py runserver" -NoNewWindow -WindowStyle Hidden
+Start-Process -NoNewWindow -Wait -FilePath "poetry" -ArgumentList "run", "python", "manage.py", "runserver"
 
 Set-Location -Path "webapp"
 npm install
-
 npm run dev
