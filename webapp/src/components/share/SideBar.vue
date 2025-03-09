@@ -14,20 +14,33 @@
         <SideBarButton
           :icon="HomeIcon"
           :isActive="isActive('/')"
-          :label="'Home'"
+          :label="'Page d\'Accueil'"
           to="/"
         />
         <SideBarButton
           :icon="ChartPieIcon"
           :isActive="isActive('/dashboard')"
-          :label="'Dashboard'"
+          :label="'Interface de statistiques'"
           to="/dashboard"
         />
         <SideBarButton
           :icon="MapIcon"
           :isActive="isActive('/map')"
-          :label="'Map'"
+          :label="'Carte Interactive'"
           to="/map"
+        />
+        <SideBarButton
+          :icon="WrenchScrewdriverIcon"
+          :isActive="isActive('/machine-learning')"
+          :label="'Machine Learning'"
+          to="/machine-learning"
+        />
+        <SideBarButton
+          :demo="true"
+          :icon="ChatBubbleBottomCenterTextIcon"
+          :isActive="isActive('/chat')"
+          :label="'Chat'"
+          to="/chat"
         />
       </nav>
     </div>
@@ -36,10 +49,9 @@
     </div>
   </div>
 </template>
-
 <script lang="ts" setup>
 import { RouterView, useRoute } from "vue-router"
-import { ChartPieIcon, HomeIcon, MapIcon } from "@heroicons/vue/24/solid"
+import { ChartPieIcon, HomeIcon, MapIcon, WrenchScrewdriverIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/vue/24/solid"
 import SideBarButton from "@/components/reusable/buttons/SideBarButton.vue"
 
 const isActive = (path: string) => {

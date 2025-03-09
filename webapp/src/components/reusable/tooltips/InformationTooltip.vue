@@ -4,7 +4,7 @@
 
           <!-- Tooltip -->
           <div
-            class="translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-black/80 px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
+            class="w-40 translate-x-1/5 absolute right-0 top-6 z-10 hidden w-fit min-w-32 max-w-56 rounded-md bg-black/80 px-2 py-1 text-center text-[0.7rem] text-white opacity-0 shadow-md transition-opacity duration-200 group-hover:block group-hover:opacity-100"
           >
             {{ text }}
           </div>

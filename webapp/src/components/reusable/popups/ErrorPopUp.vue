@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import {Dialog, DialogPanel, DialogTitle, TransitionChild} from "@headlessui/vue";
-import {ExclamationCircleIcon} from "@heroicons/vue/24/solid";
+import { ExclamationCircleIcon } from "@heroicons/vue/24/solid";
 import { defineProps } from "vue"
 
 defineProps<{

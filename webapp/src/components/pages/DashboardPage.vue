@@ -1,152 +1,117 @@
 <template>
-  <div
-    class="flex h-full w-full flex-col items-start justify-between gap-2 p-12 py-4"
-  >
-    <div class="flex flex-row gap-3">
-      <SelectOption
-        :default="
-          countries.find((country) => country.name === route.query.country) ||
-          countries[0]
-        "
-        :label="'Country'"
-        :rowData="countries"
-      />
-      <SelectOption
-        :default="decades[0]"
-        :label="'Decades'"
-        :rowData="decades"
-      />
-      <SelectOption
-        :default="chemicals[0]"
-        :label="'Chemicals'"
-        :rowData="chemicals"
-      />
+  <div v-if="isLoadingData && !noData" class="flex h-full w-full items-center justify-center">
+    <LoadingWheel />
+  </div>
+  <div v-else class="flex h-full w-full flex-col items-start justify-between gap-2 p-10 py-4">
+    <div class="flex flex-row items-center justify-between w-full">
+      <SelectOption v-if="countries.length" :default="countries.find((country) => country.name === route.query.country) ||
+        countries[0]
+        " :label="'Pays'" :rowData="countries" :flag='true' @update:selectedData="filterFilters" />
+      <SelectOption v-if="decades.length" :default="decades[0]" :label="'Décennies'" :rowData="decades"
+        @update:selectedData="filterData($event, 'reference_year__range')" />
+      <SelectOption v-if="observedProperties.length" :default="observedProperties[0]"
+        :label="'Déterminant de propriété observée'" :rowData="observedProperties"
+        @update:selectedData="filterData($event, 'observed_property_determinand')" />
+      <SelectOption v-if="matrix.length" :rowData="matrix" :label="'Matrice analysée'" :default="matrix[0]"
+        @update:selectedData="filterData($event, 'matrix')" />
     </div>
-    <div class="flex w-full flex-row items-center justify-between gap-2">
-      <DashboardInformationCards
-        :icon="Chemicals"
-        title="Count of Chemicals Monitored"
-        value="100"
-      />
-      <DashboardInformationCards
-        :icon="WebDomain"
-        title="Count of Monitoring Sites"
-        value="100"
-      />
-      <DashboardInformationCards
-        :icon="Sample"
-        title="Number of Collected Samples"
-        value="100"
-      />
-      <DashboardInformationCards
-        :icon="Proportion"
-        title="Proportion Of Confirmed Samples"
-        value="100"
-      />
+    <div class="pt-24 flex items-start justify-center w-full h-full font-normal text-xl text-ocean" v-if="noData">
+      Pas de données.
     </div>
-    <div class="flex w-full flex-row items-center gap-8">
-      <!-- Need to make apart .vue file for the table -->
-      <div
-        class="h-full min-h-fit w-full rounded-lg border border-ocean/50 bg-white p-2 py-3"
-      >
-        <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
-          <div class="text-sm font-semibold text-ocean">
-            Overview of Chemical Measurements Across Sites
+    <div class="flex h-full w-full flex-col items-start justify-between gap-2 pt-4" v-else>
+      <div class="flex w-full flex-row items-center justify-between gap-2" v-if="dashboardData">
+        <DashboardInformationCards :tooltip="'Nombre total de toutes les propriétés observées dans l\'ensemble des données collectées.'" :icon="Chemicals" title="Total des propriétés observées"
+          :value="dashboardData?.count_chemicals_monitored.toLocaleString('fr-BE', { maximumFractionDigits: 2, })" />
+        <DashboardInformationCards :tooltip="'Nombre total de sites où des données de qualité de l\'eau ont été collectées et surveillées.'" :icon="WebDomain" title="Total des sites surveillés"
+          :value="dashboardData?.count_monitoring_sites.toLocaleString('fr-BE', { maximumFractionDigits: 2, })" />
+        <DashboardInformationCards :tooltip="'Nombre total d\'échantillons collectés pour l\'analyse de la qualité de l\'eau.'" :icon="Sample" title="Total des échantillons collectés"
+          :value="dashboardData?.number_of_collected_samples.toLocaleString('fr-BE', { maximumFractionDigits: 2, })" />
+        <DashboardInformationCards :tooltip="'Proportion d\'échantillons dont les résultats ont été validés et confirmés.'" :icon="Proportion" title="Taux d'échantillons confirmés"
+          :value="(dashboardData?.proportion_of_confirmed_samples * 100).toLocaleString('fr-BE', { maximumFractionDigits: 2, }) + '%'" />
+      </div>
+      <div class="flex flex-row items-center gap-4 w-full">
+        <div class="h-full min-h-fit rounded-lg border border-ocean/50 bg-white p-2 py-3">
+          <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
+            <div class="text-sm font-semibold text-ocean truncate">
+              Aperçu des propriétés observées à travers les sites surveillés
+            </div>
+            <InformationTooltip text="Vue d'ensemble des propriétés observées sur tous les sites surveillés, classées par ordre croissant selon le nombre total d'observations. Inclut les statistiques moyennes, minimales et maximales." />
           </div>
-          <InformationTooltip text="More info about collected samples" />
+          <div class="w-full">
+            <ObservedPropertyTable :data="dashboardData?.determinand_table" :headers="['Déterminant de propriété observée', 'Total des échantillons collectés' , 'Moyenne', 'Minimum' , 'Maximum', 'Udm']" />
+          </div>
         </div>
+        <div class="h-full min-h-fit rounded-lg border border-ocean/50 bg-white p-2 py-3">
+          <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
+            <div class="text-sm font-semibold text-ocean truncate">
+              Vue d'ensemble des catégories des corps d'eau
+            </div>
+            <InformationTooltip text="Aperçu des catégories des corps d'eau, classées par ordre croissant selon le nombre total d'observations." />
+          </div>
 
-        <div class="h-36 overflow-y-auto">
-          <table class="min-w-full">
-            <thead>
-              <tr class="border-b border-gray-200 text-center text-xs">
-                <th class="px-4 py-2">Chemical</th>
-                <th class="px-4 py-2">Count</th>
-                <th class="px-4 py-2">Mean</th>
-                <th class="px-4 py-2">Min</th>
-                <th class="px-4 py-2">Max</th>
-                <th class="px-4 py-2">Std Dev</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(chemical, index) in paginatedChemicals"
-                :key="index"
-                class="text-center text-xs"
-              >
-                <td class="w-56 px-4 py-2">{{ chemical.name }}</td>
-                <td class="px-4 py-2">{{ chemical.count }}</td>
-                <td class="px-4 py-2">{{ chemical.mean }}</td>
-                <td class="px-4 py-2">{{ chemical.min }}</td>
-                <td class="px-4 py-2">{{ chemical.max }}</td>
-                <td class="px-4 py-2">{{ chemical.stdDev }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="max-h-40 w-fit pl-3 overflow-y-scroll">
+            <table>
+              <thead>
+                <tr class="border-b border-gray-200 text-center text-xs">
+                  <th class="py-2 px-4 text-ellipsis w-44 max-w-44 whitespace-nowrap overflow-hidden text-ellipsis">Catégorie des corps d'eau</th>
+                  <th class="py-2 px-4 text-ellipsis w-44 max-w-44 whitespace-nowrap overflow-hidden text-ellipsis">Total des échantillons collectés</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(category, index) in dashboardData?.waterbody_table" :key="index"
+                  class="text-center text-xs">
+                  <td class="py-2 px-4 w-50 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis">{{ category.category }}</td>
+                  <td class="py-2 px-4 truncate max-w-32 w-32 whitespace-nowrap overflow-hidden text-ellipsis">{{ category.number.toLocaleString('fr-BE', {
+                    maximumFractionDigits:
+                      2,
+                  }) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
-        <!-- Pagination -->
-        <div
-          v-if="totalPages > 1"
-          class="flex items-center justify-center gap-4"
-        >
-          <div
-            :disabled="currentPage === 1"
-            class="text-ocen text-xs font-semibold"
-            @click="prevPage"
-          >
-            <ChevronLeftIcon
-              class="h-4 w-4 text-gray-500 hover:cursor-pointer hover:text-ocean"
-            />
-          </div>
-          <div class="text-xs">Page {{ currentPage }} of {{ totalPages }}</div>
-          <div
-            :disabled="currentPage === totalPages"
-            class="text-ocen text-xs font-semibold"
-            @click="nextPage"
-          >
-            <ChevronRightIcon
-              class="h-4 w-4 text-gray-500 hover:cursor-pointer hover:text-ocean"
-            />
-          </div>
+        <div class="h-40">
+          <DonutChart v-if="dashboardData" :data="dashboardData?.loq_donut.data"
+            :labels="dashboardData?.loq_donut.labels" />
         </div>
       </div>
-      <div class="-ml-24 h-40 w-fit">
-        <DonutChart :chartData="data" />
-      </div>
-    </div>
-    <div class="flex w-full flex-row items-center justify-between gap-8">
-      <div
-        class="h-fit min-h-64 w-1/2 rounded-lg border border-ocean/50 bg-white p-3 px-6"
-      >
-        <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
-          <div class="text-sm font-semibold text-ocean">
-            Average Observed Values Over Time
+      <div class="flex w-full flex-row items-center justify-between gap-8">
+        <div class="h-full w-1/2 rounded-lg border border-ocean/50 bg-white p-3 px-6">
+          <div class="flex w-full flex-row items-center gap-4 px-3 py-2">
+            <div class="text-sm font-semibold text-ocean truncate">
+              Valeurs moyennes observées au fil du temps (Déterminant de propriété observée)
+            </div>
+            <InformationTooltip text="Suivi des valeurs moyennes observées au fil du temps, pour le déterminant sélectionné de propriété observée." />
           </div>
-          <InformationTooltip text="More info about collected samples" />
-        </div>
-        <LineChart :chartData="data" />
-      </div>
-      <div
-        class="h-fit min-h-64 w-1/2 rounded-lg border border-ocean/50 bg-white p-3 px-6"
-      >
-        <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
-          <div class="text-sm font-semibold text-ocean">
-            Most Monitored Determinands
+          <div class="relative h-3/4">
+            <div v-if="!IsLineChartAvailable"
+              class="absolute inset-0 cursor-not-allowed flex justify-center items-center text-white text-xl font-normal z-10">
+              <span class="text-ocean bg-aqua/30 px-3 py-2 rounded-lg text-sm">Séléctionnez une propriété pour voir son
+                évolution temporelle.</span>
+            </div>
+            <LineChart v-if="dashboardData && IsLineChartAvailable" :data="dashboardData?.property_line" />
           </div>
-          <InformationTooltip text="More info about collected samples" />
         </div>
-        <BarChart :chartData="data" />
+        <div class="h-fit min-h-64 w-1/2 rounded-lg border border-ocean/50 bg-white p-3 px-6">
+          <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
+            <div class="text-sm font-semibold text-ocean truncate">
+              Les déterminants les plus observés
+            </div>
+            <InformationTooltip text="Classement des déterminants les plus fréquemment observés, ordonnés par le nombre total d'échantillons collectés." />
+          </div>
+          <BarChart v-if="dashboardData" :data="dashboardData?.property_bar" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue"
+import axios from 'axios'
+import { computed, ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/24/outline"
-import type * as types from "@/type"
+import * as types from "@/type"
+import LoadingWheel from "@/components/share/LoadingWheel.vue"
 import SelectOption from "@/components/reusable/dropdowns/SelectOption.vue"
 import BarChart from "@/components/reusable/charts/BarChart.vue"
 import DonutChart from "@/components/reusable/charts/DonutChart.vue"
@@ -157,210 +122,140 @@ import Sample from "@/assets/icons/Sample.vue"
 import Proportion from "@/assets/icons/Proportion.vue"
 import DashboardInformationCards from "@/components/reusable/cards/DashboardInformationCards.vue"
 import InformationTooltip from "@/components/reusable/tooltips/InformationTooltip.vue"
+import ObservedPropertyTable from "@/components/tables/ObservedPropertyTable.vue"
+
 
 const route = useRoute()
+const isLoadingData = computed(() => {
+  return !dashboardData.value ||
+    countries.value.length === 0 ||
+    decades.value.length === 0 ||
+    observedProperties.value.length === 0 ||
+    matrix.value.length === 0;
+});
 
-const allChemicals = ref([
-  {
-    name: "Trichloromethane",
-    mean: 0.01,
-    min: 0.01,
-    max: 0.02,
-    stdDev: 0.005,
-    count: 6,
-  },
-  {
-    name: "Fenthion",
-    mean: 0.02,
-    min: 0.01,
-    max: 0.03,
-    stdDev: 0.007,
-    count: 4,
-  },
-  {
-    name: "Chloridazon",
-    mean: 0.015,
-    min: 0.01,
-    max: 0.02,
-    stdDev: 0.006,
-    count: 1,
-  },
-  {
-    name: "Thallium",
-    mean: 0.05,
-    min: 0.04,
-    max: 0.06,
-    stdDev: 0.008,
-    count: 9,
-  },
-  {
-    name: "Aldicarb",
-    mean: 0.03,
-    min: 0.02,
-    max: 0.04,
-    stdDev: 0.009,
-    count: 7,
-  },
-  {
-    name: "Malathion",
-    mean: 0.04,
-    min: 0.02,
-    max: 0.05,
-    stdDev: 0.01,
-    count: 5,
-  },
-  {
-    name: "Atrazine",
-    mean: 0.05,
-    min: 0.04,
-    max: 0.07,
-    stdDev: 0.02,
-    count: 8,
-  },
-  {
-    name: "Glyphosate",
-    mean: 0.02,
-    min: 0.01,
-    max: 0.03,
-    stdDev: 0.004,
-    count: 3,
-  },
-  {
-    name: "Carbaryl",
-    mean: 0.01,
-    min: 0.01,
-    max: 0.02,
-    stdDev: 0.003,
-    count: 2,
-  },
-  {
-    name: "Paraquat",
-    mean: 0.04,
-    min: 0.03,
-    max: 0.05,
-    stdDev: 0.008,
-    count: 6,
-  },
-])
+const IsLineChartAvailable = computed(() => {
+  return filters.value["observed_property_determinand"] != 'Tout';
+});
 
-// Pagination setup
-const itemsPerPage = 3
-const currentPage = ref(1)
+const noData = ref<boolean>(false)
+const countries = ref<types.Option[]>([]);
+const decades = ref<types.Option[]>([]);
+const observedProperties = ref<types.Option[]>([]);
+const matrix = ref<types.Option[]>([]);
+const dashboardData = ref<types.DashboardData | null>(null)
+const filters = ref<types.FilterType>({ 'country': 'Tout', 'reference_year__range': 'Tout', 'observed_property_determinand': 'Tout', 'matrix': 'Tout' })
 
-const totalPages = computed(() =>
-  Math.ceil(allChemicals.value.length / itemsPerPage)
-)
 
-const paginatedChemicals = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return allChemicals.value.slice(start, end)
-})
+onMounted(async () => {
+  try {
+    if (route?.query.country) {
+      const response = await axios.post('/api/data/?include_all=true', {
+        filter_kwargs: { 'country': route?.query.country },
+        include: ['decades', 'observedProperties', 'matrix']
+      });
+      countries.value = response.data.countries
+      decades.value = response.data.decades
+      observedProperties.value = response.data.observedProperties
+      matrix.value = response.data.matrix
 
-function nextPage() {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++
+
+      filters.value['country'] = (route.query.country as string) ?? 'Tout'
+    }
+    else {
+      const response = await axios.post('/api/data/?include_all=true', {
+        include: ['decades', 'observedProperties', 'matrix']
+      });
+      countries.value = response.data.countries
+      decades.value = response.data.decades
+      observedProperties.value = response.data.observedProperties
+      matrix.value = response.data.matrix
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+
+  try {
+    const response = await axios.post('/api/stats/dashboard/', {
+      filter_kwargs: filters.value
+    });
+    if (response.status === 204) {
+      dashboardData.value = null;
+      noData.value = true;
+    } else {
+      dashboardData.value = response.data
+      noData.value = false
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+
+const filterFilters = async (payload: types.Option) => {
+  try {
+    const response = await axios.post('/api/data/?include_all=true', {
+      filter_kwargs: { 'country': payload.name },
+      include: ['decades', 'observedProperties', 'matrix']
+    });
+    decades.value = response.data.decades
+    observedProperties.value = response.data.observedProperties
+    matrix.value = response.data.matrix
+
+    filters.value = { 'country': 'Tout', 'reference_year__range': 'Tout', 'observed_property_determinand': 'Tout', 'matrix': 'Tout' }
+  }
+  catch (error) {
+    console.error(error);
+  }
+
+  filters.value['country'] = payload.name
+  try {
+    const response = await axios.post('/api/stats/dashboard/', {
+      filter_kwargs: filters.value
+    });
+    if (response.status === 204) {
+      dashboardData.value = null;
+      noData.value = true;
+    } else {
+      dashboardData.value = response.data
+      noData.value = false
+    }
+  }
+  catch (error) {
+    console.error(error);
+  }
+};
+
+
+const filterData = async (payload: types.Option, filterName: keyof types.FilterType) => {
+  if (filterName != 'reference_year__range') {
+    filters.value[filterName] = payload.name
+  }
+  else {
+    if (payload.name !== "Tout") {
+      if (payload.start && payload.end) {
+        filters.value[filterName] = [payload.start, payload.end];
+      }
+    } else {
+      delete filters.value[filterName];
+    }
+  }
+
+  try {
+    const response = await axios.post('/api/stats/dashboard/', {
+      filter_kwargs: filters.value
+    });
+    if (response.status === 204) {
+      dashboardData.value = null;
+      noData.value = true;
+    } else {
+      dashboardData.value = response.data
+      noData.value = false
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
-
-function prevPage() {
-  if (currentPage.value > 1) {
-    currentPage.value--
-  }
-}
-
-const countries = ref<types.Option[]>([
-  { name: "All" },
-  { name: "Albania", isoAlpha2: "AL" },
-  { name: "Andorra", isoAlpha2: "AD" },
-  { name: "Armenia", isoAlpha2: "AM" },
-  { name: "Austria", isoAlpha2: "AT" },
-  { name: "Azerbaijan", isoAlpha2: "AZ" },
-  { name: "Belarus", isoAlpha2: "BY" },
-  { name: "Belgium", isoAlpha2: "BE" },
-  { name: "Bosnia and Herzegovina", isoAlpha2: "BA" },
-  { name: "Bulgaria", isoAlpha2: "BG" },
-  { name: "Croatia", isoAlpha2: "HR" },
-  { name: "Cyprus", isoAlpha2: "CY" },
-  { name: "Czech Republic", isoAlpha2: "CZ" },
-  { name: "Denmark", isoAlpha2: "DK" },
-  { name: "Estonia", isoAlpha2: "EE" },
-  { name: "Finland", isoAlpha2: "FI" },
-  { name: "France", isoAlpha2: "FR" },
-  { name: "Georgia", isoAlpha2: "GE" },
-  { name: "Germany", isoAlpha2: "DE" },
-  { name: "Greece", isoAlpha2: "GR" },
-  { name: "Hungary", isoAlpha2: "HU" },
-  { name: "Iceland", isoAlpha2: "IS" },
-  { name: "Ireland", isoAlpha2: "IE" },
-  { name: "Italy", isoAlpha2: "IT" },
-  { name: "Kazakhstan", isoAlpha2: "KZ" },
-  { name: "Kosovo", isoAlpha2: "XK" },
-  { name: "Latvia", isoAlpha2: "LV" },
-  { name: "Liechtenstein", isoAlpha2: "LI" },
-  { name: "Lithuania", isoAlpha2: "LT" },
-  { name: "Luxembourg", isoAlpha2: "LU" },
-  { name: "Malta", isoAlpha2: "MT" },
-  { name: "Moldova", isoAlpha2: "MD" },
-  { name: "Monaco", isoAlpha2: "MC" },
-  { name: "Montenegro", isoAlpha2: "ME" },
-  { name: "Netherlands", isoAlpha2: "NL" },
-  { name: "North Macedonia", isoAlpha2: "MK" },
-  { name: "Norway", isoAlpha2: "NO" },
-  { name: "Poland", isoAlpha2: "PL" },
-  { name: "Portugal", isoAlpha2: "PT" },
-  { name: "Romania", isoAlpha2: "RO" },
-  { name: "Russia", isoAlpha2: "RU" },
-  { name: "San Marino", isoAlpha2: "SM" },
-  { name: "Serbia", isoAlpha2: "RS" },
-  { name: "Slovakia", isoAlpha2: "SK" },
-  { name: "Slovenia", isoAlpha2: "SI" },
-  { name: "Spain", isoAlpha2: "ES" },
-  { name: "Sweden", isoAlpha2: "SE" },
-  { name: "Switzerland", isoAlpha2: "CH" },
-  { name: "Turkey", isoAlpha2: "TR" },
-  { name: "Ukraine", isoAlpha2: "UA" },
-  { name: "United Kingdom", isoAlpha2: "GB" },
-  { name: "Vatican City", isoAlpha2: "VA" },
-])
-
-const decades = ref<{ name: string }[]>([
-  { name: "All" },
-  { name: "1900-1910" },
-  { name: "1910-1920" },
-  { name: "1920-1930" },
-  { name: "1930-1940" },
-  { name: "1940-1950" },
-  { name: "1950-1960" },
-  { name: "1960-1970" },
-  { name: "1970-1980" },
-  { name: "1980-1990" },
-  { name: "1990-2000" },
-  { name: "2000-2010" },
-  { name: "2010-2020" },
-  { name: "2020-2030" },
-])
-
-const chemicals = ref<types.Option[]>([
-  { name: "All" },
-  { name: "Tetrachloroethylene", code: "CAS_127-18-4" },
-  { name: "Trichloroethylene", code: "CAS_79-01-6" },
-  { name: "Perchloroethylene", code: "CAS_127-18-4" },
-  { name: "Chloroform", code: "CAS_67-66-3" },
-  { name: "Dichloromethane", code: "CAS_75-09-2" },
-  { name: "Carbon Tetrachloride", code: "CAS_56-23-5" },
-  { name: "1,1,1-Trichloroethane", code: "CAS_71-55-6" },
-  { name: "Methylene Chloride", code: "CAS_75-09-2" },
-  { name: "Tetrachloromethane", code: "CAS_56-23-5" },
-  { name: "Bromotrichloromethane", code: "CAS_75-64-9" },
-  { name: "Perfluorocyclopropane", code: "CAS_675-99-2" },
-  { name: "Hexachloroethane", code: "CAS_67-72-1" },
-])
-
-const data = ref<types.BarData[]>([
-  { x: "Trichloromethane", y: 5 },
-  { x: "Fenthion", y: 3 },
-  { x: "Chloridazon", y: 1 },
-  { x: "Thallium", y: 2 },
-])
 </script>

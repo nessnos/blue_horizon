@@ -2,34 +2,27 @@
   <div id="line-chart" class="px-2 pt-4"></div>
 </template>
 <script lang="ts" setup>
-import { onMounted } from "vue"
+import { onMounted, onBeforeUnmount, watch, ref } from "vue"
 import ApexCharts from "apexcharts"
-import type { BarData } from "@/type"
+import type * as types from "@/type"
 
 const props = defineProps<{
-  chartData: BarData[]
+  data: types.ChartData[] | undefined
 }>()
 
-onMounted(() => {
+
+const chartInstance = ref<ApexCharts | null>(null);
+
+const renderChart = () => {
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
+  }
+
   const options = {
     series: [
       {
-        name: "Average Chemicals",
-        data: [
-          { x: "1/10", y: 4 },
-          { x: "2/10", y: 3 },
-          { x: "3/10", y: 10 },
-          { x: "4/10", y: 9 },
-          { x: "5/10", y: 5 },
-          { x: "6/10", y: 29 },
-          { x: "7/10", y: 20 },
-          { x: "8/10", y: 4 },
-          { x: "19/10", y: 32 },
-          { x: "10/10", y: 9 },
-          { x: "11/10", y: 29 },
-          { x: "12/10", y: 9 },
-          { x: "13/10", y: 19 },
-        ],
+        name: 'Moyenne Chemicals',
+        data: props.data,
       },
     ],
     chart: {
@@ -37,16 +30,10 @@ onMounted(() => {
       type: "line",
       toolbar: {
         show: false,
-        tools: {
-          download: false,
-          selection: false,
-          zoom: false,
-          zoomin: false,
-          zoomout: false,
-          pan: false,
-          reset: false,
-          customIcons: [],
-        },
+      },
+      zoom: {
+        enabled: false,
+        allowMouseWheelZoom: false
       },
     },
     stroke: {
@@ -55,8 +42,12 @@ onMounted(() => {
     },
     xaxis: {
       type: "category",
+      tickAmount: 11,
       labels: {
         show: true,
+        rotate: 0,
+        rotateAlways: false,
+        hideOverlappingLabels: false,
         style: {
           colors: "#D2D2D2",
         },
@@ -70,6 +61,13 @@ onMounted(() => {
       },
       axisTicks: {
         show: false,
+      },
+    },
+    yaxis: {
+      labels: {
+        formatter: function (value: number) {
+          return value.toLocaleString('fr-BE', { maximumFractionDigits: 2 });
+        },
       },
     },
     grid: {
@@ -123,23 +121,35 @@ onMounted(() => {
         var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex]
 
         return (
-          '<div class="p-1.5 bg-black/80 text-white text-xs"> Average : ' +
-          data.y +
+          '<div class="p-1.5 bg-black/80 text-white text-xs"> Moyenne : ' +
+          data.y.toLocaleString('fr-BE', { maximumFractionDigits: 2 }) +
           "</div>"
         )
       },
     },
-  }
+  };
 
-  if (
-    document.getElementById("line-chart") &&
-    typeof ApexCharts !== "undefined"
-  ) {
-    const chart = new ApexCharts(document.getElementById("line-chart"), options)
-    chart.render()
+  if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
+    chartInstance.value = new ApexCharts(document.getElementById("line-chart"), options);
+    chartInstance.value.render();
   }
-})
+};
+
+onMounted(() => {
+  renderChart();
+});
+
+watch(() => props.data, (newData) => {
+  renderChart();
+});
+
+onBeforeUnmount(() => {
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
+  }
+});
 </script>
+
 <style>
 .apexcharts-xaxistooltip {
   background: transparent !important;
@@ -151,10 +161,10 @@ onMounted(() => {
 }
 
 .apexcharts-xaxistooltip-bottom:before {
-  opacity: 0 !important;
+  opacity: 0 !important
 }
 
 .apexcharts-xaxistooltip-bottom:after {
-  opacity: 0 !important;
+  opacity: 0 !important
 }
 </style>

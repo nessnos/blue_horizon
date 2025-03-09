@@ -18,6 +18,21 @@ const router = createRouter({
       name: "dashboard",
       component: () => import("../views/DashboardView.vue"),
     },
+    {
+      path: "/machine-learning",
+      name: "machine-learning",
+      component: () => import("../views/MachineLearningView.vue"),
+    },
+    {
+      path: "/machine-learning/details/pipeline",
+      name: "pipeline-details",
+      component: () => import("../views/PipelineDetailsView.vue"),
+    },
+    {
+      path: "/chat",
+      name: "chat",
+      component: () => import("../views/ChatView.vue"),
+    },
   ],
 })
 
