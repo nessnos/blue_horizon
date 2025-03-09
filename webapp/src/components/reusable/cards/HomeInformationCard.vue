@@ -12,7 +12,7 @@
       <div class="text-sm font-semibold">{{ title }}</div>
       <div class="py-2 text-xs">{{ description }}</div>
     </div>
-    <DefaultButton :label="'En Savoir Plus'" :to="link" />
+    <DefaultButton :label="'En savoir plus'" :to="link" />
   </div>
 </template>
 
