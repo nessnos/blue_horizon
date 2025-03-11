@@ -13,98 +13,68 @@ Data is sourced from the European Environment Agency (EEA) databases, available 
 
 ## Dependencies installation
 
-### Python
+The dependencies installation is handled in [launching the project](#launching-the-project).
 
-> We use Poetry to manage Python dependencies. If you don't have Poetry installed, you can follow the instructions in the [official documentation](https://python-poetry.org/).
-
-To install all the necessary backend dependencies, run:
- 
-```bash
-poetry install
-```
-
-### NPM
-
-> Make sure NPM and Node.js is installed, use NVM to make it easier https://github.com/nvm-sh/nvm
-
-To install frontend dependencies run:
-
-```bash
-npm --prefix webapp install
-```
-# Setup
+## Setup
 
 ### Docker
 
-You now need to launch the `postgres` container with Docker.
+You now need to launch the `postgres` and `redis` containers with Docker.
 
 > To install Docker, check [https://www.docker.com/](https://www.docker.com/)
 
-After having installed Docker, start the container:
+After having installed Docker, run the container via dockeer-compose:
 
 ```bash
-docker run --name waterdb -d -p 5422:5432 -e POSTGRES_PASSWORD=waterize postgres:15-bullseye
+docker compose up -d
 ```
 
-This created and ran a container named `waterdb` and set the `POSTGRES_PASSWORD` to `waterize`.
+This created and ran two containers : 
+1. `postgres` : the postgres sql server with a database named `waterdata` with POSTGRES_PASSWROD `waterize`
+2. `redis`: the message broker to queue and distribute background tasks used by `Celery`
 
-### Postgres
-
-To create the `waterdata` database in your container, open a shell in your container and log in as a `postgres` user:
+If you want to stop or start the containers use the following commands:
 
 ```bash
-docker exec -it waterdb  psql -h localhost -U postgres 
+docker compose down   # Stop the container
+docker compose up -d  # Start the container again
 ```
 
-Create the database:
+## Restoring Database
 
-```postgresql
-CREATE DATABASE waterdata;
+### Postgres SQL
+
+You are going to restore the database with all the water quality data and some others tables/views.
+
+>To install Postgres, check https://www.postgresql.org/download/macosx/
+
+> [!NOTE]  
+> MacOS
+>  ```bash
+> brew install postgresql@15 
+>```
+
+Run `init.sh` or `init.ps1`
+```bash
+./init.sh #MacOs & Linux
+./init.ps1 #Windows
 ```
 
-To leave the shell use this command:
-```postgresql
-\q
-```
+## Launching the project
 
-Now dump all the data inside the `waterdata` database:
+To start all app components and restoring the database backup : `Django`, `Vue.js` and `Celery` 
+
+> [!WARNING]  
+> Make sure to have a `.env` file containing the `OpenAI` API Key & the parameters for the `Django` database settings in the root folder.
+
 
 ```bash
-pg_restore -U postgres -h localhost -p 5422 --clean --create --verbose -d postgres waterdata_backup.dump
-```
-(You'll be prompted for the password: `waterize`.)
-
-Your PostgreSQL database is now running inside the Docker container. You can connect to it from your host machine using:
-
-```bash
-psql -h localhost -p 5422 -U postgres -d waterdata
+./launch.sh #MacOs & Linux
+./launch.ps1 #Windows
 ```
 
-If you want to stop or start the container use the following commands:
-
-```bash
-docker stop waterdb   # Stop the container
-docker start waterdb  # Start the container again
-```
-
-# Running the project
-
-### Django
-
-To start the backend server:
-
-```bash
-poetry run python manage.py runserver
-```
-
-> Your web server will run on port `8000`, you can try to open it on [http://localhost:8000](http://localhost:8000).
-
-### Webapp
-
-> Before starting Vue.js server, move to webapp directory.
-
-```bash
-npm run dev
-```
+> Your backend server will run on port `8000`, you can try to open it on [http://localhost:8000](http://localhost:8000).
 
 > The server typically runs on port `5173`, you can access it from folling link: [http://localhost:5173](http://localhost:5173).
+
+> The celery server will be running in the background for task management.

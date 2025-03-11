@@ -1,20 +1,21 @@
 <template>
   <div id="donut-chart"></div>
 </template>
-<script lang="ts" setup>
-import { onMounted } from "vue"
-import ApexCharts from "apexcharts"
-import type { BarData } from "@/type"
 
-defineProps<{
-  chartData: BarData[]
-}>()
+<script setup lang="ts">
+import { onMounted, watch } from 'vue';
+import ApexCharts from 'apexcharts';
 
-const series = [44, 55]
+const props = defineProps<{
+  data: number[] | undefined;
+  labels: string[] | undefined;
+}>();
 
-onMounted(() => {
+let chart: ApexCharts | null = null;
+
+const renderChart = () => {
   const options: ApexCharts.ApexOptions = {
-    series: series,
+    series: props.data,
     chart: {
       events: {
         click: undefined,
@@ -22,10 +23,9 @@ onMounted(() => {
       height: "100%",
       width: "100%",
       type: "donut",
-      offsetX: 50,
     },
     colors: ["#002665", "#9FD0F0"],
-    labels: ["Under LOQ", "Above LOQ"],
+    labels: props.labels,
     legend: {
       show: false,
     },
@@ -36,11 +36,12 @@ onMounted(() => {
       enabled: false,
     },
     tooltip: {
-      custom: function ({ series, seriesIndex }) {
-        const data = series[seriesIndex]
+      custom: function ({ series, seriesIndex, w }) {
+        const data = series[seriesIndex];
+        const label = w.globals.labels[seriesIndex];
         return `
-          <div class="p-1.5 shadow rounded bg-black/80 text-white text-xs">
-            ${data}%
+          <div class="p-1.5 shadow rounded bg-black/80 text-white text-xs text-wrap w-24 max-w-24 text-center">
+            <strong>${label}</strong>: ${data.toLocaleString('fr-BE', { maximumFractionDigits: 2 })}
           </div>
         `
       },
@@ -55,15 +56,16 @@ onMounted(() => {
             show: true,
             name: {
               show: true,
-              offsetY: 15,
-              formatter: () => "above LOQ",
+              offsetY: 20,
+              formatter: () => "> LOQ",
             },
             value: {
               show: true,
               fontSize: "20px",
               fontWeight: 500,
               color: "#002665",
-              offsetY: -25,
+              offsetY: -20,
+              formatter: (value: string) => parseInt(value).toLocaleString('fr-BE', { maximumFractionDigits: 2 }).toString(),
             },
 
             total: {
@@ -72,11 +74,9 @@ onMounted(() => {
               color: "#002665",
               fontWeight: 600,
               formatter: (w) => {
-                const total = w.globals.seriesTotals.reduce(
-                  (a: number, b: number) => b,
-                  0
-                )
-                return `${total}%`
+                const total = w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0);
+                const aboveLOQ = w.globals.series[1];
+                return `${((aboveLOQ / total) * 100).toLocaleString('fr-BE', { maximumFractionDigits: 2, })}%`;
               },
             },
           },
@@ -90,12 +90,22 @@ onMounted(() => {
         },
       },
     },
+  };
+
+  if (chart) {
+    chart.destroy();
   }
 
-  const donutChartElement = document.getElementById("donut-chart")
-  if (donutChartElement && typeof ApexCharts !== "undefined") {
-    const chart = new ApexCharts(donutChartElement, options)
-    chart.render()
+  const donutChartElement = document.getElementById("donut-chart");
+  if (donutChartElement && typeof ApexCharts !== 'undefined') {
+    chart = new ApexCharts(donutChartElement, options);
+    chart.render();
   }
-})
+};
+
+onMounted(() => {
+  renderChart();
+});
+
+watch([() => props.data, () => props.labels], renderChart);
 </script>

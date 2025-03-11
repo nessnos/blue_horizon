@@ -13,6 +13,9 @@ import os
 import json
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,10 +62,13 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
 ]
+
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
+    'http://127.0.0.1:5173'
 ]
 
 ROOT_URLCONF = 'water.urls'
@@ -92,11 +98,11 @@ WSGI_APPLICATION = 'water.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'waterdata',
-        'USER': 'postgres',
-        'PASSWORD': 'waterize',
-        'HOST': 'localhost',
-        'PORT': '5422',
+        'NAME': os.environ.get("DB_NAME"),  
+        'USER': os.environ.get("DB_USER"),      
+        'PASSWORD': os.environ.get("DB_PASSWORD"),  
+        'HOST': os.environ.get("DB_HOST"),           
+        'PORT': os.environ.get("DB_PORT"),       
     }
 }
 
@@ -147,3 +153,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# TASK BACKGROUND JOBS SETUP - CELERY
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'

@@ -10,7 +10,7 @@
       </div>
       <div class="flex w-full flex-row justify-between">
         <div class="text-xs font-normal">{{ title }}</div>
-        <InformationTooltip class="pl-4" text="More info about collected samples"/>
+        <InformationTooltip class="pl-4" :text="tooltip"/>
       </div>
     </div>
   </div>
@@ -22,7 +22,8 @@ import InformationTooltip from "@/components/reusable/tooltips/InformationToolti
 
 defineProps<{
   title: string
-  value: string | number
+  tooltip : string
+  value: string | number | undefined
   icon: any
 }>()
 </script>

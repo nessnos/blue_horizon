@@ -1,0 +1,28 @@
+
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-bullseye
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: waterize
+      POSTGRES_DB: waterdata
+    ports:
+      - "5422:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
+  ollama:

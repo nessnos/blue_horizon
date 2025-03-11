@@ -2,30 +2,41 @@
   <div id="bar-chart" class="px-2 pt-4"></div>
 </template>
 <script lang="ts" setup>
-import { onMounted } from "vue"
+import { onMounted, watch, ref } from "vue"
 import ApexCharts from "apexcharts"
-import type { BarData } from "@/type"
+import type * as types from "@/type"
 
 const props = defineProps<{
-  chartData: BarData[]
+  data: types.ChartData[] | undefined
 }>()
 
-onMounted(() => {
-  const sortedData = [...props.chartData].sort((a, b) => b.y - a.y)
+const categories = ref<(string | string[])[]>([]);
+
+const splitCategories = () => {
+  if (props?.data) {
+    categories.value = props.data.map(element => {
+      return element.x.toString().split(" ");
+    });
+  }
+};
+
+let chart: ApexCharts | null = null;
+
+const renderChart = () => {
   const options = {
     series: [
       {
         name: "Chemicals",
         color: "#002665",
-        data: sortedData,
+        data: props.data,
       },
     ],
     states: {
       active: {
         filter: {
-          type: "none",
-        },
-      },
+          type: 'none'
+        }
+      }
     },
     chart: {
       type: "bar",
@@ -39,23 +50,35 @@ onMounted(() => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "90%",
+        columnWidth: "85%",
         borderRadiusApplication: "end",
         borderRadius: 4,
+        dataLabels: {
+          position: 'top',
+        },
+        value: {
+          formatter: (value: string) => parseInt(value).toLocaleString('fr-BE', { maximumFractionDigits: 2 }).toString(),
+        },
       },
     },
     tooltip: {
       enabled: true,
-      custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+      custom: function ({ series, seriesIndex, dataPointIndex, w }: {
+        series: number[][];
+        seriesIndex: number;
+        dataPointIndex: number;
+        w: any;
+      }) {
         const dataPoint = series[seriesIndex][dataPointIndex]
         const category = w.globals.labels[dataPointIndex]
         return `<div class="p-[5px] bg-black/80 text-white text-xs border-none;">
-                  ${category}: ${dataPoint}
+                  ${category} : ${dataPoint.toLocaleString('fr-BE', { maximumFractionDigits: 2 })}
                 </div>`
       },
     },
+
     grid: {
-      show: true,
+      show: false,
       strokeDashArray: 4,
       padding: {
         left: 6,
@@ -64,19 +87,31 @@ onMounted(() => {
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      offsetY: -25,
+      style: {
+        fontSize: '12px',
+        colors: ["#002665"],
+        fontWeight: '400'
+      },
+      formatter: function (value: number) {
+        return value.toLocaleString('fr-BE', { maximumFractionDigits: 2 });
+      },
     },
     legend: {
       show: false,
       position: "right",
     },
     xaxis: {
+      categories: categories.value,
       floating: false,
       labels: {
+        rotate: 0,
         show: true,
         style: {
-          cssClass: "text-xs font-normal fill-ocean",
+          cssClass: "text-xs font-semibold fill-ocean truncate",
         },
+        maxWidth: 20
       },
       axisBorder: {
         show: false,
@@ -86,21 +121,28 @@ onMounted(() => {
       },
     },
     yaxis: {
-      show: true,
-      tickAmount: "dataPoints",
+      show: false,
     },
     fill: {
       opacity: 1,
     },
+  };
+
+  if (chart) {
+    chart.destroy();
   }
 
-  if (
-    document.getElementById("bar-chart") &&
-    typeof ApexCharts !== "undefined"
-  ) {
-    const chart = new ApexCharts(document.getElementById("bar-chart"), options)
-    chart.render()
-  }
-})
+  chart = new ApexCharts(document.getElementById("bar-chart"), options);
+  chart.render();
+};
+
+onMounted(() => {
+  renderChart();
+  splitCategories();
+});
+
+watch(() => props.data, () => {
+  splitCategories();
+  renderChart();
+}, { deep: true });
 </script>
-<style></style>
