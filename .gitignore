@@ -2,3 +2,5 @@
 .DS_Store
 .env
 node_modules
+waterdata_backup.dump
+data/AggregatedWaterData.csv
