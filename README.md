@@ -51,7 +51,7 @@ You are going to restore the database with all the water quality data and some o
 > [!NOTE]  
 > MacOS
 >  ```bash
-> brew install postgresql@15 
+> brew install postgresql
 >```
 
 Run `init.sh` or `init.ps1`
