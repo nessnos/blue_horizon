@@ -11,10 +11,16 @@
     <tr>
       <td v-for="(country, countryIndex) in selectedCountry" :key="countryIndex"
         v-if="info && Object.keys(info).length > 0" class="border border-gray-300 p-2 text-center text-xs text-ocean">
-        {{ formatValue(info?.[country.code]?.[label]) }} <span v-if="typeof info?.[country.code]?.[label] === 'number'">{{info?.[country.code]?.['Unité de Mesure']}}</span>
+        {{ formatValue(info?.[country.code]?.[label]) }} 
+        <span v-if="typeof info?.[country.code]?.[label] === 'number' && !['Total des sites surveillés', 'Total des propriétés observées','Total des échantillons collectés','Taux d\'échantillons confirmés', 'Nombre total d\'échantillons'].includes(label)">
+          {{info?.[country.code]?.['Unité de Mesure']}}
+        </span>
+        <span v-if="label == 'Taux d\'échantillons confirmés'">
+          %
+        </span>
       </td>
     </tr>
-  </tbody>
+  </tbody> 
 </template>
 
 <script lang="ts" setup>

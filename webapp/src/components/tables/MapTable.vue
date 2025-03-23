@@ -28,11 +28,11 @@
             'Total des échantillons collectés',
             'Taux d\'échantillons confirmés',
             'Le déterminant le plus observé',
+            'Nombre total d\'échantillons',
             'Concentration Moyenne',
             'Valeur maximale mesurée',
             'Valeur minimale mesurée',
             'Écart type des données',
-            'Nombre total d\'échantillons',
           ]"
           :selected-country="selectedCountry"
         />

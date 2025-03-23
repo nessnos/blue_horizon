@@ -29,7 +29,7 @@
         <DashboardInformationCards :tooltip="'Proportion d\'échantillons dont les résultats ont été validés et confirmés.'" :icon="Proportion" title="Taux d'échantillons confirmés"
           :value="(dashboardData?.proportion_of_confirmed_samples * 100).toLocaleString('fr-BE', { maximumFractionDigits: 2, }) + '%'" />
       </div>
-      <div class="flex flex-row items-center gap-4 w-full">
+      <div class="flex flex-row items-center justify-between w-full">
         <div class="h-full min-h-fit rounded-lg border border-ocean/50 bg-white p-2 py-3">
           <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
             <div class="text-sm font-semibold text-ocean truncate">
@@ -38,7 +38,7 @@
             <InformationTooltip text="Vue d'ensemble des propriétés observées sur tous les sites surveillés, classées par ordre croissant selon le nombre total d'observations. Inclut les statistiques moyennes, minimales et maximales." />
           </div>
           <div class="w-full">
-            <ObservedPropertyTable :data="dashboardData?.determinand_table" :headers="['Déterminant de propriété observée', 'Total des échantillons collectés' , 'Moyenne', 'Minimum' , 'Maximum', 'Udm']" />
+            <ObservedPropertyTable :data="dashboardData?.determinand_table" :headers="['Déterminant de propriété observée', 'Total des échantillons collectés' , 'Valeur Moyenne', 'Valeur Minimum' , 'Valeur Maximum', 'Udm']" />
           </div>
         </div>
         <div class="h-full min-h-fit rounded-lg border border-ocean/50 bg-white p-2 py-3">
@@ -53,8 +53,8 @@
             <table>
               <thead>
                 <tr class="border-b border-gray-200 text-center text-xs">
-                  <th class="py-2 px-4 text-ellipsis w-44 max-w-44 whitespace-nowrap overflow-hidden text-ellipsis">Catégorie des corps d'eau</th>
-                  <th class="py-2 px-4 text-ellipsis w-44 max-w-44 whitespace-nowrap overflow-hidden text-ellipsis">Total des échantillons collectés</th>
+                  <th title="Catégorie des corps d'eau" class="py-2 px-4 text-ellipsis w-44 max-w-44 whitespace-nowrap overflow-hidden text-ellipsis">Catégorie des corps d'eau</th>
+                  <th title='Total des échantillons collectés' class="py-2 px-4 text-ellipsis w-44 max-w-44 whitespace-nowrap overflow-hidden text-ellipsis">Total des échantillons collectés</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +70,7 @@
             </table>
           </div>
         </div>
-        <div class="h-40">
+        <div class="h-40 w-40">
           <DonutChart v-if="dashboardData" :data="dashboardData?.loq_donut.data"
             :labels="dashboardData?.loq_donut.labels" />
         </div>
