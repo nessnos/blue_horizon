@@ -29,7 +29,7 @@
         <DashboardInformationCards :tooltip="'Proportion d\'échantillons dont les résultats ont été validés et confirmés.'" :icon="Proportion" title="Taux d'échantillons confirmés"
           :value="(dashboardData?.proportion_of_confirmed_samples * 100).toLocaleString('fr-BE', { maximumFractionDigits: 2, }) + '%'" />
       </div>
-      <div class="flex flex-row items-center justify-between w-full">
+      <div class="flex flex-row items-center justify-between space-x-4 w-full">
         <div class="h-full min-h-fit rounded-lg border border-ocean/50 bg-white p-2 py-3">
           <div class="flex w-full flex-row items-center gap-4 px-3 py-2 pt-0">
             <div class="text-sm font-semibold text-ocean truncate">

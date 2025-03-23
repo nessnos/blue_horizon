@@ -5,7 +5,7 @@
                 <tr class="border-b border-gray-200 text-center text-xs">
                     <th v-for="(header, index) in headers" :key="index"
                     :title="header"
-                        class="py-2 px-4 max-w-32 w-32 whitespace-nowrap overflow-hidden text-ellipsis">
+                        class="py-2 px-4 max-w-24 w-24 whitespace-nowrap overflow-hidden text-ellipsis">
                         {{ header }}
                     </th>
                 </tr>
@@ -13,7 +13,7 @@
             <tbody class="h-32 overflow-y-auto">
                 <tr v-for="(determinand, index) in paginatedDeterminands" :key="index" class="text-center text-xs">
                     <td v-for="(value, key) in determinand" :key="key" class="p-1">
-                        <div :class="[key == 'uom' ? 'w-40 max-w-40' : 'max-w-32 w-32']"
+                        <div :class="[key == 'uom' ? 'w-24 max-w-24' : 'max-w-32 w-32']"
                             class="whitespace-nowrap overflow-hidden text-ellipsis">
                             {{ formatValue(value) }}
                         </div>
