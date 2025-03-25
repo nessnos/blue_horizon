@@ -35,8 +35,10 @@ class ChatCompletion(APIView):
         queryset = ChatData.objects.filter(country = country['name']).values('country', 'phenomenon_time_reference_year', 'total_monitoring_sites', 
                                                                                   'water_body_category', 'matrix', 'proportion_of_confirmed_samples',
                                                                                   'loq_value', 'number_of_collected_samples', 'number_samples_below_loq',
-                                                                                  'mean_concentration', 'minimum_recorded_value', 'maximum_recorded_value', 'unit_of_measure')
+                                                                                  'mean_concentration', 'minimum_recorded_value', 'maximum_recorded_value', 'unit_of_measure').order_by('-phenomenon_time_reference_year')[:668]
         
+        
+
         formatted_string = "\n".join(
             " | ".join(f"{key}: {value}" for key, value in item.items()) 
             for item in queryset
@@ -52,7 +54,7 @@ class ChatCompletion(APIView):
         userRequest = history[-1]
         
         max_output_tokens = 1000
-        max_input_tokens = 70000
+        max_input_tokens = 100000
         
         history=history[:-1]
         messages=[]
