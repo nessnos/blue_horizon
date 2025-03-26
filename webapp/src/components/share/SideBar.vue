@@ -1,9 +1,7 @@
 <template>
   <div class="flex">
-    <div
-      class="h-screen bg-ocean pb-2 px-3 shadow relative left-0"
-    >
-      <nav class="mt-6 flex flex-col space-y-2 items-center">
+    <div class="relative left-0 h-screen bg-ocean px-3 pb-2 shadow">
+      <nav class="mt-6 flex flex-col items-center space-y-2">
         <RouterLink to="/" class="mb-2 w-10">
           <img
             alt="Blue Horizon"
@@ -51,7 +49,13 @@
 </template>
 <script lang="ts" setup>
 import { RouterView, useRoute } from "vue-router"
-import { ChartPieIcon, HomeIcon, MapIcon, WrenchScrewdriverIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/vue/24/solid"
+import {
+  ChartPieIcon,
+  ChatBubbleBottomCenterTextIcon,
+  HomeIcon,
+  MapIcon,
+  WrenchScrewdriverIcon,
+} from "@heroicons/vue/24/solid"
 import SideBarButton from "@/components/reusable/buttons/SideBarButton.vue"
 
 const isActive = (path: string) => {

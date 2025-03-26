@@ -2,7 +2,7 @@
   <div id="bar-chart" class="px-2 pt-4"></div>
 </template>
 <script lang="ts" setup>
-import { onMounted, watch, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 import ApexCharts from "apexcharts"
 import type * as types from "@/type"
 
@@ -10,17 +10,17 @@ const props = defineProps<{
   data: types.ChartData[] | undefined
 }>()
 
-const categories = ref<(string | string[])[]>([]);
+const categories = ref<(string | string[])[]>([])
 
 const splitCategories = () => {
   if (props?.data) {
-    categories.value = props.data.map(element => {
-      return element.x.toString().split(" ");
-    });
+    categories.value = props.data.map((element) => {
+      return element.x.toString().split(" ")
+    })
   }
-};
+}
 
-let chart: ApexCharts | null = null;
+let chart: ApexCharts | null = null
 
 const renderChart = () => {
   const options = {
@@ -34,9 +34,9 @@ const renderChart = () => {
     states: {
       active: {
         filter: {
-          type: 'none'
-        }
-      }
+          type: "none",
+        },
+      },
     },
     chart: {
       type: "bar",
@@ -54,25 +54,35 @@ const renderChart = () => {
         borderRadiusApplication: "end",
         borderRadius: 4,
         dataLabels: {
-          position: 'top',
+          position: "top",
         },
         value: {
-          formatter: (value: string) => parseInt(value).toLocaleString('fr-BE', { maximumFractionDigits: 2 }).toString(),
+          formatter: (value: string) =>
+            parseInt(value)
+              .toLocaleString("fr-BE", { maximumFractionDigits: 2 })
+              .toString(),
         },
       },
     },
     tooltip: {
       enabled: true,
-      custom: function ({ series, seriesIndex, dataPointIndex, w }: {
-        series: number[][];
-        seriesIndex: number;
-        dataPointIndex: number;
-        w: any;
+      custom: function ({
+        series,
+        seriesIndex,
+        dataPointIndex,
+        w,
+      }: {
+        series: number[][]
+        seriesIndex: number
+        dataPointIndex: number
+        w: any
       }) {
         const dataPoint = series[seriesIndex][dataPointIndex]
         const category = w.globals.labels[dataPointIndex]
         return `<div class="p-[5px] bg-black/80 text-white text-xs border-none;">
-                  ${category} : ${dataPoint.toLocaleString('fr-BE', { maximumFractionDigits: 2 })}
+                  ${category} : ${dataPoint.toLocaleString("fr-BE", {
+          maximumFractionDigits: 2,
+        })}
                 </div>`
       },
     },
@@ -90,12 +100,12 @@ const renderChart = () => {
       enabled: true,
       offsetY: -25,
       style: {
-        fontSize: '12px',
+        fontSize: "12px",
         colors: ["#002665"],
-        fontWeight: '400'
+        fontWeight: "400",
       },
       formatter: function (value: number) {
-        return value.toLocaleString('fr-BE', { maximumFractionDigits: 2 });
+        return value.toLocaleString("fr-BE", { maximumFractionDigits: 2 })
       },
     },
     legend: {
@@ -111,7 +121,7 @@ const renderChart = () => {
         style: {
           cssClass: "text-xs font-semibold fill-ocean truncate",
         },
-        maxWidth: 20
+        maxWidth: 20,
       },
       axisBorder: {
         show: false,
@@ -126,23 +136,27 @@ const renderChart = () => {
     fill: {
       opacity: 1,
     },
-  };
-
-  if (chart) {
-    chart.destroy();
   }
 
-  chart = new ApexCharts(document.getElementById("bar-chart"), options);
-  chart.render();
-};
+  if (chart) {
+    chart.destroy()
+  }
+
+  chart = new ApexCharts(document.getElementById("bar-chart"), options)
+  chart.render()
+}
 
 onMounted(() => {
-  renderChart();
-  splitCategories();
-});
+  renderChart()
+  splitCategories()
+})
 
-watch(() => props.data, () => {
-  splitCategories();
-  renderChart();
-}, { deep: true });
+watch(
+  () => props.data,
+  () => {
+    splitCategories()
+    renderChart()
+  },
+  { deep: true }
+)
 </script>

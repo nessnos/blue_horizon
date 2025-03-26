@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed } from "vue"
 
 const props = defineProps<{
   to: string | object
@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const parsedTo = computed(() => {
   try {
-    return typeof props.to === 'string' ? JSON.parse(props.to) : props.to
+    return typeof props.to === "string" ? JSON.parse(props.to) : props.to
   } catch (error) {
     return props.to
   }

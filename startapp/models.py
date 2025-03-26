@@ -1,6 +1,8 @@
 import uuid
+
 from django.db import models
 from django.utils.timezone import now
+
 
 # WATER DATA RELATED
 class Country(models.Model):
@@ -9,7 +11,8 @@ class Country(models.Model):
 
     class Meta:
         db_table = 'countries'
-        managed = False 
+        managed = False
+
 
 class WaterData(models.Model):
     countryCode = models.CharField(max_length=255, null=False, blank=False)
@@ -36,7 +39,7 @@ class WaterData(models.Model):
     resultStandardDeviationValue = models.FloatField(null=True, blank=True)
     procedureAnalyticalMethod = models.CharField(max_length=255, null=True, blank=True)
     parameterSampleDepth = models.FloatField(null=True, blank=True)
-    resultObservationStatus = models.CharField(max_length=1, null=True,blank=True)
+    resultObservationStatus = models.CharField(max_length=1, null=True, blank=True)
     remarks = models.TextField(null=True, blank=True)
     UID = models.CharField(unique=True, primary_key=True)
 
@@ -72,8 +75,8 @@ class PipelineRun(models.Model):
 
     def __str__(self):
         return f"Pipeline {self.task_id} - {self.status}"
-    
-    
+
+
 # MATERIALIZED VIEWS
 class CleanedData(models.Model):
     countryCode = models.CharField(max_length=255, null=False, blank=False)
@@ -100,13 +103,14 @@ class CleanedData(models.Model):
     resultStandardDeviationValue = models.FloatField(null=True, blank=True)
     procedureAnalyticalMethod = models.CharField(max_length=255, null=True, blank=True)
     parameterSampleDepth = models.FloatField(null=True, blank=True)
-    resultObservationStatus = models.CharField(max_length=1, null=True,blank=True)
+    resultObservationStatus = models.CharField(max_length=1, null=True, blank=True)
     remarks = models.TextField(null=True, blank=True)
     UID = models.CharField(unique=True, primary_key=True)
 
     class Meta:
         managed = False
-        db_table = 'cleaned_data'  
+        db_table = 'cleaned_data'
+
 
 class Filters(models.Model):
     id = models.AutoField(primary_key=True)
@@ -120,6 +124,7 @@ class Filters(models.Model):
         managed = False
         db_table = "filters"
 
+
 class CountryStats(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.TextField(null=True, blank=True)
@@ -128,19 +133,19 @@ class CountryStats(models.Model):
     decades_covered = models.TextField(null=True, blank=True)
     water_body_category = models.TextField(null=True, blank=True)
     matrix = models.TextField(null=True, blank=True)
-    
+
     count_of_chemicals_monitored = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
     number_of_collected_samples = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
     proportion_of_confirmed_samples = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    
+
     most_monitored_determinand = models.TextField(null=True, blank=True)
     total_samples = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
-    
+
     mean_concentration = models.TextField(null=True, blank=True)
     standard_deviation = models.TextField(null=True, blank=True)
     minimum_recorded_value = models.TextField(null=True, blank=True)
     maximum_recorded_value = models.TextField(null=True, blank=True)
-    
+
     unit_of_measure = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -154,27 +159,26 @@ class DashboardData(models.Model):
     observed_property_determinand = models.CharField(max_length=255, null=True, blank=True)
     reference_year = models.IntegerField(null=True, blank=True)
     matrix = models.CharField(max_length=255, null=True, blank=True)
-    
+
     number_of_collected_samples = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
     nominator_of_confirmed_samples = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
     denominator_of_confirmed_samples = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
-    
+
     result_mean_value = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
     stddev = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
     result_minimum_value = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
     result_maximum_value = models.DecimalField(max_digits=20, decimal_places=6, null=True, blank=True)
-    
+
     uom = models.TextField(null=True, blank=True)
-    
+
     under_loq = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
     above_loq = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
-    
+
     list_of_water_body_category = models.TextField(null=True, blank=True)
     list_of_monitoring_sites = models.TextField(null=True, blank=True)
 
-
     class Meta:
-        managed = False 
+        managed = False
         db_table = "dashboard_data"
 
 

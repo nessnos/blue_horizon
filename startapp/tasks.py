@@ -1,6 +1,6 @@
-from django.db.models import Avg
 from celery import shared_task
 from celery.utils.log import get_task_logger
+from django.db.models import Avg
 
 logger = get_task_logger(__name__)
 
@@ -18,13 +18,13 @@ from startapp.models import WaterData, PipelineRun, Country
 def cleanData(filter_kwargs):
     if not isinstance(filter_kwargs, dict) or filter_kwargs == {}:
         queryset = WaterData.objects.all()
-    else :
+    else:
         queryset = WaterData.objects.filter(**filter_kwargs)
 
     yearly_data = queryset.values('phenomenonTimeReferenceYear').annotate(
-                resultMeanValue=Avg('resultMeanValue')
-            ).order_by('phenomenonTimeReferenceYear')
-        
+        resultMeanValue=Avg('resultMeanValue')
+    ).order_by('phenomenonTimeReferenceYear')
+
     df = pd.DataFrame(yearly_data)
 
     Q1 = df["resultMeanValue"].quantile(0.25)
@@ -42,7 +42,7 @@ def cleanData(filter_kwargs):
     y = np.array(df_filtered["resultMeanValue"])
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
-    
+
     return X, y, X_train, X_test, y_train, y_test
 
 
@@ -56,18 +56,20 @@ def arimaForecasting(self, model, filter_kwargs, pipelineRunID):
 
         X, y, X_train, X_test, y_train, y_test = cleanData(filter_kwargs)
 
-        model_fitted = ARIMA(y_train, order=(int(parameters['p']['value']), int(parameters['d']['value']), int(parameters['q']['value']))).fit()
+        model_fitted = ARIMA(y_train, order=(
+        int(parameters['p']['value']), int(parameters['d']['value']), int(parameters['q']['value']))).fit()
 
         years_to_predict = np.array([int(max(X)) + x for x in range(1, 6)]).reshape(-1, 1)
 
         y_forecasts = model_fitted.get_forecast(steps=len(years_to_predict)).predicted_mean
         y_pred = model_fitted.get_forecast(steps=len(X_test)).predicted_mean
 
-        country_instance = Country.objects.filter(isoalpha2 = filter_kwargs['countryCode']).values_list("country", flat=True).first()
+        country_instance = Country.objects.filter(isoalpha2=filter_kwargs['countryCode']).values_list("country",
+                                                                                                      flat=True).first()
 
         results = {
-            'country' : country_instance,
-            'observedProperty' : filter_kwargs['observedPropertyDeterminandLabel'],
+            'country': country_instance,
+            'observedProperty': filter_kwargs['observedPropertyDeterminandLabel'],
             'model': model['name'],
             'parameters': parameters,
             'series': [
@@ -82,18 +84,19 @@ def arimaForecasting(self, model, filter_kwargs, pipelineRunID):
                     'name': 'Prédictions futures',
                     'type': 'line',
                     'data': [
-                        {'x': year, 'y': value} for year, value in zip(years_to_predict.flatten().tolist(), y_forecasts.tolist())
+                        {'x': year, 'y': value} for year, value in
+                        zip(years_to_predict.flatten().tolist(), y_forecasts.tolist())
                     ]
                 }
             ],
             'metrics': {
-                        'mean_absolute_error': float(mean_absolute_error(y_test, y_pred)),
-                        'mean_squared_error': float(mean_squared_error(y_test, y_pred)),
-                        'root_mean_squared_error': root_mean_squared_error(y_test, y_pred)
-                    }
+                'mean_absolute_error': float(mean_absolute_error(y_test, y_pred)),
+                'mean_squared_error': float(mean_squared_error(y_test, y_pred)),
+                'root_mean_squared_error': root_mean_squared_error(y_test, y_pred)
             }
+        }
 
-        pipeline_run.results  = results
+        pipeline_run.results = results
         pipeline_run.save()
         pipeline_run.mark_completed(success=True)
 
@@ -102,6 +105,7 @@ def arimaForecasting(self, model, filter_kwargs, pipelineRunID):
     except Exception as e:
         pipeline_run.mark_completed(success=False)
         raise e
+
 
 @shared_task(bind=True)
 def randomForestRegression(self, model, filter_kwargs, pipelineRunID):
@@ -114,7 +118,8 @@ def randomForestRegression(self, model, filter_kwargs, pipelineRunID):
 
         X, y, X_train, X_test, y_train, y_test = cleanData(filter_kwargs)
 
-        model_fitted = RandomForestRegressor(n_estimators=int(parameters['n_estimators']['value']), max_depth=int(parameters['max_depth']['value'])).fit(X_train, y_train)
+        model_fitted = RandomForestRegressor(n_estimators=int(parameters['n_estimators']['value']),
+                                             max_depth=int(parameters['max_depth']['value'])).fit(X_train, y_train)
 
         X_predicted = model_fitted.predict(X)
 
@@ -122,12 +127,13 @@ def randomForestRegression(self, model, filter_kwargs, pipelineRunID):
 
         y_forecasts = model_fitted.predict(years_to_predict)
         y_pred = model_fitted.predict(X_test)
-        
-        country_instance = Country.objects.filter(isoalpha2 = filter_kwargs['countryCode']).values_list("country", flat=True).first()
+
+        country_instance = Country.objects.filter(isoalpha2=filter_kwargs['countryCode']).values_list("country",
+                                                                                                      flat=True).first()
 
         results = {
-            'country' : country_instance,
-            'observedProperty' : filter_kwargs['observedPropertyDeterminandLabel'],
+            'country': country_instance,
+            'observedProperty': filter_kwargs['observedPropertyDeterminandLabel'],
             'model': model['name'],
             'parameters': parameters,
             'series': [
@@ -149,19 +155,20 @@ def randomForestRegression(self, model, filter_kwargs, pipelineRunID):
                     'name': 'Prédictions futures',
                     'type': 'scatter',
                     'data': [
-                        {'x': year, 'y': value} for year, value in zip(years_to_predict.flatten().tolist(), y_forecasts.tolist())
+                        {'x': year, 'y': value} for year, value in
+                        zip(years_to_predict.flatten().tolist(), y_forecasts.tolist())
                     ]
                 }
             ],
             'metrics': {
-                        'r_squared': float(model_fitted.score(X_train, y_train)),
-                        'mean_absolute_error': float(mean_absolute_error(y_test, y_pred)),
-                        'mean_squared_error': float(mean_squared_error(y_test, y_pred)),
-                        'root_mean_squared_error': root_mean_squared_error(y_test, y_pred)
-                    }
+                'r_squared': float(model_fitted.score(X_train, y_train)),
+                'mean_absolute_error': float(mean_absolute_error(y_test, y_pred)),
+                'mean_squared_error': float(mean_squared_error(y_test, y_pred)),
+                'root_mean_squared_error': root_mean_squared_error(y_test, y_pred)
             }
+        }
 
-        pipeline_run.results  = results
+        pipeline_run.results = results
         pipeline_run.save()
         pipeline_run.mark_completed(success=True)
 
@@ -170,6 +177,7 @@ def randomForestRegression(self, model, filter_kwargs, pipelineRunID):
     except Exception as e:
         pipeline_run.mark_completed(success=False)
         raise e
+
 
 @shared_task(bind=True)
 def linearRegression(self, model, filter_kwargs, pipelineRunID):
@@ -182,19 +190,20 @@ def linearRegression(self, model, filter_kwargs, pipelineRunID):
         X, y, X_train, X_test, y_train, y_test = cleanData(filter_kwargs)
 
         model_fitted = LinearRegression(fit_intercept=parameters['fit_intercept']['value']).fit(X_train, y_train)
-        
+
         X_predicted = model_fitted.predict(X)
 
         years_to_predict = np.array([int(max(X)) + x for x in range(1, 6)]).reshape(-1, 1)
 
         y_forecasts = model_fitted.predict(years_to_predict)
         y_pred = model_fitted.predict(X_test)
-        
-        country_instance = Country.objects.filter(isoalpha2 = filter_kwargs['countryCode']).values_list("country", flat=True).first()
+
+        country_instance = Country.objects.filter(isoalpha2=filter_kwargs['countryCode']).values_list("country",
+                                                                                                      flat=True).first()
 
         results = {
-            'country' : country_instance,
-            'observedProperty' : filter_kwargs['observedPropertyDeterminandLabel'],
+            'country': country_instance,
+            'observedProperty': filter_kwargs['observedPropertyDeterminandLabel'],
             'model': model['name'],
             'parameters': parameters,
             'series': [
@@ -216,20 +225,20 @@ def linearRegression(self, model, filter_kwargs, pipelineRunID):
                     'name': 'Prédictions futures',
                     'type': 'scatter',
                     'data': [
-                        {'x': year, 'y': value} for year, value in zip(years_to_predict.flatten().tolist(), y_forecasts.tolist())
+                        {'x': year, 'y': value} for year, value in
+                        zip(years_to_predict.flatten().tolist(), y_forecasts.tolist())
                     ]
                 }
             ],
             'metrics': {
-                        'r_squared': float(model_fitted.score(X_train, y_train)),
-                        'mean_absolute_error': float(mean_absolute_error(y_test, y_pred)),
-                        'mean_squared_error': float(mean_squared_error(y_test, y_pred)),
-                        'root_mean_squared_error': root_mean_squared_error(y_test, y_pred)
-                    }
+                'r_squared': float(model_fitted.score(X_train, y_train)),
+                'mean_absolute_error': float(mean_absolute_error(y_test, y_pred)),
+                'mean_squared_error': float(mean_squared_error(y_test, y_pred)),
+                'root_mean_squared_error': root_mean_squared_error(y_test, y_pred)
             }
+        }
 
-
-        pipeline_run.results  = results
+        pipeline_run.results = results
         pipeline_run.save()
         pipeline_run.mark_completed(success=True)
 
@@ -238,4 +247,3 @@ def linearRegression(self, model, filter_kwargs, pipelineRunID):
     except Exception as e:
         pipeline_run.mark_completed(success=False)
         raise e
-

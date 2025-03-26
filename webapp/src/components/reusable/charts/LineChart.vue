@@ -2,7 +2,7 @@
   <div id="line-chart" class="px-2 pt-4"></div>
 </template>
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount, watch, ref } from "vue"
+import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 import ApexCharts from "apexcharts"
 import type * as types from "@/type"
 
@@ -10,18 +10,17 @@ const props = defineProps<{
   data: types.ChartData[] | undefined
 }>()
 
-
-const chartInstance = ref<ApexCharts | null>(null);
+const chartInstance = ref<ApexCharts | null>(null)
 
 const renderChart = () => {
   if (chartInstance.value) {
-    chartInstance.value.destroy();
+    chartInstance.value.destroy()
   }
 
   const options = {
     series: [
       {
-        name: 'Moyenne Chemicals',
+        name: "Moyenne Chemicals",
         data: props.data,
       },
     ],
@@ -33,7 +32,7 @@ const renderChart = () => {
       },
       zoom: {
         enabled: false,
-        allowMouseWheelZoom: false
+        allowMouseWheelZoom: false,
       },
     },
     stroke: {
@@ -66,7 +65,7 @@ const renderChart = () => {
     yaxis: {
       labels: {
         formatter: function (value: number) {
-          return value.toLocaleString('fr-BE', { maximumFractionDigits: 2 });
+          return value.toLocaleString("fr-BE", { maximumFractionDigits: 2 })
         },
       },
     },
@@ -122,32 +121,41 @@ const renderChart = () => {
 
         return (
           '<div class="p-1.5 bg-black/80 text-white text-xs"> Moyenne : ' +
-          data.y.toLocaleString('fr-BE', { maximumFractionDigits: 2 }) +
+          data.y.toLocaleString("fr-BE", { maximumFractionDigits: 2 }) +
           "</div>"
         )
       },
     },
-  };
-
-  if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
-    chartInstance.value = new ApexCharts(document.getElementById("line-chart"), options);
-    chartInstance.value.render();
   }
-};
+
+  if (
+    document.getElementById("line-chart") &&
+    typeof ApexCharts !== "undefined"
+  ) {
+    chartInstance.value = new ApexCharts(
+      document.getElementById("line-chart"),
+      options
+    )
+    chartInstance.value.render()
+  }
+}
 
 onMounted(() => {
-  renderChart();
-});
+  renderChart()
+})
 
-watch(() => props.data, (newData) => {
-  renderChart();
-});
+watch(
+  () => props.data,
+  (newData) => {
+    renderChart()
+  }
+)
 
 onBeforeUnmount(() => {
   if (chartInstance.value) {
-    chartInstance.value.destroy();
+    chartInstance.value.destroy()
   }
-});
+})
 </script>
 
 <style>
@@ -161,10 +169,10 @@ onBeforeUnmount(() => {
 }
 
 .apexcharts-xaxistooltip-bottom:before {
-  opacity: 0 !important
+  opacity: 0 !important;
 }
 
 .apexcharts-xaxistooltip-bottom:after {
-  opacity: 0 !important
+  opacity: 0 !important;
 }
 </style>

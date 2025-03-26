@@ -815,3 +815,183 @@ worker: Warm shutdown (MainProcess)
 worker: Hitting Ctrl+C again will terminate all running tasks!
 
 worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@MacBook-Pro-van-Ines.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.3.1-arm64-arm-64bit-Mach-O 2025-03-25 20:45:07
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x106c53cb0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-25 20:45:08,510: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-25 20:45:08,513: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-25 20:45:09,525: INFO/MainProcess] mingle: all alone
+[2025-03-25 20:45:09,548: INFO/MainProcess] celery@MacBook-Pro-van-Ines.local ready.
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@MacBook-Pro-van-Ines.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.3.1-arm64-arm-64bit-Mach-O 2025-03-25 20:46:30
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x10410fcb0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-25 20:46:31,616: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-25 20:46:31,622: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-25 20:46:32,630: INFO/MainProcess] mingle: all alone
+[2025-03-25 20:46:32,638: INFO/MainProcess] celery@MacBook-Pro-van-Ines.local ready.
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@MacBook-Pro-van-Ines.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.3.1-arm64-arm-64bit-Mach-O 2025-03-26 07:34:00
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x10520fcb0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-26 07:34:01,085: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-26 07:34:01,088: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-26 07:34:02,100: INFO/MainProcess] mingle: all alone
+[2025-03-26 07:34:02,119: INFO/MainProcess] celery@MacBook-Pro-van-Ines.local ready.
+[2025-03-26 08:21:33,660: INFO/MainProcess] Task startapp.tasks.linearRegression[241c7e18-06ab-45a5-b2e6-cb72a230b4a6] received
+[2025-03-26 08:21:35,042: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:38: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = pd.to_datetime(df_filtered['phenomenonTimeReferenceYear'], format='%Y')
+
+[2025-03-26 08:21:35,044: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:39: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = df_filtered['phenomenonTimeReferenceYear'].dt.year
+
+[2025-03-26 08:21:35,054: INFO/ForkPoolWorker-8] Task startapp.tasks.linearRegression[241c7e18-06ab-45a5-b2e6-cb72a230b4a6] succeeded in 1.3929275409900583s: {'country': 'Belgique', 'observedProperty': 'Ammonium', 'model': 'Régression Linéaire', 'parameters': {'fit_intercept': {'value': True, 'type': 'checkbox', 'label': 'Ajuster l\'interception'}}, 'series': [{'name': 'Données observées', 'type': 'scatter', 'data': [...]}, {'name': 'Droite de régression', 'type': 'line', 'data': [...]}, {'name': 'Prédictions futures', 'type': 'scatter', 'data': [...]}], 'metrics': {'r_squared': 0.6972260145000488, 'mean_absolute_error': 1.172635577370346, 'mean_squared_error': 1.4956344407757576, 'root_mean_squared_error': 1.2229613406709787}}
+[2025-03-26 09:29:46,794: INFO/MainProcess] Task startapp.tasks.linearRegression[561b5535-4137-44bb-aa2e-a9a4dea5ca83] received
+[2025-03-26 09:29:47,031: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:38: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = pd.to_datetime(df_filtered['phenomenonTimeReferenceYear'], format='%Y')
+
+[2025-03-26 09:29:47,033: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:39: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = df_filtered['phenomenonTimeReferenceYear'].dt.year
+
+[2025-03-26 09:29:47,044: INFO/ForkPoolWorker-8] Task startapp.tasks.linearRegression[561b5535-4137-44bb-aa2e-a9a4dea5ca83] succeeded in 0.24863287503831089s: {'country': 'Albanie', 'observedProperty': 'Alkalinity', 'model': 'Régression Linéaire', 'parameters': {'fit_intercept': {'value': True, 'type': 'checkbox', 'label': 'Ajuster l\'interception'}}, 'series': [{'name': 'Données observées', 'type': 'scatter', 'data': [...]}, {'name': 'Droite de régression', 'type': 'line', 'data': [...]}, {'name': 'Prédictions futures', 'type': 'scatter', 'data': [...]}], 'metrics': {'r_squared': 0.2636653037174145, 'mean_absolute_error': 61.4733031609192, 'mean_squared_error': 3787.489902907725, 'root_mean_squared_error': 61.542586092134}}
+[2025-03-26 10:53:44,751: INFO/MainProcess] Task startapp.tasks.linearRegression[6eb43178-bdbf-4c03-9135-137724d66072] received
+[2025-03-26 10:53:45,093: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:38: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = pd.to_datetime(df_filtered['phenomenonTimeReferenceYear'], format='%Y')
+
+[2025-03-26 10:53:45,095: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:39: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = df_filtered['phenomenonTimeReferenceYear'].dt.year
+
+[2025-03-26 10:53:45,108: INFO/ForkPoolWorker-8] Task startapp.tasks.linearRegression[6eb43178-bdbf-4c03-9135-137724d66072] succeeded in 0.35584195802221075s: {'country': 'Belgique', 'observedProperty': 'Ammonium', 'model': 'Régression Linéaire', 'parameters': {'fit_intercept': {'value': True, 'type': 'checkbox', 'label': 'Ajuster l\'interception'}}, 'series': [{'name': 'Données observées', 'type': 'scatter', 'data': [...]}, {'name': 'Droite de régression', 'type': 'line', 'data': [...]}, {'name': 'Prédictions futures', 'type': 'scatter', 'data': [...]}], 'metrics': {'r_squared': 0.6972260145000488, 'mean_absolute_error': 1.172635577370346, 'mean_squared_error': 1.4956344407757578, 'root_mean_squared_error': 1.2229613406709787}}
+[2025-03-26 11:08:40,839: INFO/MainProcess] Task startapp.tasks.linearRegression[469337cc-c32d-43f6-920a-90419d4f1c4c] received
+[2025-03-26 11:08:41,030: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:38: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = pd.to_datetime(df_filtered['phenomenonTimeReferenceYear'], format='%Y')
+
+[2025-03-26 11:08:41,032: WARNING/ForkPoolWorker-8] /Users/nessnos/PycharmProjects/infof308/startapp/tasks.py:39: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df_filtered['phenomenonTimeReferenceYear'] = df_filtered['phenomenonTimeReferenceYear'].dt.year
+
+[2025-03-26 11:08:41,042: INFO/ForkPoolWorker-8] Task startapp.tasks.linearRegression[469337cc-c32d-43f6-920a-90419d4f1c4c] succeeded in 0.20122333301696926s: {'country': 'Albanie', 'observedProperty': 'Alkalinity', 'model': 'Régression Linéaire', 'parameters': {'fit_intercept': {'value': True, 'type': 'checkbox', 'label': 'Ajuster l\'interception'}}, 'series': [{'name': 'Données observées', 'type': 'scatter', 'data': [...]}, {'name': 'Droite de régression', 'type': 'line', 'data': [...]}, {'name': 'Prédictions futures', 'type': 'scatter', 'data': [...]}], 'metrics': {'r_squared': 0.26366530371741437, 'mean_absolute_error': 61.4733031609192, 'mean_squared_error': 3787.489902907725, 'root_mean_squared_error': 61.542586092134}}
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@MacBook-Pro-van-Ines.local v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- macOS-15.3.1-arm64-arm-64bit-Mach-O 2025-03-26 13:08:32
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         water:0x103b0fcb0
+- ** ---------- .> transport:   redis://localhost:6379/0
+- ** ---------- .> results:     redis://localhost:6379/0
+- *** --- * --- .> concurrency: 11 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . startapp.tasks.arimaForecasting
+  . startapp.tasks.linearRegression
+  . startapp.tasks.randomForestRegression
+
+[2025-03-26 13:08:33,536: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2025-03-26 13:08:33,538: INFO/MainProcess] mingle: searching for neighbors
+[2025-03-26 13:08:34,549: INFO/MainProcess] mingle: all alone
+[2025-03-26 13:08:34,575: INFO/MainProcess] celery@MacBook-Pro-van-Ines.local ready.
+
+worker: Hitting Ctrl+C again will terminate all running tasks!
+
+worker: Warm shutdown (MainProcess)

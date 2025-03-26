@@ -9,8 +9,11 @@
               :key="index"
               class="border border-gray-300 p-2 text-lg font-bold text-ocean"
             >
-              <div class="flex flex-row items-center gap-3 justify-center">
-                <span class="fi rounded-[0.2rem] shadow" :class="'fi-' + country.code?.toLowerCase()"></span>
+              <div class="flex flex-row items-center justify-center gap-3">
+                <span
+                  class="fi rounded-[0.2rem] shadow"
+                  :class="'fi-' + country.code?.toLowerCase()"
+                ></span>
                 <span>{{ country.name }}</span>
               </div>
             </th>
@@ -37,21 +40,26 @@
           :selected-country="selectedCountry"
         />
       </table>
-      <div class="flex flex-row items-center justify-center space-x-4 w-full px-2 py-6">
-        <DefaultButton v-for="country in selectedCountry" :label="'Explorez ' + country.name" :to="{ name: 'dashboard', query: { country: country.name }} " />
+      <div
+        class="flex w-full flex-row items-center justify-center space-x-4 px-2 py-6"
+      >
+        <DefaultButton
+          v-for="country in selectedCountry"
+          :label="'Explorez ' + country.name"
+          :to="{ name: 'dashboard', query: { country: country.name } }"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { RouterLink } from "vue-router"
 import type * as types from "@/type"
 import CountryTable from "@/components/tables/CountryTable.vue"
 import DefaultButton from "@/components/reusable/buttons/DefaultButton.vue"
 
 defineProps<{
   selectedCountry: types.Country[]
-  generalInfo: {[key: string]: types.CountryGeneralInfo}
+  generalInfo: { [key: string]: types.CountryGeneralInfo }
 }>()
 </script>

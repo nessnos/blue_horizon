@@ -1,6 +1,8 @@
 # `Water Quality Explorer for Europe`
 
-This project is a web application developed for a university assignment aimed at analyzing and visualizing public data on water quality in Europe. It leverages data science techniques to provide dynamic exploration and visual representation of water quality metrics, using data from the European Environment Agency (EEA).
+This project is a web application developed for a university assignment aimed at analyzing and visualizing public data
+on water quality in Europe. It leverages data science techniques to provide dynamic exploration and visual
+representation of water quality metrics, using data from the European Environment Agency (EEA).
 
 ## Project Goals
 
@@ -9,7 +11,8 @@ The application enables users to:
 - Explore and analyze data related to water quality across various ecosystems in Europe.
 - Perform temporal analysis of water quality metrics.
 
-Data is sourced from the European Environment Agency (EEA) databases, available at [eea.europa.eu](https://www.eea.europa.eu).
+Data is sourced from the European Environment Agency (EEA) databases, available
+at [eea.europa.eu](https://www.eea.europa.eu).
 
 ## Dependencies installation
 
@@ -29,7 +32,8 @@ After having installed Docker, run the container via dockeer-compose:
 docker compose up -d
 ```
 
-This created and ran two containers : 
+This created and ran two containers :
+
 1. `postgres` : the postgres sql server with a database named `waterdata` with POSTGRES_PASSWROD `waterize`
 2. `redis`: the message broker to queue and distribute background tasks used by `Celery`
 
@@ -46,7 +50,7 @@ docker compose up -d  # Start the container again
 
 You are going to restore the database with all the water quality data and some others tables/views.
 
->To install Postgres, check https://www.postgresql.org/download/macosx/
+> To install Postgres, check https://www.postgresql.org/download/macosx/
 
 > [!NOTE]  
 > MacOS
@@ -55,6 +59,7 @@ You are going to restore the database with all the water quality data and some o
 >```
 
 Run `init.sh` or `init.ps1`
+
 ```bash
 ./init.sh #MacOs & Linux
 ./init.ps1 #Windows
@@ -62,11 +67,11 @@ Run `init.sh` or `init.ps1`
 
 ## Launching the project
 
-To start all app components and restoring the database backup : `Django`, `Vue.js` and `Celery` 
+To start all app components and restoring the database backup : `Django`, `Vue.js` and `Celery`
 
 > [!WARNING]  
-> Make sure to have a `.env` file containing the `OpenAI` API Key & the parameters for the `Django` database settings in the root folder.
-
+> Make sure to have a `.env` file containing the `OpenAI` API Key & the parameters for the `Django` database settings in
+> the root folder.
 
 ```bash
 ./launch.sh #MacOs & Linux
@@ -75,6 +80,7 @@ To start all app components and restoring the database backup : `Django`, `Vue.j
 
 > Your backend server will run on port `8000`, you can try to open it on [http://localhost:8000](http://localhost:8000).
 
-> The server typically runs on port `5173`, you can access it from folling link: [http://localhost:5173](http://localhost:5173).
+> The server typically runs on port `5173`, you can access it from folling
+> link: [http://localhost:5173](http://localhost:5173).
 
 > The celery server will be running in the background for task management.

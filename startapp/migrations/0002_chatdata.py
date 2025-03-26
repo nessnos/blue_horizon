@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('startapp', '0001_initial'),
     ]
@@ -21,19 +20,26 @@ class Migration(migrations.Migration):
                 ('total_monitoring_sites', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
                 ('water_body_category', models.TextField(blank=True, null=True)),
                 ('matrix', models.TextField(blank=True, null=True)),
-                ('proportion_of_confirmed_samples', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True)),
+                ('proportion_of_confirmed_samples',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True)),
                 ('loq_value', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True)),
-                ('number_of_collected_samples', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
-                ('number_samples_below_loq', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
+                ('number_of_collected_samples',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
+                ('number_samples_below_loq',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
                 ('mean_concentration', models.TextField(blank=True, null=True)),
-                ('number_samples_mean_below_loq', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
+                ('number_samples_mean_below_loq',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
                 ('median_concentration', models.TextField(blank=True, null=True)),
-                ('number_samples_median_below_loq', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
+                ('number_samples_median_below_loq',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
                 ('standard_deviation', models.TextField(blank=True, null=True)),
                 ('minimum_recorded_value', models.TextField(blank=True, null=True)),
-                ('number_samples_min_below_loq', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
+                ('number_samples_min_below_loq',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
                 ('maximum_recorded_value', models.TextField(blank=True, null=True)),
-                ('number_samples_max_below_loq', models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
+                ('number_samples_max_below_loq',
+                 models.DecimalField(blank=True, decimal_places=2, max_digits=20, null=True)),
                 ('unit_of_measure', models.TextField(blank=True, null=True)),
             ],
             options={
